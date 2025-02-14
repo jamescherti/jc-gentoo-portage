@@ -1,0 +1,6 @@
+# prevent certain packages from being installed/updated.
+# Examples:
+# >www-client/chromium-121.0.6167.139
+# >dev-util/nvidia-cuda-toolkit-12.4.0
+# >app-crypt/gnupg-2.2.41
+# >media-video/obs-studio-30.1.2

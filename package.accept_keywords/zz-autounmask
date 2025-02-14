@@ -1,0 +1,76 @@
+# package.use/custom - James Cherti's Gentoo Portage
+#
+# Author: James Cherti
+# URL: https://github.com/jamescherti/jc-gentoo-portage
+#
+# License:
+# --------
+# Distributed under terms of the MIT license.
+#
+# Copyright (C) 2022-2025 James Cherti
+#
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the “Software”), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included in all
+# copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# SOFTWARE.
+#
+
+sys-apps/tuned ~amd64
+dev-python/python-lsp-isort ~amd64
+sys-power/tlp ~amd64
+app-containers/nvidia-container-toolkit ~amd64
+sys-libs/libnvidia-container ~amd64
+app-text/sdcv ~amd64
+sci-libs/transformers ~amd64
+sci-libs/huggingface_hub ~amd64
+sci-libs/tokenizers ~amd64
+sci-libs/safetensors ~amd64
+dev-libs/protobuf ~amd64
+dev-libs/dynolog ~amd64
+dev-libs/cpuinfo ~amd64
+dev-libs/pthreadpool ~amd64
+sci-libs/onnx ~amd64
+sci-libs/foxi ~amd64
+dev-libs/psimd ~amd64
+dev-libs/FP16 ~amd64
+dev-libs/FXdiv ~amd64
+dev-libs/pocketfft ~amd64
+sci-libs/kineto ~amd64
+dev-python/PeachPy ~amd64
+dev-python/Opcodes ~amd64
+dev-util/nvidia-cuda-toolkit ~amd64
+app-text/proselint ~amd64
+x11-misc/xdo ~amd64
+games-board/pychess ~amd64
+x11-misc/pcmanfm ~amd64
+x11-libs/libfm ~amd64
+media-libs/openh264 ~amd64
+app-misc/ddcutil ~amd64
+sys-kernel/pf-sources ~amd64
+sys-kernel/zen-sources ~amd64
+media-plugins/nvidia-vaapi-driver ~amd64
+dev-python/schema ~amd64
+app-text/OCRmyPDF ~amd64
+media-fonts/iosevka ~amd64
+dev-util/shellcheck ~amd64
+app-admin/ananicy ~amd64
+games-util/gamemode ~amd64
+media-video/obs-studio ~amd64
+media-video/obs-v4l2sink ~amd64
+media-video/v4l2loopback ~amd64
+media-video/avidemux ~amd64
+media-libs/avidemux-core ~amd64
+media-libs/avidemux-plugins ~amd64
