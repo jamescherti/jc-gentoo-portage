@@ -4,7 +4,7 @@ This repository houses James Cherti's [Gentoo](https://www.gentoo.org/) Portage 
 
 ## Installation
 
-Here's how to install James Cherti's dotfiles:
+Here's how to install James Cherti's portage in a new Gentoo installation:
 
 1. **Clone the Repository:**
 
