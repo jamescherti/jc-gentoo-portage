@@ -1,6 +1,6 @@
 # jc-gentoo-portage
 
-This repository houses James Cherti's Gentoo Portage (`/etc/portage`).
+This repository houses James Cherti's [Gentoo](https://www.gentoo.org/) Portage (`/etc/portage`).
 
 ## Installation
 
@@ -40,3 +40,6 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 ## Links
 
 - [jc-gentoo-portage @GitHub](https://github.com/jamescherti/jc-gentoo-portage)
+- [Customizing /etc/portage/make.conf ](https://wiki.gentoo.org/wiki//etc/portage/make.conf)
+- [Gentoo Wiki](https://wiki.gentoo.org/wiki/)
+- [Gentoo Handbook](https://wiki.gentoo.org/wiki/Handbook:Main_Page)
