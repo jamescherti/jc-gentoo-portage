@@ -1,6 +1,10 @@
 # jc-gentoo-portage
 
-This repository houses James Cherti's [Gentoo](https://www.gentoo.org/) Portage (`/etc/portage`).
+This repository houses James Cherti's [Gentoo](https://www.gentoo.org/) Portage (`/etc/portage`), which enables the compilation and installation of software packages on a Gentoo Linux system.
+
+Portage uses ebuild scripts that define how software should be compiled and installed, providing a high degree of customization and optimization.
+
+The configurations in this repository can serve as a foundation for your own Portage setup or inspire you to enhance your existing configuration.
 
 ## Installation
 
