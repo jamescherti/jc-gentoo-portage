@@ -22,7 +22,7 @@ Here's how to install James Cherti's portage in a new Gentoo installation:
 
 The `jc-gentoo-portage` files have been written by James Cherti and is distributed under terms of the MIT license.
 
-Copyright (C) 2022-2025 [James Cherti](https://www.jamescherti.com).
+Copyright (C) 2022-2026 [James Cherti](https://www.jamescherti.com).
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of
 this software and associated documentation files (the “Software”), to deal in
