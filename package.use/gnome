@@ -58,7 +58,7 @@ gnome-base/gnome-control-center -ibus
 # strictly bounded to things you explicitly execute.
 net-misc/networkmanager -concheck
 
-# Omit physical sensor calibration layers and flatbed scanning daemons
+# TODO Omit physical sensor calibration layers and flatbed scanning daemons
 # gnome-base/gnome-settings-daemon -colord
 # gnome-base/gnome-control-center -colord
 

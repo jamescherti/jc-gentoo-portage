@@ -27,10 +27,6 @@
 # TODO auto remove
 sys-firmware/intel-microcode hostonly
 
-# NVME disks
-# TODO auto remove
-sys-fs/lvm2 nvme
-
 # The symlink flag automatically creates or updates a symbolic link at
 # /usr/src/linux pointing to your current kernel source code.
 sys-kernel/gentoo-sources symlink

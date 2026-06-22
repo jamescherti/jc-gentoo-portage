@@ -1,3 +1,5 @@
 /make.profile
 /savedconfig
+/package.use/00hardware*
+/package.use/00cpu-flags
 *.swp
