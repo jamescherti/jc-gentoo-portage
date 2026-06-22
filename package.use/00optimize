@@ -46,7 +46,25 @@
 */* -nls -cjk
 
 # Remove bloat
-*/* -debug -handbook -gtk-doc -doc -test -examples -accessibility -perl -firewalld -ppp -zeroconf
+*/* -debug -handbook -gtk-doc -doc -test -examples -accessibility -perl -firewalld -ppp -zeroconf -modemmanager
+
+# Fix modemmanager
+# !!! The ebuild selected to satisfy
+# ">=net-misc/networkmanager-1.10.4[introspection]" has unmet requirements. -
+# net-misc/networkmanager-1.52.1::gentoo USE="bluetooth introspection nss
+# policykit systemd tools wext wifi -audit -concheck -connection-sharing -debug
+# -dhclient -dhcpcd (-elogind) -gnutls -gtk-doc -iptables -iwd -libedit
+# -modemmanager -nftables -ofono -ovs -ppp -psl -resolvconf (-selinux) -syslog
+# -teamd -test -vala" ABI_X86="(64) -32 (-x32)" The following REQUIRED_USE flag
+# constraints are unsatisfied:
+# bluetooth? ( modemmanager )
+# The above constraints are a subset of the following complete expression:
+# bluetooth? ( modemmanager ) connection-sharing? ( any-of ( iptables nftables )
+# ) gtk-doc? ( introspection ) iwd? ( wifi ) test? ( tools ) vala? (
+# introspection ) wext? ( wifi ) exactly-one-of ( gnutls nss ) at-most-one-of (
+# elogind systemd ) at-most-one-of ( dhclient dhcpcd ) at-most-one-of ( syslog
+# systemd )
+net-misc/networkmanager modemmanager
 
 # -xv (XVideo): This is an ancient, legacy X11 hardware video overlay path from
 # the late 1990s. Modern video players render frames using OpenGL, Vulkan, or
@@ -58,6 +76,12 @@
 # discovery (zeroconf) to function. Because I have globally disabled zeroconf in
 # my make.conf, disabling escl (-escl) is required.
 media-gfx/sane-backends SANE_BACKENDS: -escl
+
+# Make the GCC executable run faster when compiling other packages by building
+# GCC itself using Profile-Guided Optimization (PGO) and Link-Time Optimization
+# (LTO). This typically yields a 10% to 20% performance improvement in compile
+# times.
+sys-devel/gcc pgo lto
 
 # TODO Removed global lto pgo
 #

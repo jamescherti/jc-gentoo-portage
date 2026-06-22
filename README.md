@@ -4,6 +4,14 @@ This repository houses James Cherti's [Gentoo](https://www.gentoo.org/) Portage 
 
 The configurations in this repository can serve as a foundation for your own Portage setup or inspire you to enhance your existing configuration.
 
+## Prerequisites
+
+Before installing, ensure your system is set to the compatible 23.0 systemd desktop profile:
+```bash
+eselect profile set default/linux/amd64/23.0/desktop/systemd
+
+```
+
 ## Installation
 
 Here's how to install James Cherti's portage in a new Gentoo installation:
@@ -24,11 +32,15 @@ Here's how to install James Cherti's portage in a new Gentoo installation:
    echo "*/* $(cpuid2cpuflags)" > /etc/portage/package.use/00cpu-flags
    ```
 
-
 4. Create make.profile:
    ```
    cd /etc/portage
    ln -sf ../../var/db/repos/gentoo/profiles/default/linux/amd64/23.0/desktop/systemd make.profile
+   ```
+
+5. Recompile GCC using this Portage configuration, which explicitly enables Profile-Guided Optimization (PGO) and Link-Time Optimization (LTO) to maximize compilation throughput:
+   ```
+   emerge -av sys-devel/gcc
    ```
 
 5. Begin customizing it to fit your specific requirements.
