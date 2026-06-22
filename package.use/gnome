@@ -23,6 +23,7 @@
 #
 
 # Global configuration
+# TODO: Is -gnome-keyring useful?
 */* -qt5 -qt6 -gnome-online-accounts -gnome-keyring wayland -geolocation
 
 # Disable KDE
