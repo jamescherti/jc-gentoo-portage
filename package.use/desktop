@@ -1,4 +1,3 @@
-#
 # Copyright (C) 2022-2026 James Cherti
 # URL: https://github.com/jamescherti/jc-gentoo-portage
 #
@@ -23,5 +22,7 @@
 # SOFTWARE.
 #
 
-FEATURES="ccache"
-CCACHE_DIR="/var/cache/ccache"
+# -zeroconf disables avahi. For a machine that only plays sound to speakers or
+# headphones physically plugged into its own jacks or paired via Bluetooth,
+# zero-configuration local service scanning is overhead.
+*/* -startup-notification -evdev -sdl -sdl2 networkmanager fontconfig dbus cups mtp scanner joystick gstreamer -jack alsa v4l spell aspell opengl gles2 egl

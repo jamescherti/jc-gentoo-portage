@@ -1,4 +1,3 @@
-#
 # Copyright (C) 2022-2026 James Cherti
 # URL: https://github.com/jamescherti/jc-gentoo-portage
 #
@@ -23,5 +22,21 @@
 # SOFTWARE.
 #
 
-FEATURES="ccache"
-CCACHE_DIR="/var/cache/ccache"
+# URL: https://www.gentoo.org/support/news-items/2022-07-29-pipewire-sound-server.html
+#
+# GNOME: Required by Portage constraints: enabling global 'ffmpeg' on pipewire
+# requires 'extra' to compile the extended codec and audio/video pipelines.
+# Also
+#
+# pipewire-alsa: Install ALSA plugin, similar to media-plugins/alsa-plugins's
+# USE=pulseaudio.
+#
+# extra: The Portage package manager requires the extra USE flag to be active
+# whenever the ffmpeg USE flag is enabled for media-video/pipewire.  Fixes: The
+# following REQUIRED_USE flag constraints are unsatisfied: ffmpeg? ( extra )
+media-video/pipewire extra pipewire-alsa sound-server
+media-sound/pulseaudio -daemon
+
+# Pulse audio
+# media-video/pipewire -sound-server
+# media-sound/pulseaudio daemon

@@ -23,5 +23,12 @@
 # SOFTWARE.
 #
 
-FEATURES="ccache"
-CCACHE_DIR="/var/cache/ccache"
+# Fonts
+# Accept Microsoft proprietary EULA for standard web fonts compatibility
+media-fonts/corefonts MSttfEULA
+
+# Codecs
+# Allow the patent-restricted Fraunhofer AAC library for high-quality audio
+# compilation
+media-video/ffmpeg all-rights-reserved
+media-libs/fdk-aac all-rights-reserved

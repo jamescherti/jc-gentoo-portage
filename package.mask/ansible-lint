@@ -23,5 +23,20 @@
 # SOFTWARE.
 #
 
-FEATURES="ccache"
-CCACHE_DIR="/var/cache/ccache"
+# TODO
+# The Portage output shows a dependency conflict regarding the
+# dev-python/pathspec package. Portage detected that a newer version (1.1.1) is
+# available in the repository and targeted it for an upgrade.
+# 
+# However, the currently installed version of app-admin/ansible-lint (26.3.0)
+# defines a strict version boundary that restricts its dependency to versions
+# older than 1.1.0:
+# 
+# <dev-python/pathspec-1.1.0[python_targets_python3_14(-)] required by
+# (app-admin/ansible-lint-26.3.0 ... installed)
+# 
+# Portage handled this conflict correctly by skipping the pathspec upgrade to
+# protect the integrity of the installed ansible-lint package. Because the
+# process completed with Nothing to merge; quitting., no packages were altered,
+# and the system remains in a safe state.
+>=dev-python/pathspec-1.1.0

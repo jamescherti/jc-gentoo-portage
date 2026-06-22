@@ -1,0 +1,59 @@
+# Gentoo Optimizations
+
+# The combination of xs, asm, orc, jit, threads, and kms represents a
+# performance-oriented configuration that maximizes hardware utilization
+# and system responsiveness. The asm, orc, and jit flags empower software to use
+# hand-optimized assembly routines and just-in-time compilation, which
+# significantly accelerates tasks like media processing and script execution. By
+# including threads and kms, you ensure the system is optimized for multi-core
+# parallelism and flicker-free, high-resolution graphics output via the kernel's
+# display manager.
+#
+# -telemetry Disables upstream metrics tracking and background analytics
+# reporting to maximize network privacy and eliminate data-collection overhead.
+#
+# TODO: removed seccom
+# While you have explicitly excluded seccomp to prioritize stability and
+# minimize overhead, this set of flags as a whole essentially forces your
+# applications to run at the closest possible level to your underlying hardware,
+# reducing software-induced latency.
+*/* xs asm orc jit threads kms -telemetry
+
+# The exclusion of nls (Native Language Support) is a deliberate choice to
+# simplify the dependency graph and streamline the package installation process.
+# By setting USE="-nls", you instruct Portage to ignore internationalization
+# libraries and omit the compilation of localized message files, ensuring that
+# all software interfaces default to English. This configuration is particularly
+# beneficial on Gentoo because it prevents unnecessary interactions with the
+# gettext utility and significantly reduces the total number of files installed
+# across your system. Consequently, your updates will finish faster, and you
+# will regain valuable disk space that would otherwise be occupied by dozens of
+# translation files you do not need, resulting in a cleaner and more efficient
+# OS environment.
+*/* -nls
+
+# Remove bloat
+*/* -debug -handbook -gtk-doc -doc -examples -accessibility -perl -firewalld -ppp -zeroconf
+
+# Fix -zeroconf issue. An error occurs because the escl driver (Apple AirPrint /
+# eSCL network scanning protocol) inside sane-backends requires network service
+# discovery (zeroconf) to function. Because I have globally disabled zeroconf in
+# my make.conf, disabling escl (-escl) is required.
+media-gfx/sane-backends SANE_BACKENDS: -escl
+
+# TODO Removed global lto pgo
+#
+# TODO removed tcmalloc lobally via USE flags can introduce build failures and
+# runtime instability for packages that strictly expect the default glibc
+# allocator. It is significantly safer to remove this from make.conf and apply
+# it on a per-package basis via /etc/portage/package.use/.
+#
+# TODO removed custom-optimizations: This instructs specific build scripts to
+# bypass standard safety profiles to inject aggressive optimization pathways. It
+# frequently breaks compilation on various system utilities and libraries that
+# require strict compliance with standard build behaviors.
+#
+# TODO removed native-extensions: This flag influences how certain interpreted
+# language packages compile performance-sensitive subroutines into native binary
+# code. Forcing it globally can break compilation for upstream packages that
+# expect standard fallback implementations.
