@@ -1,4 +1,3 @@
-#
 # Copyright (C) 2022-2026 James Cherti
 # URL: https://github.com/jamescherti/jc-gentoo-portage
 #
@@ -23,7 +22,17 @@
 # SOFTWARE.
 #
 
-# -flto: Deeper optimization, supported by GCC and Clang. Useful for GCC users
-# or when maximum optimization is required.
-CFLAGS="${CFLAGS} -flto"
-CXXFLAGS="${CXXFLAGS} -flto"
+app-office/libreoffice -branding -bluetooth -qt6 -mariadb -gtk3 gtk4
+
+# TODO: Strip all database hooks from LibreOffice's semantic text stack.
+# dev-libs/redland -mysql -berkdb -sqlite
+
+# LibreOffice requires Native Language Support (nls) to manage its extensive
+# string parsing and localized interface frameworks. It depends on
+# dev-libs/boost, but the current system flags have nls disabled globally or
+# per-package. Portage refuses to build LibreOffice until Boost is compiled with
+# nls support.
+dev-libs/boost nls
+
+# TODO Force-strip the heavy database client layers
+# media-gfx/fontforge -tiff

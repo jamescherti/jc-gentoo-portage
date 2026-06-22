@@ -25,4 +25,4 @@
 # -zeroconf disables avahi. For a machine that only plays sound to speakers or
 # headphones physically plugged into its own jacks or paired via Bluetooth,
 # zero-configuration local service scanning is overhead.
-*/* -startup-notification -evdev -sdl -sdl2 -jack X networkmanager fontconfig udev dbus policykit udisks cups mtp scanner joystick gstreamer alsa v4l spell aspell opengl gles2 egl
+*/* -startup-notification -evdev -sdl -sdl2 -jack X networkmanager fontconfig udev dbus policykit udisks cups mtp scanner joystick alsa v4l spell aspell opengl gles2 egl

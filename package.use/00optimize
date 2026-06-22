@@ -48,6 +48,11 @@
 # Remove bloat
 */* -debug -handbook -gtk-doc -doc -test -examples -accessibility -perl -firewalld -ppp -zeroconf -modemmanager
 
+# Unless you use a physical Yubikey or hardware security token plugged into your
+# machine for SSH authentication or disk decryption, disabling smartcard prevents
+# system utilities from building smartcard-reading libraries
+*/* -smartcard
+
 # Fix modemmanager
 # !!! The ebuild selected to satisfy
 # ">=net-misc/networkmanager-1.10.4[introspection]" has unmet requirements. -

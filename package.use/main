@@ -22,8 +22,6 @@
 # SOFTWARE.
 #
 
-app-office/libreoffice -bluetooth -qt6 -mariadb
-
 # NOTE: Ensures that the package installs microcode files for my CPU only.
 # THIS IS NOT PORTABLE
 # TODO auto remove
