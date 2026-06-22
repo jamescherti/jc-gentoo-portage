@@ -23,7 +23,7 @@
 #
 
 # Global configuration
-*/* -gnome-online-accounts wayland -geolocation
+*/* -qt6 -gnome-online-accounts wayland -geolocation
 
 # Disable KDE
 */* -kde -kaccounts -semantic-desktop

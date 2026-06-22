@@ -26,5 +26,5 @@
 # headphones physically plugged into its own jacks or paired via Bluetooth,
 # zero-configuration local service scanning is overhead.
 #
-# TODO X gtk qt6 systemd dbus policykit
-*/* -startup-notification -evdev -sdl -sdl2 -jack networkmanager fontconfig udev dbus udisks cups mtp scanner joystick gstreamer alsa v4l spell aspell opengl gles2 egl
+# TODO X gtk
+*/* -startup-notification -evdev -sdl -sdl2 -jack networkmanager fontconfig udev dbus policykit udisks cups mtp scanner joystick gstreamer alsa v4l spell aspell opengl gles2 egl
