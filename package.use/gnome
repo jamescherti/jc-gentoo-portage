@@ -23,7 +23,10 @@
 #
 
 # Global configuration
-*/* -gnome-online-accounts wayland pipewire pulseaudio -geolocation
+*/* -gnome-online-accounts wayland -geolocation
+
+# Disable KDE
+*/* -kde -kaccounts -semantic-desktop
 
 # GNOME: Prune comic book archive formats from the primary document viewer
 app-text/papers -comics

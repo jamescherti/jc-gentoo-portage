@@ -43,7 +43,7 @@ net-print/cups-meta -foomatic
 net-print/cups-filters -foomatic
 
 # Minimalist Vim
-app-editors/vim -X acl -crypt -gpm -sound -wayland
+app-editors/vim -X -gpm acl -crypt -gpm -sound -wayland
 
 # Minimalist Emacs
 app-editors/emacs wide-int harfbuzz tree-sitter xattr X gmp acl gtk gui inotify jit ssl threads zlib dynamic-loading -alsa -dbus -gif -gpm -jpeg -lcms -png -sound -svg -systemd -tiff -webp -cairo -xft -xpm -games -gfile -gsettings -gzip-el -imagemagick -kerberos -libxml2 -livecd -m17n-lib -mailutils -motif -source -sqlite -toolkit-scroll-bars -valgrind
@@ -107,8 +107,6 @@ media-libs/libsdl2 -pipewire
 # app-text/aspell l10n_fr
 # app-text/hunspell l10n_fr
 # app-admin/keepassxc -network
-# app-editors/gvim python -gpm -nls
-# app-editors/vim terminal python vim-pager -gpm -nls
 # app-emulation/qemu usbredir spice
 # app-misc/recoll -inotify qt5
 # app-office/libreoffice pdfimport -mariadb -branding

@@ -13,18 +13,25 @@ Here's how to install James Cherti's portage in a new Gentoo installation:
    emerge -av app-portage/cpuid2cpuflags
    ```
 
-1. Clone the Repository:
+2. Clone the Repository:
 
    ```bash
    git clone https://github.com/jamescherti/jc-gentoo-portage /etc/portage
    ```
 
-2. Update CPU flags:
+3. Update CPU flags:
    ```
    echo "*/* $(cpuid2cpuflags)" > /etc/portage/package.use/00cpu-flags
    ```
 
-2. Begin customizing it to fit your specific requirements.
+
+4. Create make.profile:
+   ```
+   cd /etc/portage
+   ln -sf ../../var/db/repos/gentoo/profiles/default/linux/amd64/23.0/desktop/systemd make.profile
+   ```
+
+5. Begin customizing it to fit your specific requirements.
 
 ## License
 

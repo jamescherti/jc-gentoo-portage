@@ -30,10 +30,28 @@
 # will regain valuable disk space that would otherwise be occupied by dozens of
 # translation files you do not need, resulting in a cleaner and more efficient
 # OS environment.
-*/* -nls
+#
+# cjk: cjk (Chinese, Japanese, Korean), safe to disable globally.
+#
+# TODO
+# icu: icu (International Components for Unicode). Do not disable globally.
+# The icu library handles advanced Unicode data, character encodings, time/date
+# formatting, and text collation. Unlike NLS, which just manages translations,
+# ICU is a foundational component of modern text rendering and web engines.
+# Consequences of disabling icu: Globally setting -icu will block the
+# installation of software dependencies. Modern web browsers (Chromium,
+# Firefox), desktop components, and typography libraries (such as
+# media-libs/harfbuzz) require ICU. Forcing -icu will lead to severe dependency
+# conflicts or build failures.
+*/* -nls -cjk
 
 # Remove bloat
-*/* -debug -handbook -gtk-doc -doc -examples -accessibility -perl -firewalld -ppp -zeroconf
+*/* -debug -handbook -gtk-doc -doc -test -examples -accessibility -perl -firewalld -ppp -zeroconf
+
+# -xv (XVideo): This is an ancient, legacy X11 hardware video overlay path from
+# the late 1990s. Modern video players render frames using OpenGL, Vulkan, or
+# EGL directly onto the window surface. You do not need XV hooks.
+*/* -xv
 
 # Fix -zeroconf issue. An error occurs because the escl driver (Apple AirPrint /
 # eSCL network scanning protocol) inside sane-backends requires network service
