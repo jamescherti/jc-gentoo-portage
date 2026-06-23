@@ -88,6 +88,12 @@ media-gfx/sane-backends SANE_BACKENDS: -escl
 # times.
 sys-devel/gcc pgo lto
 
+# PGO optimizes code blocks inside individual source files
+app-shells/bash pgo
+app-arch/xz-utils pgo
+sys-devel/binutils pgo
+dev-lang/python pgo
+
 # TODO Removed global lto pgo
 #
 # TODO removed tcmalloc lobally via USE flags can introduce build failures and
