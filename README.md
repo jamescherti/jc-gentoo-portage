@@ -45,6 +45,45 @@ Here's how to install James Cherti's portage in a new Gentoo installation:
 
 5. Begin customizing it to fit your specific requirements.
 
+## Customizations
+
+## Intel Processor + NVIDIA GPU
+
+File: `/etc/portage/package.use/00hardware-video`
+
+```
+# Intel processors generally have an Intel integrated GPU. Even if the Nvidia
+# card drives your displays, the Intel iGPU is highly efficient at
+# hardware-accelerated video decoding.
+*/* VIDEO_CARDS: -* nvidia intel
+
+# Use VA-API for Intel integrated graphics and NVDEC for the NVIDIA discrete
+# GPU, while bypassing legacy X11-bound VDPAU.
+*/* nvenc nvdec -vdpau
+
+# Intel
+# Just like vdpau, vaapi (Video Acceleration API) is the explicit hardware
+# decoding path used by your Intel integrated GPU for Quick Sync video decoding.
+# It is a hardware attribute, not a global software behavior.
+*/* vaapi
+```
+
+## Intel audio + USB audio
+
+File: `/etc/portage/package.use/00hardware-audio`
+
+```
+*/* ALSA_CARDS: -* hda-intel usb-audio
+```
+
+## Scanner: Disable all sane backends
+
+File: `/etc/portage/package.use/00hardware-scanner`
+
+```
+*/* ALSA_CARDS: -* hda-intel usb-audio
+```
+
 ## License
 
 The **jc-gentoo-portage** files have been written by James Cherti and is distributed under terms of the MIT license.
