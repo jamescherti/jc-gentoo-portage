@@ -12,10 +12,6 @@ eselect profile set default/linux/amd64/23.0/desktop/systemd
 
 ```
 
-Ensure the following kernel configuration parameter is enabled:
-
-* `CONFIG_FW_LOADER_COMPRESS=y` (This is enabled by default in standard configurations)
-
 ## Installation
 
 Here's how to install James Cherti's portage in a new Gentoo installation:
