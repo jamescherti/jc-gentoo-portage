@@ -47,7 +47,7 @@ Here's how to install James Cherti's portage in a new Gentoo installation:
 
 ## Customizations
 
-## Intel Processor + NVIDIA GPU
+### Intel Processor + NVIDIA GPU
 
 File: `/etc/portage/package.use/00hardware-video`
 
@@ -68,7 +68,7 @@ File: `/etc/portage/package.use/00hardware-video`
 */* vaapi
 ```
 
-## Intel audio + USB audio
+### Intel audio + USB audio
 
 File: `/etc/portage/package.use/00hardware-audio`
 
@@ -76,7 +76,7 @@ File: `/etc/portage/package.use/00hardware-audio`
 */* ALSA_CARDS: -* hda-intel usb-audio
 ```
 
-## Scanner: Disable all sane backends
+### Scanner: Disable all sane backends
 
 File: `/etc/portage/package.use/00hardware-scanner`
 
