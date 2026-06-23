@@ -74,6 +74,7 @@ sys-firmware/intel-microcode hostonly
 File: `/etc/portage/package.use/00hardware-audio`
 
 ```
+# Intel audio + USB audio
 */* ALSA_CARDS: -* hda-intel usb-audio
 ```
 
@@ -82,6 +83,7 @@ File: `/etc/portage/package.use/00hardware-audio`
 File: `/etc/portage/package.use/00my-hardware-scanner`
 
 ```
+# Disable all sane backends
 */* SANE_BACKENDS: -*
 ```
 
