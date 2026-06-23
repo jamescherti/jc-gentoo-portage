@@ -32,3 +32,7 @@ media-fonts/corefonts MSttfEULA
 # compilation
 media-video/ffmpeg all-rights-reserved
 media-libs/fdk-aac all-rights-reserved
+
+# Printers
+media-gfx/brscan4 Brother
+net-print/brother-genml1-bin brother-eula  # brother-overlay

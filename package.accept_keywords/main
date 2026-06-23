@@ -25,3 +25,7 @@
 dev-util/difftastic ~amd64
 dev-util/shellcheck-bin ~amd64
 media-libs/nvidia-vaapi-driver ~amd64
+media-gfx/brscan4 ~amd64
+
+# brother-overlay
+net-print/brother-genml1-bin ~amd64

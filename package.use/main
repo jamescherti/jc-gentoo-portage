@@ -22,11 +22,6 @@
 # SOFTWARE.
 #
 
-# NOTE: Ensures that the package installs microcode files for my CPU only.
-# THIS IS NOT PORTABLE
-# TODO auto remove
-sys-firmware/intel-microcode hostonly
-
 # The symlink flag automatically creates or updates a symbolic link at
 # /usr/src/linux pointing to your current kernel source code.
 sys-kernel/gentoo-sources symlink

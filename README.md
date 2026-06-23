@@ -49,22 +49,23 @@ Here's how to install James Cherti's portage in a new Gentoo installation:
 
 ### Intel Processor + NVIDIA GPU
 
-File: `/etc/portage/package.use/00hardware-video`
+File: `/etc/portage/package.use/00my-hardware-video`
 
 ```
-# Intel processors generally have an Intel integrated GPU. Even if the Nvidia
-# card drives your displays, the Intel iGPU is highly efficient at
-# hardware-accelerated video decoding.
+# Tells Portage to only install the microcode files necessary for the host CPU.
+sys-firmware/intel-microcode hostonly
+
+# Enables drivers for both the NVIDIA discrete GPU and the Intel integrated
+# GPU. This setup allows leveraging the Intel iGPU for power-efficient
+# hardware video decoding.
 */* VIDEO_CARDS: -* nvidia intel
 
-# Use VA-API for Intel integrated graphics and NVDEC for the NVIDIA discrete
-# GPU, while bypassing legacy X11-bound VDPAU.
+# Opts into native NVIDIA hardware video encoding/decoding while disabling the legacy,
+# X11-bound VDPAU backend.
 */* nvenc nvdec -vdpau
 
-# Intel
-# Just like vdpau, vaapi (Video Acceleration API) is the explicit hardware
-# decoding path used by your Intel integrated GPU for Quick Sync video decoding.
-# It is a hardware attribute, not a global software behavior.
+# Enables VA-API support across applications. This allows the Intel integrated GPU
+# to handle hardware acceleration paths natively via Intel Quick Sync.
 */* vaapi
 ```
 
@@ -78,10 +79,10 @@ File: `/etc/portage/package.use/00hardware-audio`
 
 ### Scanner: Disable all sane backends
 
-File: `/etc/portage/package.use/00hardware-scanner`
+File: `/etc/portage/package.use/00my-hardware-scanner`
 
 ```
-*/* ALSA_CARDS: -* hda-intel usb-audio
+*/* SANE_BACKENDS: -*
 ```
 
 ## License
