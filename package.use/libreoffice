@@ -22,7 +22,7 @@
 # SOFTWARE.
 #
 
-app-office/libreoffice -branding -bluetooth -qt6 -mariadb -gtk3 gtk4
+app-office/libreoffice -branding -bluetooth -qt6 -mariadb gtk3 -gtk4
 
 # TODO: Strip all database hooks from LibreOffice's semantic text stack.
 # dev-libs/redland -mysql -berkdb -sqlite
