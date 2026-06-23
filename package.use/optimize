@@ -94,6 +94,17 @@ app-arch/xz-utils pgo
 sys-devel/binutils pgo
 dev-lang/python pgo
 
+# Enables ZSTD compression (compress-zstd) to shrink the disk space used by
+# hardware firmware files in /lib/firmware, which modern kernels and dracut can
+# read natively.
+#
+# Also enables deduplication (deduplicate) to remove redundant, identical
+# firmware files across different device folders, further saving storage.
+#
+# (The kernel and initramfs generator must be configured to support
+# ZSTD-compressed firmware: CONFIG_FW_LOADER_COMPRESS=y.)
+sys-kernel/linux-firmware compress-zstd deduplicate
+
 # TODO Removed global lto pgo
 #
 # TODO removed tcmalloc lobally via USE flags can introduce build failures and
