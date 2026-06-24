@@ -1,6 +1,6 @@
 # jc-gentoo-portage - A highly opinionated, performance-oriented Gentoo Portage /etc/portage desktop configuration
 
-The [jc-gentoo-portage](https://github.com/jamescherti/jc-gentoo-portage) repository houses a highly opinionated, performance-oriented Gentoo Portage desktop configuration. It can be used to build a lean and fast operating system by explicitly stripping away legacy dependencies, unneeded background daemons, and redundant toolkit libraries.
+The [jc-gentoo-portage](https://github.com/jamescherti/jc-gentoo-portage) repository houses a highly opinionated, performance-oriented Gentoo Portage (`/etc/portage`) desktop configuration. It can be used to build a lean and fast operating system by explicitly stripping away legacy dependencies, unneeded background daemons, and redundant toolkit libraries.
 
 These configuration files serve as a strict baseline to maximize hardware utilization, minimize compile times, and keep the system footprint as small as possible.
 
