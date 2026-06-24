@@ -9,7 +9,6 @@ The configurations in this repository can serve as a foundation for your own Por
 Before installing, ensure your system is set to the compatible 23.0 systemd desktop profile:
 ```bash
 eselect profile set default/linux/amd64/23.0/desktop/systemd
-
 ```
 
 ## Installation
