@@ -6,7 +6,7 @@
 #
 
 # -evdev: Used both in console and X/Wayland
-*/* -wxwidgets -samba -sdl -sdl2 -evdev alsa nvme apparmor bluetooth lvm bash-completion lm-sensors hddtemp verify-sig cryptsetup
+*/* -wxwidgets -sdl -sdl2 -evdev alsa nvme apparmor bluetooth lvm bash-completion lm-sensors hddtemp verify-sig cryptsetup
 
 # The symlink flag automatically creates or updates a symbolic link at
 # /usr/src/linux pointing to your current kernel source code.
@@ -42,6 +42,9 @@ media-fonts/fonts-meta -latin
 # Compiles a headless, low-overhead version of the some tools
 app-text/mupdf -X
 sys-apps/lshw -gtk
+net-firewall/firewalld -gui
+media-gfx/img2pdf -gui
+net-misc/unison -gtk
 
 # Expands file format support, particularly for specialized document formats
 # like DjVu and PostScript.
@@ -68,7 +71,6 @@ sys-apps/lshw -gtk
 
 # Installs the CLI version of the file synchronization tool, stripping out
 # unnecessary GUI dependencies.
-# net-misc/unison -gtk
 
 # app-admin/keepassxc -network
 
@@ -99,7 +101,6 @@ sys-apps/lshw -gtk
 # media-plugins/calf -gtk
 # dev-lang/python tk
 # sys-apps/smartmontools -update-drivedb
-# media-gfx/img2pdf -gui
 # media-gfx/fontforge -gtk -X
 # app-text/tessdata_fast l10n_en l10n_fr
 # app-text/aspell l10n_fr
@@ -111,8 +112,6 @@ sys-apps/lshw -gtk
 # app-text/sdcv darkterm
 # app-text/stardict -powerwordparse -wikiparse
 # dev-libs/boost nls
-# gnome-base/gvfs fuse samba
-# net-firewall/firewalld -gui
 # net-misc/networkmanager -dhcpcd
 # net-proxy/tsocks envconf dns
 # sys-libs/ncurses -gpm

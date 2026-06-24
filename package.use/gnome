@@ -38,6 +38,3 @@ gnome-extra/evolution-data-server -weather
 # unnecessary background HTTP requests, keeping your system network traffic
 # strictly bounded to things you explicitly execute.
 net-misc/networkmanager -concheck
-
-# Remove Active Directory and Samba
-net-fs/cifs-utils -ads
