@@ -1,8 +1,19 @@
-# jc-gentoo-portage
+# jc-gentoo-portage - Optimized /etc/portage Setup for Gentoo Linux
 
-This repository houses James Cherti's [Gentoo](https://www.gentoo.org/) Portage (`/etc/portage`), which enables the compilation and installation of software packages on a Gentoo Linux system.
+The Gentoo Portage configurations (`/etc/portage`) in this repository can serve as a foundation for your own Portage setup or inspire you to enhance your existing configuration.
 
-The configurations in this repository can serve as a foundation for your own Portage setup or inspire you to enhance your existing configuration.
+The [jc-gentoo-portage](https://github.com/jamescherti/jc-gentoo-portage) repository houses a highly opinionated, performance-oriented Gentoo Portage configuration. It can be used to build a lean and fast operating system by explicitly stripping away legacy dependencies, unneeded background daemons, and redundant toolkit libraries.
+
+These configuration files serve as a strict baseline to maximize hardware utilization, minimize compile times, and keep the system footprint as small as possible.
+
+Key Benefits:
+
+* Pure GTK desktop environment (specifically `gnome-base/gnome-light`). It strictly prevents Qt dependencies from bleeding into the system via applications like LibreOffice or Matplotlib. In addition to that, it actively debloats the GNOME shell by pruning heavy file-indexing hooks from `localsearch`, removing Samba/Active Directory integrations from Nautilus, and stripping out weather daemons, cloud providers, and background sensor calibrations.
+* The system dependency graph is significantly reduced. Setting `-nls` globally forces interfaces to English, which skips the compilation of thousands of unneeded localization files and reduces the time required for system updates. The configuration also drops KDE libraries, optical media decryption routines, and obsolete X11 hardware overlay paths.
+* Core system utilities, including GCC, Bash, and Python, are compiled using Profile-Guided Optimization (PGO) and Link-Time Optimization (LTO). Global flags such as `xs`, `asm`, `orc`, `jit`, and `threads` ensure applications use hand-optimized assembly routines and multi-core parallelism to execute code as close to the bare metal as possible.
+* Network chatter is strictly bounded. The configuration explicitly disables upstream telemetry, background analytics reporting, and zero-configuration local service scanning like Avahi. It also prevents NetworkManager from leaking your IP address through periodic background HTTP connectivity checks.
+* The audio system is firmly standardized on PipeWire, actively disabling the legacy PulseAudio daemon. For video, the setup relies entirely on FFmpeg's optimized internal decoders and the industry-reference `dav1d` AV1 decoder, which prevents Portage from pulling in redundant, legacy external codecs.
+* Unnecessary UI layers are explicitly masked to prevent dependency bloat. For example, Qt6 is restricted from being pulled into GTK-based environments via Python data science libraries. The configuration also trims LibreOffice extensions, heavy database indexing hooks, and large redundant typography packages for a minimalist graphical environment.
 
 ## Prerequisites
 
