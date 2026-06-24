@@ -40,8 +40,8 @@
 #
 # REMOVED: External legacy codecs like lame, twolame, and fdk are unnecessary
 # because FFmpeg handles 100% of these formats using its own native, highly
-# optimized internal encoders and decoders. USE="$USE flac faad twolame mp3 mp4
-# mpeg ogg aac fdk lame
+# optimized internal encoders and decoders.
+# USE="$USE flac faad twolame mp3 mp4 mpeg ogg aac fdk lame"
 */* gstreamer ffmpeg x264 x265 vpx aom opus speex vorbis theora matroska dav1d
 
 
