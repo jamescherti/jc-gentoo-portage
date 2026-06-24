@@ -15,3 +15,4 @@ net-fs/cifs-utils -ads -acl
 # gnome-base/gnome-control-center-48.7 (cups ? >=net-fs/samba-4.0.0[client])
 #                                      (cups ? >=net-fs/samba-4.0.0[client])
 gnome-base/gnome-control-center -cups
+gnome-base/gnome-light -cups
