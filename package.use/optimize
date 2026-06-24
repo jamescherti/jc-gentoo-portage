@@ -98,19 +98,11 @@ dev-lang/python pgo
 # files across different device folders, saving storage.
 sys-kernel/linux-firmware deduplicate
 
-# TODO Removed global lto pgo
-#
 # TODO removed tcmalloc lobally via USE flags can introduce build failures and
 # runtime instability for packages that strictly expect the default glibc
 # allocator. It is significantly safer to remove this from make.conf and apply
 # it on a per-package basis via /etc/portage/package.use/.
-#
-# TODO removed custom-optimizations: This instructs specific build scripts to
-# bypass standard safety profiles to inject aggressive optimization pathways. It
-# frequently breaks compilation on various system utilities and libraries that
-# require strict compliance with standard build behaviors.
-#
-# TODO removed native-extensions: This flag influences how certain interpreted
-# language packages compile performance-sensitive subroutines into native binary
-# code. Forcing it globally can break compilation for upstream packages that
-# expect standard fallback implementations.
+
+# native-extensions: This flag influences how certain interpreted language
+# packages compile performance-sensitive subroutines into native binary code.
+*/* native-extensions
