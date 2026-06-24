@@ -66,4 +66,5 @@ net-misc/networkmanager -concheck
 net-fs/cifs-utils -ads
 
 # GNOME: Disable screencast
-x11-wm/mutter -screencast
+# Screencast is required for screen sharing
+# x11-wm/mutter -screencast

@@ -26,3 +26,30 @@
 # headphones physically plugged into its own jacks or paired via Bluetooth,
 # zero-configuration local service scanning is overhead.
 */* -startup-notification -evdev -sdl -sdl2 -jack X networkmanager fontconfig udev dbus policykit udisks cups mtp scanner joystick alsa v4l spell aspell opengl gles2 egl
+
+# PulseEffects and Audio Plugin Configuration
+#
+# Enabled Features (Audio Processing Modules):
+# - calf: Enables the Calf Studio Gear suite (provides the Limiter).
+# - zamaudio: Enables ZamAudio plugins (provides the Maximizer).
+# - lsp: Provides high-quality parametric equalizers, multiband compressors, and
+#   alternative limiters. Required for most community presets to function.
+# - rnnoise: Enables a recurrent neural network noise reduction plugin. Filters
+#   background noise and keyboard typing without distorting the human voice.
+# - bs2b: Bauer stereophonic-to-binaural. Simulates a speaker crossfeed to
+#   reduce listening fatigue when using headphones.
+#
+# Disabled Features (Build Optimizations & UI Stripping):
+# - calf (-gui): Disables standalone graphical interfaces. The intent is to host
+#   these plugins exclusively inside PulseEffects.
+# - lsp-plugins (-X): Disables X11 UI binaries to save compilation overhead.
+#   PulseEffects manages the plugin parameters natively.
+# - zam-plugins (-opengl): Disables OpenGL, which ZamAudio uses exclusively for
+#   its standalone UI binaries.
+# - serd (-tools): Disables standalone command-line utilities (e.g., serdi) used
+#   by developers for RDF validation in the terminal.
+media-sound/pulseeffects calf zamaudio
+media-plugins/calf -gui lv2
+media-libs/lsp-plugins -X
+dev-libs/serd -tools
+media-plugins/zam-plugins -opengl
