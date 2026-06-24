@@ -1,0 +1,55 @@
+#
+# Copyright (C) 2022-2026 James Cherti
+# URL: https://github.com/jamescherti/jc-gentoo-portage
+#
+# Distributed under terms of the MIT license.
+#
+
+# Remove bloat
+# -zeroconf disables avahi.
+#
+# -handbook Some packages, particularly those from the KDE or legacy GNOME
+# ecosystems, have documentation translated into dozens of languages. Disabling
+# this saves disk space and reduces documentation build time.
+*/* -debug -handbook -gtk-doc -doc -test -examples -accessibility -perl -firewalld -ppp -zeroconf -modemmanager
+
+# Fix modemmanager
+# !!! The ebuild selected to satisfy
+# ">=net-misc/networkmanager-1.10.4[introspection]" has unmet requirements. -
+# net-misc/networkmanager-1.52.1::gentoo USE="bluetooth introspection nss
+# policykit systemd tools wext wifi -audit -concheck -connection-sharing -debug
+# -dhclient -dhcpcd (-elogind) -gnutls -gtk-doc -iptables -iwd -libedit
+# -modemmanager -nftables -ofono -ovs -ppp -psl -resolvconf (-selinux) -syslog
+# -teamd -test -vala" ABI_X86="(64) -32 (-x32)" The following REQUIRED_USE flag
+# constraints are unsatisfied:
+# bluetooth? ( modemmanager )
+# The above constraints are a subset of the following complete expression:
+# bluetooth? ( modemmanager ) connection-sharing? ( any-of ( iptables nftables )
+# ) gtk-doc? ( introspection ) iwd? ( wifi ) test? ( tools ) vala? (
+# introspection ) wext? ( wifi ) exactly-one-of ( gnutls nss ) at-most-one-of (
+# elogind systemd ) at-most-one-of ( dhclient dhcpcd ) at-most-one-of ( syslog
+# systemd )
+net-misc/networkmanager modemmanager
+
+# Unless you use a physical Yubikey or hardware security token plugged into your
+# machine for SSH authentication or disk decryption, disabling smartcard
+# prevents system utilities from building smartcard-reading libraries
+*/* -smartcard
+
+# -xv (XVideo): This is an ancient, legacy X11 hardware video overlay path from
+# the late 1990s. Modern video players render frames using OpenGL, Vulkan, or
+# EGL directly onto the window surface. You do not need XV hooks.
+*/* -xv
+
+# Fix -zeroconf issue. An error occurs because the escl driver (Apple AirPrint /
+# eSCL network scanning protocol) inside sane-backends requires network service
+# discovery (zeroconf) to function. Because I have globally disabled zeroconf in
+# my make.conf, disabling escl (-escl) is required.
+media-gfx/sane-backends SANE_BACKENDS: -escl
+
+# Enables deduplication (deduplicate) to remove redundant, identical firmware
+# files across different device folders, saving storage.
+sys-kernel/linux-firmware deduplicate
+
+# - gnome-online-accounts: Disabled to prevent unnecessary cloud service bindings.
+*/* -gnome-online-accounts

@@ -1,0 +1,124 @@
+#
+# Copyright (C) 2022-2026 James Cherti
+# URL: https://github.com/jamescherti/jc-gentoo-portage
+#
+# Distributed under terms of the MIT license.
+#
+
+# -evdev: Used both in console and X/Wayland
+*/* -wxwidgets -samba -sdl -sdl2 -evdev alsa nvme apparmor bluetooth lvm bash-completion lm-sensors hddtemp verify-sig cryptsetup
+
+# The symlink flag automatically creates or updates a symbolic link at
+# /usr/src/linux pointing to your current kernel source code.
+sys-kernel/gentoo-sources symlink
+sys-kernel/zen-sources symlink
+
+# Disable legacy translation databases for modern IPP printers
+net-print/cups-meta -foomatic
+net-print/cups-filters -foomatic
+
+# Minimalist Vim
+app-editors/vim -X acl -crypt -gpm -sound -wayland
+
+# I am running a minimal GTK-based desktop environment (gnome-light) and use
+# tools like GIMP, keeping qt6 enabled on matplotlib will force Portage to pull
+# in a massive portion of the Qt6 toolkit framework framework (such as
+# dev-qt/qtbase), which you do not need.
+dev-python/matplotlib -qt6
+
+# basic, open-source GPU-compute capabilities without cluttering the
+# system-wide configurations for gallium.
+# Based on the applications in my Ansible playbook and my current hardware
+# stack, OpenCL is completely useless
+# media-libs/mesa opencl
+
+# Prune massive redundant typography packages from the install plan
+# I do not need 14 different font families for a clean desktop layout. GNOME
+# natively relies on media-fonts/cantarell for its system shell, and the
+# terminal code layouts will look crisp using media-fonts/source-code-pro or
+# dejavu.
+media-fonts/fonts-meta -latin
+
+# Compiles a headless, low-overhead version of the some tools
+app-text/mupdf -X
+sys-apps/lshw -gtk
+
+# Expands file format support, particularly for specialized document formats
+# like DjVu and PostScript.
+# app-text/qpdfview djvu fitz postscript
+
+# Adds support for generating thumbnails for EPUB files in your file manager.
+# xfce-base/tumbler epub
+# x11-misc/redshift -gtk
+
+# kde-plasma/plasma-meta -sddm -crash-handler -firewall -crypt -smart -browser-integration -wallpapers -kwallet colord
+# kde-plasma/kdeplasma-addons -alternate-calendar
+# kde-plasma/plasma-workspace -calendar
+
+# dev-python/numpy doc
+# dev-python/scipy doc
+# dev-python/pandas doc -X
+# dev-python/matplotlib doc examples
+# sci-libs/scikit-learn examples
+# dev-python/pillow examples
+
+# Integrates OpenCV, allowing the Caffe2 library to leverage advanced computer
+# vision features.
+# sci-libs/caffe2 opencv
+
+# Installs the CLI version of the file synchronization tool, stripping out
+# unnecessary GUI dependencies.
+# net-misc/unison -gtk
+
+# app-admin/keepassxc -network
+
+# Enables PAM (Pluggable Authentication Modules), allowing SSH to use standard
+# system authentication methods.
+# net-misc/openssh pam
+
+# Enables connection tracking
+# net-firewall/iptables conntrack
+
+# Enables Wi-Fi Protected Setup and Central Regulatory Domain Agent support for
+# better wireless hardware compliance and configuration.
+# net-wireless/wpa_supplicant wps crda
+
+# Improves video playback performance by enabling hardware acceleration and
+# OpenH264 support for WebRTC video.
+# www-client/firefox openh264 hwaccel geckodriver pgo system-png eme-free system-python-libs
+
+# mail-client/thunderbird pgo system-png
+
+# Adds scripting capabilities, allowing for the creation of custom overlays and
+# automation scripts using Python and Lua.
+# media-video/obs-studio python lua
+
+# app-office/gnucash python
+# app-text/tesseract -opencl
+# net-mail/notmuch emacs
+# media-plugins/calf -gtk
+# dev-lang/python tk
+# sys-apps/smartmontools -update-drivedb
+# media-gfx/img2pdf -gui
+# media-gfx/fontforge -gtk -X
+# app-text/tessdata_fast l10n_en l10n_fr
+# app-text/aspell l10n_fr
+# app-text/hunspell l10n_fr
+# app-emulation/qemu usbredir spice
+# app-misc/recoll -inotify qt5
+# app-office/libreoffice pdfimport -mariadb -branding
+# app-text/evince -djvu -postscript -gstreamer -spell -tiff
+# app-text/sdcv darkterm
+# app-text/stardict -powerwordparse -wikiparse
+# dev-libs/boost nls
+# gnome-base/gvfs fuse samba
+# net-firewall/firewalld -gui
+# net-misc/networkmanager -dhcpcd
+# net-proxy/tsocks envconf dns
+# sys-libs/ncurses -gpm
+# sys-process/cronie anacron
+# www-client/chromium -system-png widevine # -system-png because firefox adds "apng" to libpng
+# www-client/chromium-bin widevine
+# media-gfx/digikam imagemagick -lensfun -opengl -openmp -panorama -scanner
+# kde-frameworks/kio -handbook -kwallet
+# sci-libs/fftw -fortran

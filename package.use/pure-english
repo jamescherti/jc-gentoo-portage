@@ -1,0 +1,34 @@
+#
+# Copyright (C) 2022-2026 James Cherti
+# URL: https://github.com/jamescherti/jc-gentoo-portage
+#
+# Distributed under terms of the MIT license.
+#
+
+# Global exclusion of the Intelligent Input Bus (IBUS).
+#
+# Justification:
+# - Performance: Prevents unnecessary background daemon processes.
+# - Footprint: Eliminates complex dependencies and reduces system bloat.
+# - Security: Minimizes the attack surface by removing unused system services.
+#
+# Note:
+# This assumes that no specialized Input Method Editors (IME) are required for
+# non-Latin script input. If localized language support is needed in the future,
+# this flag must be re-evaluated.
+*/* -ibus
+
+# The exclusion of nls (Native Language Support) is a deliberate choice to
+# simplify the dependency graph and streamline the package installation process.
+# By setting USE="-nls", you instruct Portage to ignore internationalization
+# libraries and omit the compilation of localized message files, ensuring that
+# all software interfaces default to English. This configuration is particularly
+# beneficial on Gentoo because it prevents unnecessary interactions with the
+# gettext utility and significantly reduces the total number of files installed
+# across your system. Consequently, your updates will finish faster, and you
+# will regain valuable disk space that would otherwise be occupied by dozens of
+# translation files you do not need, resulting in a cleaner and more efficient
+# OS environment.
+#
+# cjk: cjk (Chinese, Japanese, Korean), safe to disable globally.
+*/* -nls -cjk

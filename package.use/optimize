@@ -4,24 +4,6 @@
 #
 # Distributed under terms of the MIT license.
 #
-# Permission is hereby granted, free of charge, to any person obtaining a copy
-# of this software and associated documentation files (the “Software”), to deal
-# in the Software without restriction, including without limitation the rights
-# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-# copies of the Software, and to permit persons to whom the Software is
-# furnished to do so, subject to the following conditions:
-#
-# The above copyright notice and this permission notice shall be included in all
-# copies or substantial portions of the Software.
-#
-# THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-# SOFTWARE.
-#
 
 # Gentoo Optimizations
 
@@ -34,78 +16,12 @@
 # parallelism and flicker-free, high-resolution graphics output via the kernel's
 # display manager.
 #
-# -telemetry Disables upstream metrics tracking and background analytics
-# reporting to maximize network privacy and eliminate data-collection overhead.
-#
 # TODO: removed seccom
 # While you have explicitly excluded seccomp to prioritize stability and
 # minimize overhead, this set of flags as a whole essentially forces your
 # applications to run at the closest possible level to your underlying hardware,
 # reducing software-induced latency.
-*/* xs asm orc jit threads kms -telemetry
-
-# The exclusion of nls (Native Language Support) is a deliberate choice to
-# simplify the dependency graph and streamline the package installation process.
-# By setting USE="-nls", you instruct Portage to ignore internationalization
-# libraries and omit the compilation of localized message files, ensuring that
-# all software interfaces default to English. This configuration is particularly
-# beneficial on Gentoo because it prevents unnecessary interactions with the
-# gettext utility and significantly reduces the total number of files installed
-# across your system. Consequently, your updates will finish faster, and you
-# will regain valuable disk space that would otherwise be occupied by dozens of
-# translation files you do not need, resulting in a cleaner and more efficient
-# OS environment.
-#
-# cjk: cjk (Chinese, Japanese, Korean), safe to disable globally.
-#
-# TODO
-# icu: icu (International Components for Unicode). Do not disable globally.
-# The icu library handles advanced Unicode data, character encodings, time/date
-# formatting, and text collation. Unlike NLS, which just manages translations,
-# ICU is a foundational component of modern text rendering and web engines.
-# Consequences of disabling icu: Globally setting -icu will block the
-# installation of software dependencies. Modern web browsers (Chromium,
-# Firefox), desktop components, and typography libraries (such as
-# media-libs/harfbuzz) require ICU. Forcing -icu will lead to severe dependency
-# conflicts or build failures.
-*/* -nls -cjk
-
-# Remove bloat
-*/* -debug -handbook -gtk-doc -doc -test -examples -accessibility -perl -firewalld -ppp -zeroconf -modemmanager
-
-# Unless you use a physical Yubikey or hardware security token plugged into your
-# machine for SSH authentication or disk decryption, disabling smartcard prevents
-# system utilities from building smartcard-reading libraries
-*/* -smartcard
-
-# Fix modemmanager
-# !!! The ebuild selected to satisfy
-# ">=net-misc/networkmanager-1.10.4[introspection]" has unmet requirements. -
-# net-misc/networkmanager-1.52.1::gentoo USE="bluetooth introspection nss
-# policykit systemd tools wext wifi -audit -concheck -connection-sharing -debug
-# -dhclient -dhcpcd (-elogind) -gnutls -gtk-doc -iptables -iwd -libedit
-# -modemmanager -nftables -ofono -ovs -ppp -psl -resolvconf (-selinux) -syslog
-# -teamd -test -vala" ABI_X86="(64) -32 (-x32)" The following REQUIRED_USE flag
-# constraints are unsatisfied:
-# bluetooth? ( modemmanager )
-# The above constraints are a subset of the following complete expression:
-# bluetooth? ( modemmanager ) connection-sharing? ( any-of ( iptables nftables )
-# ) gtk-doc? ( introspection ) iwd? ( wifi ) test? ( tools ) vala? (
-# introspection ) wext? ( wifi ) exactly-one-of ( gnutls nss ) at-most-one-of (
-# elogind systemd ) at-most-one-of ( dhclient dhcpcd ) at-most-one-of ( syslog
-# systemd )
-net-misc/networkmanager modemmanager
-
-# -xv (XVideo): This is an ancient, legacy X11 hardware video overlay path from
-# the late 1990s. Modern video players render frames using OpenGL, Vulkan, or
-# EGL directly onto the window surface. You do not need XV hooks.
-*/* -xv
-
-# Fix -zeroconf issue. An error occurs because the escl driver (Apple AirPrint /
-# eSCL network scanning protocol) inside sane-backends requires network service
-# discovery (zeroconf) to function. Because I have globally disabled zeroconf in
-# my make.conf, disabling escl (-escl) is required.
-media-gfx/sane-backends SANE_BACKENDS: -escl
+*/* xs asm orc jit threads kms
 
 # Make the GCC executable run faster when compiling other packages by building
 # GCC itself using Profile-Guided Optimization (PGO) and Link-Time Optimization
@@ -118,15 +34,6 @@ app-shells/bash pgo
 app-arch/xz-utils pgo
 sys-devel/binutils pgo
 dev-lang/python pgo
-
-# Enables deduplication (deduplicate) to remove redundant, identical firmware
-# files across different device folders, saving storage.
-sys-kernel/linux-firmware deduplicate
-
-# TODO removed tcmalloc lobally via USE flags can introduce build failures and
-# runtime instability for packages that strictly expect the default glibc
-# allocator. It is significantly safer to remove this from make.conf and apply
-# it on a per-package basis via /etc/portage/package.use/.
 
 # native-extensions: This flag influences how certain interpreted language
 # packages compile performance-sensitive subroutines into native binary code.

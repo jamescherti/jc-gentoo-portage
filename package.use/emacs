@@ -1,0 +1,46 @@
+#
+# Copyright (C) 2022-2026 James Cherti
+# URL: https://github.com/jamescherti/jc-gentoo-portage
+#
+# Distributed under terms of the MIT license.
+#
+
+app-editors/emacs wide-int harfbuzz tree-sitter xattr X gmp acl gtk gui inotify jit ssl threads zlib dynamic-loading -alsa -dbus -gif -gpm -jpeg -lcms -png -sound -svg -systemd -tiff -webp -cairo -xft -xpm -games -gfile -gsettings -gzip-el -imagemagick -kerberos -libxml2 -livecd -m17n-lib -mailutils -motif -source -sqlite -toolkit-scroll-bars -valgrind
+sys-devel/gcc jit
+
+# Installs pinentry-emacs, allowing GnuPG passphrase prompts to appear in the
+# Emacs minibuffer instead of an external pinentry program. Useful for users of
+# GPG signing, encrypted email, password-store, and other GnuPG features from
+# within Emacs.
+app-crypt/pinentry emacs
+
+# Installs optional Emacs support files for GNU Mailutils. Most Emacs users,
+# including users of Gnus, mu4e, and notmuch, do not need this USE flag.
+# net-mail/mailutils emacs
+
+# Installs Emacs integration for eselect, providing Emacs commands and support
+# files for interacting with eselect-managed system settings.
+# app-admin/eselect emacs
+
+# Installs Emacs support files for LLVM development, including editing
+# assistance for LLVM-related source and configuration files.
+# llvm-core/llvm-common emacs
+
+# Installs Emacs support for Clang development, including editing assistance
+# for Clang-related source and configuration files.
+# llvm-core/clang-common emacs
+
+# Installs Emacs support files for working with gtk-doc documentation sources.
+# dev-util/gtk-doc emacs
+
+# Installs Emacs Lisp support for GNU Libidn. This is primarily useful for
+# Emacs packages that need to handle internationalized domain names (IDNs).
+# net-dns/libidn emacs
+
+# Installs po-mode, an Emacs major mode for editing gettext translation (.po)
+# files with syntax highlighting and translation-specific commands.
+# sys-devel/gettext emacs
+
+# Installs Emacs integration for pkgcheck, allowing pkgcheck to be invoked and
+# used more conveniently from within Emacs.
+# dev-util/pkgcheck emacs
