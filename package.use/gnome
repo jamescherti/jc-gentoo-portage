@@ -16,9 +16,6 @@
 # Global configuration
 */* -qt5 -qt6 wayland
 
-# Disable KDE
-*/* -kde -semantic-desktop
-
 # Prune comic book archive formats from the primary document viewer
 app-text/papers -comics
 
@@ -38,3 +35,10 @@ gnome-extra/evolution-data-server -weather
 # unnecessary background HTTP requests, keeping your system network traffic
 # strictly bounded to things you explicitly execute.
 net-misc/networkmanager -concheck
+
+# Disable KDE
+*/* -kde -semantic-desktop
+
+# Flameshot dependencies
+# -linguist: Disable Qt Assistant (documentation viewer).
+dev-qt/qttools -assistant
