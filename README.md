@@ -23,6 +23,11 @@ Before installing, ensure your system is set to the compatible 23.0 systemd desk
 eselect profile set default/linux/amd64/23.0/desktop/systemd
 ```
 
+Install `zstd`:
+```
+emerge -a app-arch/zstd
+```
+
 Then, create this required directory:
 
 ```
