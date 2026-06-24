@@ -42,3 +42,30 @@ media-sound/pulseaudio daemon
 # whenever the ffmpeg USE flag is enabled for media-video/pipewire. Fixes: The
 # following REQUIRED_USE flag constraints are unsatisfied: ffmpeg? ( extra )
 media-video/pipewire extra
+
+# PulseEffects and Audio Plugin Configuration
+#
+# Enabled Features (Audio Processing Modules):
+# - calf: Enables the Calf Studio Gear suite (provides the Limiter).
+# - zamaudio: Enables ZamAudio plugins (provides the Maximizer).
+# - lsp: Provides high-quality parametric equalizers, multiband compressors, and
+#   alternative limiters. Required for most community presets to function.
+# - rnnoise: Enables a recurrent neural network noise reduction plugin. Filters
+#   background noise and keyboard typing without distorting the human voice.
+# - bs2b: Bauer stereophonic-to-binaural. Simulates a speaker crossfeed to
+#   reduce listening fatigue when using headphones.
+#
+# Disabled Features (Build Optimizations & UI Stripping):
+# - calf (-gui): Disables standalone graphical interfaces. The intent is to host
+#   these plugins exclusively inside PulseEffects.
+# - lsp-plugins (-X): Disables X11 UI binaries to save compilation overhead.
+#   PulseEffects manages the plugin parameters natively.
+# - zam-plugins (-opengl): Disables OpenGL, which ZamAudio uses exclusively for
+#   its standalone UI binaries.
+# - serd (-tools): Disables standalone command-line utilities (e.g., serdi) used
+#   by developers for RDF validation in the terminal.
+media-sound/pulseeffects calf zamaudio
+media-plugins/calf -gui lv2
+media-libs/lsp-plugins -X
+dev-libs/serd -tools
+media-plugins/zam-plugins -opengl
