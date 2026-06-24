@@ -19,9 +19,17 @@ These configuration files serve as a strict baseline to maximize hardware utiliz
 
 Before installing, ensure your system is set to the compatible 23.0 systemd desktop profile:
 
-```bash
+```
 eselect profile set default/linux/amd64/23.0/desktop/systemd
 ```
+
+Then, create this required directory:
+
+```
+mkdir -p /var/portage-notmpfs
+```
+
+(Creating /var/portage-notmpfs is used to prevent compilation failures for massive packages that run out of space when building in RAM. Many users configure Portage to compile packages inside a tmpfs, a temporary filesystem in RAM, to accelerate build times, but exceptionally large software like web browsers, gcc, or compilers can easily exceed available memory during the build process. Creating this physical directory on a hard drive or SSD allows you to configure Portage to redirect the build location specifically for those giant packages, providing them with enough physical disk space to finish compiling successfully.)
 
 ## Installation
 
