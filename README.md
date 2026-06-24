@@ -1,7 +1,5 @@
 # jc-gentoo-portage - Optimized /etc/portage Setup for Gentoo Linux
 
-The Gentoo Portage configurations (`/etc/portage`) in this repository can serve as a foundation for your own Portage setup or inspire you to enhance your existing configuration.
-
 The [jc-gentoo-portage](https://github.com/jamescherti/jc-gentoo-portage) repository houses a highly opinionated, performance-oriented Gentoo Portage configuration. It can be used to build a lean and fast operating system by explicitly stripping away legacy dependencies, unneeded background daemons, and redundant toolkit libraries.
 
 These configuration files serve as a strict baseline to maximize hardware utilization, minimize compile times, and keep the system footprint as small as possible.
