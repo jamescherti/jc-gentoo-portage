@@ -1,6 +1,6 @@
-# jc-gentoo-portage - Optimized /etc/portage Setup for Gentoo Linux
+# jc-gentoo-portage - A highly opinionated, performance-oriented Gentoo Portage /etc/portage desktop configuration
 
-The [jc-gentoo-portage](https://github.com/jamescherti/jc-gentoo-portage) repository houses a highly opinionated, performance-oriented Gentoo Portage configuration. It can be used to build a lean and fast operating system by explicitly stripping away legacy dependencies, unneeded background daemons, and redundant toolkit libraries.
+The [jc-gentoo-portage](https://github.com/jamescherti/jc-gentoo-portage) repository houses a highly opinionated, performance-oriented Gentoo Portage desktop configuration. It can be used to build a lean and fast operating system by explicitly stripping away legacy dependencies, unneeded background daemons, and redundant toolkit libraries.
 
 These configuration files serve as a strict baseline to maximize hardware utilization, minimize compile times, and keep the system footprint as small as possible.
 
@@ -16,13 +16,12 @@ Key Benefits:
 ## Prerequisites
 
 Before installing, ensure your system is set to the compatible 23.0 systemd desktop profile:
+
 ```bash
 eselect profile set default/linux/amd64/23.0/desktop/systemd
 ```
 
 ## Installation
-
-Here's how to install James Cherti's portage in a new Gentoo installation:
 
 1. Install requirements:
    ```
@@ -51,11 +50,56 @@ Here's how to install James Cherti's portage in a new Gentoo installation:
    emerge -av sys-devel/gcc
    ```
 
-5. Begin customizing it to fit your specific requirements.
+6. Begin customizing it to fit your specific requirements.
+
+7. Install packages:
+   ```
+   emerge -av gnome-base/gnome-light
+   ```
+
+## Repository Structure
+
+Understanding the layout of this configuration is necessary for effective customization:
+
+* `make.conf`: The primary configuration file. It contains global compiler flags (`CFLAGS`, `CXXFLAGS`), `MAKEOPTS`, global `USE` flags, and `FEATURES`.
+* `package.use/`: A directory containing modular files that define USE flags on a per-package basis. Files are categorized logically (e.g., `gnome`, `sound-server`, `optimize`).
+* `package.accept_keywords/`: Allows the installation of specific testing or unstable packages on a stable system.
+* `package.mask/` and `package.unmask/`: Used to explicitly block or allow specific package versions.
+
+## Usage and Maintenance
+
+After applying this configuration or making your own modifications, you must instruct Portage to evaluate the dependency tree and apply the changes to your live system.
+
+1. Apply the new USE flags and update the system:
+   ```bash
+   emerge --ask --verbose --update --deep --newuse @world
+   ```
+
+2. Remove orphaned dependencies that are no longer required:
+   ```bash
+   emerge --ask --depclean
+   ```
 
 ## Customizations
 
-### Intel Processor + NVIDIA GPU
+This setup is highly opinionated. You are expected to review the configurations and adjust them to match your hardware and workflow.
+
+### Adjusting Global Settings (make.conf)
+
+Open `/etc/portage/make.conf` and modify the variables to match your system resources:
+
+* `MAKEOPTS`: Adjust this based on your CPU core count and available RAM. A common rule is `-jN -lN` where `N` is your logical CPU core count.
+* `VIDEO_CARDS` / `ALSA_CARDS`: Ensure these match your physical hardware.
+
+### Managing Per-Package USE Flags (package.use)
+
+The `package.use/` directory is modular. You should read through the files and remove entries for software you do not intend to install. If you need a feature that is disabled globally in `make.conf` (like `nls` or `bluetooth`), do not enable it globally. Instead, enable it only for the specific package that requires it by creating a new entry in `package.use/`.
+
+### Hardware-Specific Examples
+
+Below are examples of how to configure `package.use` for specific hardware setups. You can create new files in `/etc/portage/package.use/` to store these directives.
+
+#### Intel Processor + NVIDIA GPU
 
 File: `/etc/portage/package.use/00my-hardware-video`
 
@@ -77,7 +121,7 @@ sys-firmware/intel-microcode hostonly
 */* vaapi
 ```
 
-### Intel audio + USB audio
+#### Intel audio + USB audio
 
 File: `/etc/portage/package.use/00hardware-audio`
 
@@ -86,7 +130,7 @@ File: `/etc/portage/package.use/00hardware-audio`
 */* ALSA_CARDS: -* hda-intel usb-audio
 ```
 
-### Scanner: Disable all sane backends
+#### Scanner: Disable all sane backends
 
 File: `/etc/portage/package.use/00my-hardware-scanner`
 
