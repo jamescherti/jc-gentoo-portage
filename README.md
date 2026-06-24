@@ -91,7 +91,6 @@ This setup is highly opinionated. You are expected to review the configurations 
 Open `/etc/portage/make.conf` and modify the variables to match your system resources:
 
 * `MAKEOPTS`: Adjust this based on your CPU core count and available RAM. A common rule is `-jN -lN` where `N` is your logical CPU core count.
-* `VIDEO_CARDS` / `ALSA_CARDS`: Ensure these match your physical hardware.
 
 ### Managing Per-Package USE Flags (package.use)
 
@@ -110,7 +109,7 @@ File: `/etc/portage/package.use/00my-hardware-video`
 sys-firmware/intel-microcode hostonly
 
 # Enables drivers for both the NVIDIA discrete GPU and the Intel integrated
-# GPU. This setup allows leveraging the Intel iGPU for power-efficient
+# GPU. This setup allows using the Intel iGPU for power-efficient
 # hardware video decoding.
 */* VIDEO_CARDS: -* nvidia intel
 
@@ -125,7 +124,7 @@ sys-firmware/intel-microcode hostonly
 
 #### Intel audio + USB audio
 
-File: `/etc/portage/package.use/00hardware-audio`
+File: `/etc/portage/package.use/00my-hardware-audio`
 
 ```
 # Intel audio + USB audio
