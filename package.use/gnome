@@ -64,7 +64,3 @@ net-misc/networkmanager -concheck
 
 # GNOME: Remove Active Directory and Samba
 net-fs/cifs-utils -ads
-
-# GNOME: Disable screencast
-# Screencast is required for screen sharing
-# x11-wm/mutter -screencast
