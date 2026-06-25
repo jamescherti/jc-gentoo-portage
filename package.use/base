@@ -91,10 +91,6 @@ net-misc/unison -gtk
 
 # mail-client/thunderbird pgo system-png
 
-# Adds scripting capabilities, allowing for the creation of custom overlays and
-# automation scripts using Python and Lua.
-# media-video/obs-studio python lua
-
 # app-office/gnucash python
 # app-text/tesseract -opencl
 # net-mail/notmuch emacs

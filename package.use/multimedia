@@ -53,3 +53,32 @@ media-plugins/calf -gui lv2
 media-libs/lsp-plugins -X
 dev-libs/serd -tools
 media-plugins/zam-plugins -opengl
+
+# OBS Studio
+#
+# browser: Enables CEF (Chromium Embedded Framework) for web-based overlays.
+#          Flags configuration analysis for disabled media-video/obs-studio
+#          options:
+# fdk: Enables the Fraunhofer FDK AAC encoder. It offers excellent audio quality
+#      but operates under a restrictive license. Default AAC encoders are
+#      generally sufficient.
+# jack: Enables the JACK Audio Connection Kit backend. Highly effective for
+#       low-latency audio engineering, but unnecessary when PipeWire handles
+#       your system audio routing.
+# lua: Enables Lua scripting. Disabling this is highly recommended, allowing
+#      you to centralize your custom OBS automation entirely in Python. mpegts
+# python: Enables Python scripting support. You should remove the minus sign to
+#         enable this flag, providing a familiar and native Python environment
+#         for building scene switchers and custom tooling.
+# qsv: Enables Intel Quick Sync Video.
+# websocket: Enables the obs-websocket plugin for remote control.
+# vlc: Adds the VLC video source for advanced media handling. The vlc flag
+#      enables the VLC Video Source, offering advanced media handling
+#      compared to the default FFmpeg source. It introduces support for
+#      multi-file playlists, directory looping, and superior buffering
+#      for external network streams like RTSP or RTMP. Furthermore, it
+#      provides better compatibility with obscure video formats, embedded
+#      subtitles, and multiple audio tracks. While it is unnecessary for
+#      basic single-file playback, it is highly recommended for complex
+#      scenes and remote feed integration.
+media-video/obs-studio python lua
