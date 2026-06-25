@@ -40,5 +40,5 @@ net-misc/networkmanager -concheck
 */* -kde -semantic-desktop
 
 # Flameshot dependencies
-# -linguist: Disable Qt Assistant (documentation viewer).
+# -linguist: No Qt Assistant (documentation viewer).
 dev-qt/qttools -assistant

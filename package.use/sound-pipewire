@@ -1,0 +1,22 @@
+#
+# Copyright (C) 2022-2026 James Cherti
+# URL: https://github.com/jamescherti/jc-gentoo-portage
+#
+# Distributed under terms of the MIT license.
+#
+
+# Documentation:
+# --------------
+# URL: https://www.gentoo.org/support/news-items/2022-07-29-pipewire-sound-server.html
+
+# Pipewire
+# pipewire-alsa: Install ALSA plugin, similar to media-plugins/alsa-plugins's
+media-video/pipewire sound-server pipewire-alsa
+media-sound/pulseaudio -daemon
+*/* pipewire pulseaudio
+
+# Global config
+# extra: The Portage package manager requires the extra USE flag to be active
+# whenever the ffmpeg USE flag is enabled for media-video/pipewire. Fixes: The
+# following REQUIRED_USE flag constraints are unsatisfied: ffmpeg? ( extra )
+media-video/pipewire extra

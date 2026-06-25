@@ -9,31 +9,23 @@
 # --------------
 # URL: https://www.gentoo.org/support/news-items/2022-07-29-pipewire-sound-server.html
 
-# Choice 1: Pipewire
-# (pipewire-alsa: Install ALSA plugin, similar to media-plugins/alsa-plugins's)
-media-video/pipewire sound-server pipewire-alsa
-media-sound/pulseaudio -daemon
-*/* pipewire pulseaudio
-
-# Choice 2: Pulse audio
-# media-video/pipewire -sound-server
-# media-sound/pulseaudio daemon
-# */* -pipewire pulseaudio
-
-# Global config
-# extra: The Portage package manager requires the extra USE flag to be active
-# whenever the ffmpeg USE flag is enabled for media-video/pipewire. Fixes: The
-# following REQUIRED_USE flag constraints are unsatisfied: ffmpeg? ( extra )
-media-video/pipewire extra
-
-# Easyeffects and Audio Plugin Configuration
+# EasyEffects
 #
 # Enabled Features (Audio Processing Modules):
 # - calf: Enables the Calf Studio Gear suite (provides the Limiter).
 # - zamaudio: Enables ZamAudio plugins (provides the Maximizer).
 media-sound/easyeffects calf zamaudio
 
-# PulseEffects and Audio Plugin Configuration
+# Audacity
+#
+# media-sound/audacity:
+# - id3tag: Enables ID3 metadata tagging (Artist, Track, Album) for MP3 exports.
+#   Required to prevent blank metadata fields in exported audio files.
+# - sbsms: Provides a high-quality algorithm for time-stretching and
+#   pitch-shifting. Recommended for audio manipulation beyond basic splicing.
+media-sound/audacity id3tag sbsms
+
+# PulseEffects
 #
 # Enabled Features (Audio Processing Modules):
 # - calf: Enables the Calf Studio Gear suite (provides the Limiter).
@@ -46,7 +38,7 @@ media-sound/easyeffects calf zamaudio
 #   reduce listening fatigue when using headphones.
 media-sound/pulseeffects calf zamaudio
 
-# pulseeffect/easyeffects dependencies
+# PulseEffect and EasyEffects dependencies
 #
 # Disabled Features (Build Optimizations & UI Stripping):
 # - calf (-gui): Disables standalone graphical interfaces. The intent is to host
