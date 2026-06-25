@@ -23,19 +23,6 @@
 # reducing software-induced latency.
 */* xs asm orc jit threads kms
 
-# Make the GCC executable run faster when compiling other packages by building
-# GCC itself using Profile-Guided Optimization (PGO) and Link-Time Optimization
-# (LTO). This typically yields a 10% to 20% performance improvement in compile
-# times.
-sys-devel/gcc pgo lto
-
-# PGO optimizes code blocks inside individual source files
-app-shells/bash pgo
-app-arch/xz-utils pgo
-sys-devel/binutils pgo
-dev-lang/python pgo
-dev-lang/rust lto
-
 # native-extensions: This flag influences how certain interpreted language
 # packages compile performance-sensitive subroutines into native binary code.
 */* native-extensions
@@ -48,3 +35,16 @@ dev-lang/rust lto
 # binary size, but they also increase build time, memory usage, and may expose
 # package-specific build issues.
 */* lto pgo
+
+# Make the GCC executable run faster when compiling other packages by building
+# GCC itself using Profile-Guided Optimization (PGO) and Link-Time Optimization
+# (LTO). This typically yields a 10% to 20% performance improvement in compile
+# times.
+# sys-devel/gcc pgo lto
+
+# PGO optimizes code blocks inside individual source files
+# app-shells/bash pgo
+# app-arch/xz-utils pgo
+# sys-devel/binutils pgo
+# dev-lang/python pgo
+# dev-lang/rust lto
