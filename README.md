@@ -158,6 +158,19 @@ File: `/etc/portage/package.use/00my-hardware-scanner`
 */* SANE_BACKENDS: -*
 ```
 
+### Temporary directories
+
+Gentoo compiles the majority of software from source code via Portage, a process that generates a significant volume of intermediate build files. By default, Portage writes these temporary files to the physical disk at `/var/tmp/portage`.
+
+Configuring the following entry in `/etc/fstab` mounts the directory as a `tmpfs` (a temporary file system residing in RAM) instead of on a physical storage block device:
+
+```
+tmpfs    /var/tmp/portage     tmpfs     size=20G,uid=portage,gid=portage,mode=775,nosuid,noatime,nodev     0     0
+```
+
+This configuration maximizes hardware longevity by shifting high-volume compilation I/O operations into memory, which substantially reduces solid-state drive wear while exploiting the superior read and write speeds of RAM to eliminate storage bottlenecks.
+Rationale:
+
 ## License
 
 The **jc-gentoo-portage** files have been written by James Cherti and is distributed under terms of the MIT license.
