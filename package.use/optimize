@@ -34,7 +34,17 @@ app-shells/bash pgo
 app-arch/xz-utils pgo
 sys-devel/binutils pgo
 dev-lang/python pgo
+dev-lang/rust lto
 
 # native-extensions: This flag influences how certain interpreted language
 # packages compile performance-sensitive subroutines into native binary code.
 */* native-extensions
+
+# Enable Link Time Optimization (LTO) and Profile-Guided Optimization (PGO).
+#
+# LTO allows the compiler to perform whole-program optimizations during linking,
+# while PGO uses runtime profiling data to guide optimizations during a
+# subsequent build. These optimizations can improve performance and reduce
+# binary size, but they also increase build time, memory usage, and may expose
+# package-specific build issues.
+*/* lto pgo
