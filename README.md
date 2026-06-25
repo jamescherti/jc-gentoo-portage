@@ -15,59 +15,51 @@ These configuration files serve as a strict baseline to maximize hardware utiliz
 * The audio system is firmly standardized on PipeWire, actively disabling the legacy PulseAudio daemon. For video, the setup relies entirely on FFmpeg's optimized internal decoders and the industry-reference `dav1d` AV1 decoder, which prevents Portage from pulling in redundant, legacy external codecs.
 * Unnecessary UI layers are explicitly masked to prevent dependency bloat. For example, Qt6 is restricted from being pulled into GTK-based environments via Python data science libraries. The configuration also trims LibreOffice extensions, heavy database indexing hooks, and large redundant typography packages for a minimalist graphical environment.
 
-## Prerequisites
-
-Before installing, ensure your system is set to the compatible 23.0 systemd desktop profile:
-
-```
-eselect profile set default/linux/amd64/23.0/desktop/systemd
-```
-
-Install `zstd`:
-```
-emerge -a app-arch/zstd
-```
-
-Then, create this required directory:
-
-```
-mkdir -p /var/portage-notmpfs
-```
-
-(Creating /var/portage-notmpfs is used to prevent compilation failures for massive packages that run out of space when building in RAM. Many users configure Portage to compile packages inside a tmpfs, a temporary filesystem in RAM, to accelerate build times, but exceptionally large software like web browsers, gcc, or compilers can easily exceed available memory during the build process. Creating this physical directory on a hard drive or SSD allows you to configure Portage to redirect the build location specifically for those giant packages, providing them with enough physical disk space to finish compiling successfully.)
-
 ## Installation
 
-1. Install requirements:
+1. Ensure your system is set to the compatible 23.0 systemd desktop profile:
    ```
-   emerge -av app-portage/cpuid2cpuflags
+   eselect profile set default/linux/amd64/23.0/desktop/systemd
    ```
 
-2. Clone the Repository:
+2. Create required file and directory:
+   ```
+   mkdir -p /var/portage-notmpfs
+   touch /etc/portage/make-local.conf
+   ```
+
+   (Creating /var/portage-notmpfs is used to prevent compilation failures for massive packages that run out of space when building in RAM. Many users configure Portage to compile packages inside a tmpfs, a temporary filesystem in RAM, to accelerate build times, but exceptionally large software like web browsers, gcc, or compilers can easily exceed available memory during the build process. Creating this physical directory on a hard drive or SSD allows you to configure Portage to redirect the build location specifically for those giant packages, providing them with enough physical disk space to finish compiling successfully.)
+
+3. Install requirements:
+   ```
+   emerge -av app-portage/cpuid2cpuflags app-arch/zstd
+   ```
+
+4. Clone the Repository:
 
    ```bash
    git clone https://github.com/jamescherti/jc-gentoo-portage /etc/portage
    ```
 
-3. Update CPU flags:
+5. Update CPU flags:
    ```
    echo "*/* $(cpuid2cpuflags)" > /etc/portage/package.use/00cpu-flags
    ```
 
-4. Create make.profile:
+6. Create make.profile:
    ```
    cd /etc/portage
    ln -sf ../../var/db/repos/gentoo/profiles/default/linux/amd64/23.0/desktop/systemd make.profile
    ```
 
-5. Recompile GCC using this Portage configuration, which explicitly enables Profile-Guided Optimization (PGO) and Link-Time Optimization (LTO) to maximize compilation throughput:
+7. Recompile GCC using this Portage configuration, which explicitly enables Profile-Guided Optimization (PGO) and Link-Time Optimization (LTO) to maximize compilation throughput:
    ```
    emerge -av sys-devel/gcc
    ```
 
-6. Begin customizing it to fit your specific requirements.
+8. Begin customizing it to fit your specific requirements.
 
-7. Install packages:
+9. Install packages:
    ```
    emerge -av gnome-base/gnome-light
    ```
