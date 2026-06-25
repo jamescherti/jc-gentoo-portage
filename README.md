@@ -125,6 +125,19 @@ sys-firmware/intel-microcode hostonly
 # Enables VA-API support across applications. This allows the Intel integrated GPU
 # to handle hardware acceleration paths natively via Intel Quick Sync.
 */* vaapi
+
+# Enable Intel Quick Sync Video
+# Ensure every media application on the system compiles with Intel Quick Sync
+# Video support if the package supports it. For a dual-GPU setup containing an
+# Intel iGPU and an NVIDIA discrete card, the primary benefit is systematic
+# workload isolation. It allows offloading everyday video decoding and
+# background encoding tasks across all applications (such as media players,
+# transcoders, and broadcasting tools) directly to the Intel processor. This
+# strategy keeps the NVIDIA card completely free from media processing overhead,
+# reserving its full hardware capacity for demanding tasks like 3D rendering or
+# compute workloads, while avoiding the need to configure flags on a per-package
+# basis.
+*/* qsv
 ```
 
 #### Intel audio + USB audio
