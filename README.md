@@ -32,7 +32,7 @@ These configuration files serve as a strict baseline to maximize hardware utiliz
 
 3. Install requirements:
    ```
-   emerge -av app-portage/cpuid2cpuflags app-arch/zstd
+   emerge -av app-portage/cpuid2cpuflags app-arch/zstd dev-vcs/git
    ```
 
 4. Clone the Repository:
@@ -170,6 +170,20 @@ tmpfs    /var/tmp/portage     tmpfs     size=20G,uid=portage,gid=portage,mode=77
 
 This configuration maximizes hardware longevity by shifting high-volume compilation I/O operations into memory, which substantially reduces solid-state drive wear while exploiting the superior read and write speeds of RAM to eliminate storage bottlenecks.
 Rationale:
+
+### Gentoo Linux: Unlocking a LUKS Encrypted LVM Root Partition at Boot Time using a Key File stored on an External USB Drive
+
+Gentoo can be configured to use a key file stored on an external USB drive to unlock a LUKS encrypted LVM root partition.
+
+We will explore in this article the general steps involved in configuring Gentoo to use an external USB drive as a key file to unlock a LUKS encrypted LVM root partition.
+
+Read: [Gentoo Linux: Unlocking a LUKS Encrypted LVM Root Partition at Boot Time using a Key File stored on an External USB Drive](https://www.jamescherti.com/gentoo-linux-unlock-lvm-root-partition-at-boot-key-file-external-usb-stick/)
+
+### Installing Debian onto a separate partition from an existing distribution, such as Arch Linux or Gentoo, without using the Debian installer
+
+There are various scenarios in which one might need to install a Debian-based system (e.g., Debian, Ubuntu, etc.) from another distribution (e.g., Arch Linux, Gentoo, Debian/Ubuntu distributions, Fedora, etc.). One common reason is when a user wants to set up a Debian-based system alongside an existing distribution. This could be for the purpose of testing software compatibility, development, or simply to have a dual-boot.
+
+Read: [Installing Debian onto a separate partition from an existing distribution, such as Arch Linux or Gentoo, without using the Debian installer](https://www.jamescherti.com/how-to-install-debian-using-arch-linux-or-gentoo/)
 
 ## License
 
