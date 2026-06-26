@@ -11,13 +11,13 @@ These configuration files serve as a strict baseline to maximize hardware utiliz
 * Pure GTK desktop environment (specifically `gnome-base/gnome-light`). It strictly prevents Qt dependencies from bleeding into the system via applications like LibreOffice or Matplotlib. In addition to that, it actively debloats the GNOME shell by pruning heavy file-indexing hooks from `localsearch`, removing Samba/Active Directory integrations from Nautilus, and stripping out weather daemons, cloud providers, and background sensor calibrations.
 * The system dependency graph is significantly reduced. Setting `-nls` globally forces interfaces to English, which skips the compilation of thousands of unneeded localization files and reduces the time required for system updates. The configuration also drops KDE libraries, optical media decryption routines, and obsolete X11 hardware overlay paths.
 * Core system utilities, including GCC, Bash, and Python, are compiled using `pgo` (Profile-Guided Optimization) and `lto` (Link-Time Optimization). Global flags such as `xs`, `asm`, `orc`, `jit`, and `threads` ensure applications use hand-optimized assembly routines and multi-core parallelism to execute code as close to the bare metal as possible.
-* Network chatter is bounded. The configuration explicitly disables upstream telemetry, background analytics reporting, and zero-configuration local service scanning like Avahi. It also prevents NetworkManager from leaking your IP address through periodic background HTTP connectivity checks.
+* Network chatter is bounded. The configuration explicitly disables upstream telemetry, background analytics reporting, and zero-configuration local service scanning like Avahi. It also prevents NetworkManager from leaking IP addresses through periodic background HTTP connectivity checks.
 * The audio system is firmly standardized on PipeWire, actively disabling the legacy PulseAudio daemon. For video, the setup relies entirely on FFmpeg's optimized internal decoders and the industry-reference `dav1d` AV1 decoder, which prevents Portage from pulling in redundant, legacy external codecs.
 * Unnecessary UI layers are explicitly masked to prevent dependency bloat. For example, Qt6 is restricted from being pulled into GTK-based environments via Python data science libraries. The configuration also trims LibreOffice extensions, heavy database indexing hooks, and large redundant typography packages for a minimalist graphical environment.
 
 ## Installation
 
-1. Ensure your system is set to the compatible 23.0 systemd desktop profile:
+1. Ensure the system is set to the compatible 23.0 systemd desktop profile:
    ```
    eselect profile set default/linux/amd64/23.0/desktop/systemd
    ```
@@ -28,7 +28,7 @@ These configuration files serve as a strict baseline to maximize hardware utiliz
    touch /etc/portage/make-local.conf
    ```
 
-   (Creating /var/portage-notmpfs is used to prevent compilation failures for massive packages that run out of space when building in RAM. Many users configure Portage to compile packages inside a tmpfs, a temporary filesystem in RAM, to accelerate build times, but exceptionally large software like web browsers, gcc, or compilers can easily exceed available memory during the build process. Creating this physical directory on a hard drive or SSD allows you to configure Portage to redirect the build location specifically for those giant packages, providing them with enough physical disk space to finish compiling successfully.)
+   (Creating /var/portage-notmpfs is used to prevent compilation failures for massive packages that run out of space when building in RAM. Many users configure Portage to compile packages inside a tmpfs, a temporary filesystem in RAM, to accelerate build times, but exceptionally large software like web browsers, gcc, or compilers can easily exceed available memory during the build process. Creating this physical directory on a hard drive or SSD allows configuring Portage to redirect the build location specifically for those giant packages, providing them with enough physical disk space to finish compiling successfully.)
 
 3. Install requirements:
    ```
@@ -96,6 +96,33 @@ This setup is highly opinionated. You are expected to review the configurations 
 Open `/etc/portage/make.conf` and modify the variables to match your system resources:
 
 * `MAKEOPTS`: Adjust this based on your CPU core count and available RAM. A common rule is `-jN -lN` where `N` is your logical CPU core count.
+
+### /etc/portage/make-local.conf: Separating Local Overrides from Git-Managed Configuration
+
+The `jc-gentoo-portage` repository tracks the primary `make.conf` file via Git. Modifying `make.conf` directly to add hardware specifics will cause merge conflicts whenever `git pull` is executed to update the repository with upstream changes.
+
+To prevent this, the provided `make.conf` is automatically source `/etc/portage/make-local.conf` at the end of its execution. By placing all system-specific overrides (such as `GOAMD64`, `MAKEOPTS`, or `CFLAGS`) inside `make-local.conf`, these settings successfully override the global defaults while keeping the Git working tree clean. This allows upstream updates to be applied without manual conflict resolution.
+
+### Go Compiler Optimizations (GOAMD64)
+
+The `GOAMD64` environment variable specifies the microarchitecture level of the `amd64` (x86-64) architecture that the Go compiler targets. Setting `GOAMD64="v3"` inside `/etc/portage/make-local.conf` forces the Go compiler to generate machine code leveraging newer CPU instructions, such as AVX2, BMI1, BMI2, F16C, FMA, LZCNT, MOVBE, and OSXSAVE.
+
+While C and C++ compiler optimizations are managed via `CFLAGS` and `CXXFLAGS` (e.g., `-march=x86-64-v3`), the Go compiler ignores these flags. Many modern utilities packaged in Gentoo are written in Go (including Docker, Kubernetes, and Terraform). When Portage builds these packages from source, the ebuilds read Go-specific environment variables.
+
+To determine the correct target level for a specific hardware setup, processor capabilities must be inspected. CPU flags can be checked by running `grep -m 1 '^flags' /proc/cpuinfo` and matching them against the following levels:
+
+* `v1`: The baseline x86-64 architecture. This is appropriate for distributing compiled binaries to unknown hardware or for processors older than 2008.
+* `v2`: Requires `popcnt` and `sse4_2`. This is intended for older processors released around 2008 to 2013, such as Intel Nehalem or AMD Jaguar.
+* `v3`: Requires `avx2`. This is intended for modern processors released after 2014, such as Intel Haswell or AMD Excavator.
+* `v4`: Requires `avx512f`. This is intended for the latest enterprise or high-end desktop processors, such as Intel Skylake-X or AMD Zen 4.
+
+Once the highest supported level is identified, the variable can be appended to the local configuration:
+
+```bash
+echo 'GOAMD64="v3"' >> /etc/portage/make-local.conf
+```
+
+Explicitly declaring `GOAMD64="v3"` in `/etc/portage/make-local.conf` ensures Portage applies hardware-specific optimizations to all compiled Go binaries. If this variable is omitted, the Go compiler defaults to `v1`, generating universally compatible but unoptimized code. A higher tier should only be set if the target processor explicitly supports the required instruction sets.
 
 ### Managing Per-Package USE Flags (package.use)
 
