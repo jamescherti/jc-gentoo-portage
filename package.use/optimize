@@ -36,15 +36,10 @@
 # package-specific build issues.
 */* lto pgo
 
-# Make the GCC executable run faster when compiling other packages by building
-# GCC itself using Profile-Guided Optimization (PGO) and Link-Time Optimization
-# (LTO). This typically yields a 10% to 20% performance improvement in compile
-# times.
-# sys-devel/gcc pgo lto
-
-# PGO optimizes code blocks inside individual source files
-# app-shells/bash pgo
-# app-arch/xz-utils pgo
-# sys-devel/binutils pgo
-# dev-lang/python pgo
-# dev-lang/rust lto
+# Unlike the standard glibc malloc, jemalloc significantly reduces memory
+# fragmentation and lock contention in heavily multithreaded applications and
+# long-running daemons like tmux. Applying this flag universally ensures that
+# any software explicitly validated by Gentoo maintainers to support jemalloc
+# will use it for better memory efficiency, while safely defaulting to glibc for
+# unsupported applications like Emacs to maintain system stability.
+*/* jemalloc
