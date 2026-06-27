@@ -23,12 +23,23 @@
 # SOFTWARE.
 #
 
+# Diff
 dev-util/difftastic ~amd64
+
+# Bash
 dev-util/shellcheck-bin ~amd64
+
+# Multimedia
 media-libs/nvidia-vaapi-driver ~amd64
-media-gfx/brscan4 ~amd64
 media-video/obs-studio ~amd64
 games-util/gamemode ~amd64
+
+# Ruff
+dev-python/python-lsp-ruff ~amd64
+dev-python/lsprotocol ~amd64
+
+# Scanner
+media-gfx/brscan4 ~amd64
 
 # brother-overlay
 net-print/brother-genml1-bin ~amd64
