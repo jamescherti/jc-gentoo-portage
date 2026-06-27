@@ -8,19 +8,13 @@
 # Gentoo Optimizations
 
 # The combination of xs, asm, orc, jit, threads, and kms represents a
-# performance-oriented configuration that maximizes hardware utilization
-# and system responsiveness. The asm, orc, and jit flags empower software to use
+# performance-oriented configuration that maximizes hardware utilization and
+# system responsiveness. The asm, orc, and jit flags empower software to use
 # hand-optimized assembly routines and just-in-time compilation, which
 # significantly accelerates tasks like media processing and script execution. By
 # including threads and kms, you ensure the system is optimized for multi-core
 # parallelism and flicker-free, high-resolution graphics output via the kernel's
 # display manager.
-#
-# TODO: removed seccom
-# While you have explicitly excluded seccomp to prioritize stability and
-# minimize overhead, this set of flags as a whole essentially forces your
-# applications to run at the closest possible level to your underlying hardware,
-# reducing software-induced latency.
 */* xs asm orc jit threads kms
 
 # native-extensions: This flag influences how certain interpreted language
