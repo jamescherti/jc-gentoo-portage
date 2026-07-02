@@ -1,5 +1,5 @@
 /make.profile
-/savedconfig
+/savedconfig/
 *.swp
 /package.use/00my-*
 /repos.conf/my-*
