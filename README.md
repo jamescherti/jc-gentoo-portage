@@ -55,9 +55,9 @@ It can be used as an inspiration to build a lean and fast operating system by st
    emerge -av sys-devel/gcc
    ```
 
-8. Begin customizing it to fit your specific requirements.
+8. Begin customizing `/etc/portage` to fit your specific requirements.
 
-9. Install packages:
+9. Install packages, such as:
    ```
    emerge -av gnome-base/gnome-light
    ```
