@@ -13,6 +13,14 @@
 # cp /path/to/your/old/.config /etc/portage/savedconfig/sys-kernel/gentoo-kernel
 sys-kernel/gentoo-kernel savedconfig
 
+# sys-kernel/gentoo-kernel requirement
+# The Linux kernel cannot natively decrypt a LUKS container or scan for LVM
+# logical volumes on its own. It requires the early user-space environment
+# provided by an initramfs, which contains the necessary cryptsetup and lvm
+# binaries to unlock and mount your root partition before the main init system
+# starts.
+sys-kernel/installkernel dracut
+
 # The symlink flag automatically creates or updates a symbolic link at
 # /usr/src/linux pointing to your current kernel source code.
 sys-kernel/gentoo-sources symlink
