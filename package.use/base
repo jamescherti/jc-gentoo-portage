@@ -8,6 +8,11 @@
 # -evdev: Used both in console and X/Wayland
 */* -wxwidgets -sdl -sdl2 -evdev alsa nvme apparmor bluetooth lvm bash-completion lm-sensors hddtemp verify-sig cryptsetup
 
+# savedconfig makes Portage look for a user-supplied configuration file
+# mkdir -p /etc/portage/savedconfig/sys-kernel
+# cp /path/to/your/old/.config /etc/portage/savedconfig/sys-kernel/gentoo-kernel
+sys-kernel/gentoo-kernel savedconfig
+
 # The symlink flag automatically creates or updates a symbolic link at
 # /usr/src/linux pointing to your current kernel source code.
 sys-kernel/gentoo-sources symlink
