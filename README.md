@@ -64,7 +64,7 @@ It can be used as an inspiration to build a lean and fast operating system by st
 
 ## Repository Structure
 
-Understanding the layout of this configuration is necessary for effective customization:
+To effectively customize this configuration, you need to understand its layout:
 
 * [make.conf](https://github.com/jamescherti/jc-gentoo-portage/blob/main/make.conf): The primary configuration file. It contains global compiler flags (`CFLAGS`, `CXXFLAGS`), `MAKEOPTS`, global `USE` flags, and `FEATURES`.
 * [package.use/](https://github.com/jamescherti/jc-gentoo-portage/tree/main/package.use): A directory containing modular files that define USE flags on a per-package basis. Files are categorized logically (e.g., `gnome`, `sound-server`, `optimize`).
