@@ -6,7 +6,8 @@
 #
 
 # -evdev: Used both in console and X/Wayland
-*/* -wxwidgets -sdl -sdl2 -evdev alsa nvme apparmor bluetooth lvm bash-completion lm-sensors hddtemp verify-sig cryptsetup
+# ssl: Mandatory for secure web traffic, fetching packages, and encrypted communication.
+*/* -wxwidgets -sdl -sdl2 -evdev ssl alsa nvme apparmor bluetooth lvm bash-completion lm-sensors hddtemp verify-sig cryptsetup
 
 # sys-kernel/gentoo-kernel requirement
 # The Linux kernel cannot natively decrypt a LUKS container or scan for LVM
