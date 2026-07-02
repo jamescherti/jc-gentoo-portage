@@ -4,13 +4,13 @@
 
 The [jc-gentoo-portage](https://github.com/jamescherti/jc-gentoo-portage) repository houses an opinionated, performance-oriented Gentoo Portage (`/etc/portage`) configuration.
 
-It can be used as an inspiration to build a lean and fast operating system by explicitly stripping away legacy dependencies, unneeded background daemons, and redundant toolkit libraries.
+It can be used as an inspiration to build a lean and fast operating system by stripping away legacy dependencies, unneeded background daemons, and redundant toolkit libraries.
 
 * The system dependency graph is significantly reduced. Setting `-nls` globally forces interfaces to English, which skips the compilation of thousands of unneeded localization files and reduces the time required for system updates. The configuration also drops KDE libraries, optical media decryption routines, and obsolete X11 hardware overlay paths.
 * Core system utilities, including GCC, Bash, and Python, are compiled using `pgo` (Profile-Guided Optimization) and `lto` (Link-Time Optimization). Global flags such as `xs`, `asm`, `orc`, `jit`, and `threads` ensure applications use hand-optimized assembly routines and multi-core parallelism to execute code as close to the bare metal as possible.
-* Network chatter is bounded. The configuration explicitly disables upstream telemetry, background analytics reporting, and zero-configuration local service scanning like Avahi. It also prevents NetworkManager from leaking IP addresses through periodic background HTTP connectivity checks.
+* Network chatter is bounded. The configuration disables upstream telemetry, background analytics reporting, and zero-configuration local service scanning like Avahi. It also prevents NetworkManager from leaking IP addresses through periodic background HTTP connectivity checks.
 * The audio system is firmly standardized on PipeWire, actively disabling the legacy PulseAudio daemon. For video, the setup relies entirely on FFmpeg's optimized internal decoders and the industry-reference `dav1d` AV1 decoder, which prevents Portage from pulling in redundant, legacy external codecs.
-* Unnecessary UI layers are explicitly masked to prevent dependency bloat. For example, Qt6 is restricted from being pulled into GTK-based environments via Python data science libraries. The configuration also trims LibreOffice extensions, heavy database indexing hooks, and large redundant typography packages for a minimalist graphical environment.
+* Unnecessary UI layers are masked to prevent dependency bloat. For example, Qt6 is restricted from being pulled into GTK-based environments via Python data science libraries. The configuration also trims LibreOffice extensions, heavy database indexing hooks, and large redundant typography packages for a minimalist graphical environment.
 * Pure GTK desktop environment (specifically `gnome-base/gnome-light`). It strictly prevents Qt dependencies from bleeding into the system via applications like LibreOffice or Matplotlib. In addition to that, it actively debloats the GNOME shell by pruning heavy file-indexing hooks from `localsearch`, removing Samba/Active Directory integrations from Nautilus, and stripping out weather daemons, cloud providers, and background sensor calibrations.
 
 ## Installation
@@ -50,7 +50,7 @@ It can be used as an inspiration to build a lean and fast operating system by ex
    ln -sf ../../var/db/repos/gentoo/profiles/default/linux/amd64/23.0/desktop/systemd make.profile
    ```
 
-7. Recompile GCC using this Portage configuration, which explicitly enables Profile-Guided Optimization (PGO) and Link-Time Optimization (LTO) to maximize compilation throughput:
+7. Recompile GCC using this Portage configuration, which enables Profile-Guided Optimization (PGO) and Link-Time Optimization (LTO) to maximize compilation throughput:
    ```
    emerge -av sys-devel/gcc
    ```
@@ -69,7 +69,7 @@ Understanding the layout of this configuration is necessary for effective custom
 * [make.conf](https://github.com/jamescherti/jc-gentoo-portage/blob/main/make.conf): The primary configuration file. It contains global compiler flags (`CFLAGS`, `CXXFLAGS`), `MAKEOPTS`, global `USE` flags, and `FEATURES`.
 * [package.use/](https://github.com/jamescherti/jc-gentoo-portage/tree/main/package.use): A directory containing modular files that define USE flags on a per-package basis. Files are categorized logically (e.g., `gnome`, `sound-server`, `optimize`).
 * [package.accept_keywords/](https://github.com/jamescherti/jc-gentoo-portage/tree/main/package.accept_keywords): Allows the installation of specific testing or unstable packages on a stable system.
-* [package.mask/](https://github.com/jamescherti/jc-gentoo-portage/tree/main/package.mask) and [package.unmask/](https://github.com/jamescherti/jc-gentoo-portage/blob/main/package.unmask): Used to explicitly block or allow specific package versions.
+* [package.mask/](https://github.com/jamescherti/jc-gentoo-portage/tree/main/package.mask) and [package.unmask/](https://github.com/jamescherti/jc-gentoo-portage/blob/main/package.unmask): Used to block or allow specific package versions.
 
 ## Usage and Maintenance
 
