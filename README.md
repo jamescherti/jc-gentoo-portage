@@ -250,6 +250,7 @@ THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR I
 - [Customizing /etc/portage/make.conf ](https://wiki.gentoo.org/wiki//etc/portage/make.conf)
 - [Gentoo Wiki](https://wiki.gentoo.org/wiki/)
 - [Gentoo Handbook](https://wiki.gentoo.org/wiki/Handbook:Main_Page)
+- [Article: jc-gentoo-portage: An opinionated, performance-oriented Gentoo Portage /etc/portage configuration](https://www.jamescherti.com/jc-gentoo-portage/)
 
 Other project by the same author:
 - [jc-dotfiles @GitHub](https://github.com/jamescherti/jc-dotfiles): A collection of UNIX/Linux configuration files. You can either install them directly or use them as inspiration your own dotfiles.
