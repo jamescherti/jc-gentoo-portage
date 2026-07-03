@@ -130,6 +130,49 @@ The `package.use/` directory is modular. You should read through the files and r
 
 Below are examples of how to configure `package.use` for specific hardware setups. You can create new files in `/etc/portage/package.use/` to store these directives.
 
+### Temporary File Systems (tmpfs) Optimization
+
+Gentoo compiles the majority of software from source code via Portage, a process that generates a significant volume of intermediate build artifacts. By default, Portage writes these temporary files to the physical storage device at `/var/tmp/portage`.
+
+Shifting high-volume compilation I/O operations into memory substantially reduces solid-state drive wear while exploiting the superior read and write speeds of RAM to eliminate storage bottlenecks.
+
+To extend hardware longevity and minimize extraneous disk writes across the entire operating environment, offload the standard system temporary directories to RAM. Append these corresponding entries to `/etc/fstab`:
+
+```
+tmpfs    /tmp        tmpfs    rw,nodev,nosuid,size=8G    0 0
+tmpfs    /var/tmp    tmpfs    rw,nodev,nosuid,size=8G    0 0
+```
+
+Configuring the following entry in `/etc/fstab` mounts the directory as a `tmpfs` allocation. The size parameter establishes a hard limit on memory consumption to prevent resource exhaustion during the build process.
+
+```
+tmpfs    /var/tmp/portage     tmpfs     size=16G,uid=portage,gid=portage,mode=775,nosuid,noatime,nodev    0  0
+```
+
+### Storage Optimization & Encryption (LUKS / SSD)
+
+For systems utilizing an encrypted root filesystem on solid-state storage (SSD/NVMe), specialized kernel parameters are required to maintain storage performance.
+
+By default, dm-crypt/LUKS containers block TRIM requests for security reasons, which can degrade SSD performance and longevity over time. If `sys-kernel/genkernel` is used to manage the initramfs, append the following parameter to the bootloader kernel command line (e.g., in `grub.cfg` or `refind.conf`):
+
+```
+root_trim=yes
+```
+
+This parameter instructs the initramfs script to pass the `--allow-discards` option to `cryptsetup` during the initial phase of the boot sequence. This allows the root filesystem to successfully pass discard/TRIM commands through the encryption layer down to the underlying physical controller.
+
+This parameter is unique to `genkernel`. If the initramfs is built using `sys-kernel/dracut`, this flag will be ignored; standard Dracut configuration or the `rd.luks.options=discard` kernel parameter must be used instead.
+
+Enabling TRIM on an encrypted device exposes disk usage patterns and filesystem layout to an attacker with physical access to the drive. For standard operational profiles, the performance and hardware longevity benefits outweigh this minor metadata leakage.
+
+### Gentoo Linux: Unlocking a LUKS Encrypted LVM Root Partition at Boot Time using a Key File stored on an External USB Drive
+
+Gentoo can be configured to use a key file stored on an external USB drive to unlock a LUKS encrypted LVM root partition.
+
+We will explore in this article the general steps involved in configuring Gentoo to use an external USB drive as a key file to unlock a LUKS encrypted LVM root partition.
+
+Read: [Gentoo Linux: Unlocking a LUKS Encrypted LVM Root Partition at Boot Time using a Key File stored on an External USB Drive](https://www.jamescherti.com/gentoo-linux-unlock-lvm-root-partition-at-boot-key-file-external-usb-stick/)
+
 ### Forcing English
 
 For users who don't need localization, setting `-nls`, `-cjk`, and `-ibus` globally **forces interfaces to English**, which skips the compilation of thousands of unneeded localization files:
@@ -217,49 +260,6 @@ File: `/etc/portage/package.use/00my-hardware-scanner`
 # Disable all sane backends
 */* SANE_BACKENDS: -*
 ```
-
-### Temporary File Systems (tmpfs) Optimization
-
-Gentoo compiles the majority of software from source code via Portage, a process that generates a significant volume of intermediate build artifacts. By default, Portage writes these temporary files to the physical storage device at `/var/tmp/portage`.
-
-Shifting high-volume compilation I/O operations into memory substantially reduces solid-state drive wear while exploiting the superior read and write speeds of RAM to eliminate storage bottlenecks.
-
-To extend hardware longevity and minimize extraneous disk writes across the entire operating environment, offload the standard system temporary directories to RAM. Append these corresponding entries to `/etc/fstab`:
-
-```
-tmpfs    /tmp        tmpfs    rw,nodev,nosuid,size=8G    0 0
-tmpfs    /var/tmp    tmpfs    rw,nodev,nosuid,size=8G    0 0
-```
-
-Configuring the following entry in `/etc/fstab` mounts the directory as a `tmpfs` allocation. The size parameter establishes a hard limit on memory consumption to prevent resource exhaustion during the build process.
-
-```
-tmpfs    /var/tmp/portage     tmpfs     size=16G,uid=portage,gid=portage,mode=775,nosuid,noatime,nodev    0  0
-```
-
-### Storage Optimization & Encryption (LUKS / SSD)
-
-For systems utilizing an encrypted root filesystem on solid-state storage (SSD/NVMe), specialized kernel parameters are required to maintain storage performance.
-
-By default, dm-crypt/LUKS containers block TRIM requests for security reasons, which can degrade SSD performance and longevity over time. If `sys-kernel/genkernel` is used to manage the initramfs, append the following parameter to the bootloader kernel command line (e.g., in `grub.cfg` or `refind.conf`):
-
-```
-root_trim=yes
-```
-
-This parameter instructs the initramfs script to pass the `--allow-discards` option to `cryptsetup` during the initial phase of the boot sequence. This allows the root filesystem to successfully pass discard/TRIM commands through the encryption layer down to the underlying physical controller.
-
-This parameter is unique to `genkernel`. If the initramfs is built using `sys-kernel/dracut`, this flag will be ignored; standard Dracut configuration or the `rd.luks.options=discard` kernel parameter must be used instead.
-
-Enabling TRIM on an encrypted device exposes disk usage patterns and filesystem layout to an attacker with physical access to the drive. For standard operational profiles, the performance and hardware longevity benefits outweigh this minor metadata leakage.
-
-### Gentoo Linux: Unlocking a LUKS Encrypted LVM Root Partition at Boot Time using a Key File stored on an External USB Drive
-
-Gentoo can be configured to use a key file stored on an external USB drive to unlock a LUKS encrypted LVM root partition.
-
-We will explore in this article the general steps involved in configuring Gentoo to use an external USB drive as a key file to unlock a LUKS encrypted LVM root partition.
-
-Read: [Gentoo Linux: Unlocking a LUKS Encrypted LVM Root Partition at Boot Time using a Key File stored on an External USB Drive](https://www.jamescherti.com/gentoo-linux-unlock-lvm-root-partition-at-boot-key-file-external-usb-stick/)
 
 ### Installing Debian onto a separate partition from an existing distribution, such as Arch Linux or Gentoo, without using the Debian installer
 
