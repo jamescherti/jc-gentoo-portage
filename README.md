@@ -180,7 +180,10 @@ The systemd-boot makes `installkernel` manage `bootctl` entries dynamically usin
 ```sh
 # BLS (Boot Loader Specification): Individual menu options for each installed
 # kernel version
-echo "layout=bls" > /etc/kernel/install.conf
+{
+  echo "layout=bls"
+  echo "initrd_generator=dracut"
+} > /etc/kernel/install.conf
 
 # systemd-boot
 {
@@ -191,6 +194,8 @@ echo "layout=bls" > /etc/kernel/install.conf
   # (like nvidia-drivers) whenever a new sys-kernel/gentoo-kernel is installed.
   echo "*/* dist-kernel"
 } > /etc/portage/package.use/00my-systemd-boot
+
+echo 'initrd_generator=dracut' > /etc/kernel/install.conf
 ```
 
 ### Dracut + NVIDIA: Forcing Nvidia Driver Inclusion in the Early Boot Sequence
