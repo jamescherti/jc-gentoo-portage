@@ -118,6 +118,28 @@ File: `/etc/portage/package.use/00my-just-english`
 */* -nls -cjk
 ```
 
+### NVIDIA GPU only
+
+File: `/etc/portage/package.use/00my-hardware-video`
+
+```
+# Tells Portage to only install the microcode files necessary for the host CPU.
+sys-firmware/intel-microcode hostonly
+
+# Enables drivers for both the NVIDIA discrete GPU and the Intel integrated
+# GPU. This setup allows using the Intel iGPU for power-efficient
+# hardware video decoding.
+*/* VIDEO_CARDS: -* nvidia
+
+# Opts into native NVIDIA hardware video encoding/decoding while disabling the legacy,
+# X11-bound VDPAU backend.
+*/* nvenc nvdec -vdpau
+
+# Enables VA-API support across applications. This allows the Intel integrated GPU
+# to handle hardware acceleration paths natively via Intel Quick Sync.
+*/* vaapi
+```
+
 ### Intel Processor + NVIDIA GPU
 
 File: `/etc/portage/package.use/00my-hardware-video`
