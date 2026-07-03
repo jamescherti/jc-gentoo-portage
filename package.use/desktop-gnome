@@ -42,3 +42,18 @@ net-misc/networkmanager -concheck
 # Flameshot dependencies
 # -linguist: No Qt Assistant (documentation viewer).
 dev-qt/qttools -assistant
+
+app-office/libreoffice -branding -bluetooth -qt6 -mariadb gtk3 -gtk4
+
+# LibreOffice requires Native Language Support (nls) to manage its extensive
+# string parsing and localized interface frameworks. It depends on
+# dev-libs/boost, but the current system flags have nls disabled globally or
+# per-package. Portage refuses to build LibreOffice until Boost is compiled with
+# nls support.
+dev-libs/boost nls
+
+# libreoffice TODO: Strip all database hooks from LibreOffice's semantic text stack.
+# dev-libs/redland -mysql -berkdb -sqlite
+
+# libreoffice TODO Force-strip the heavy database client layers
+# media-gfx/fontforge -tiff
