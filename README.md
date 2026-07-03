@@ -20,21 +20,24 @@ This repository can be used as an inspiration to build a lean and fast Gentoo op
    eselect profile set default/linux/amd64/23.0/desktop/systemd
    ```
 
+  This step ensures that the base system dependencies, compiler configurations, and default USE flags are properly aligned for a modern systemd-based graphical desktop environment, preventing conflicting initialization systems.
+
 2. Create required file and directory:
    ```sh
    mkdir -p /var/portage-notmpfs
    touch /etc/portage/make-local.conf
    ```
 
-   (Creating /var/portage-notmpfs is used to prevent compilation failures for massive packages that run out of space when building in RAM. Many users configure Portage to compile packages inside a tmpfs, a temporary filesystem in RAM, to accelerate build times, but exceptionally large software like web browsers, gcc, or compilers can easily exceed available memory during the build process. Creating this physical directory on a hard drive or SSD allows configuring Portage to redirect the build location specifically for those giant packages, providing them with enough physical disk space to finish compiling successfully.)
+   Creating `/var/portage-notmpfs` prevents compilation failures for massive packages that run out of space when building in RAM. Creating `/etc/portage/make-local.conf` establishes a safe, untracked location for your machine-specific overrides (like thread count or compiler targets), ensuring future repository updates do not result in git merge conflicts.
 
 3. Install requirements:
    ```sh
    emerge -av app-portage/cpuid2cpuflags app-arch/zstd dev-vcs/git
    ```
 
-4. Clone the Repository:
+   `cpuid2cpuflags` is required to detect your host processor's hardware capabilities. `zstd` is installed to provide high-speed compression for Portage build operations and binary packages, and `git` is required to clone this repository.
 
+4. Clone the Repository:
    ```sh
    git clone https://github.com/jamescherti/jc-gentoo-portage /etc/portage
    ```
@@ -44,11 +47,15 @@ This repository can be used as an inspiration to build a lean and fast Gentoo op
    echo "*/* $(cpuid2cpuflags)" > /etc/portage/package.use/00cpu-flags
    ```
 
+   This step dynamically queries your CPU for supported instruction sets (like AVX2 or SSE4) and writes them to a Portage configuration file. This guarantees that all subsequently compiled software is highly optimized for your specific processor.
+
 6. Create make.profile:
    ```sh
    cd /etc/portage
    ln -sf ../../var/db/repos/gentoo/profiles/default/linux/amd64/23.0/desktop/systemd make.profile
    ```
+
+   Portage relies on the `make.profile` symlink to determine which system profile is currently active. Creating this link manually ensures Portage resolves the dependency graph and default variables accurately from the downloaded Gentoo repository tree.
 
 7. Recompile GCC using this Portage configuration, which enables Profile-Guided Optimization (PGO) and Link-Time Optimization (LTO) to maximize compilation throughput:
    ```sh
@@ -80,6 +87,7 @@ The `package.use/` directory is modular. You should read through the files and r
 For users who don't need localization, setting `-nls`, `-cjk`, and `-ibus` globally **forces interfaces to English**, which skips the compilation of thousands of unneeded localization files:
 
 File: `/etc/portage/package.use/00my-just-english`
+
 ```
 # Global exclusion of the Intelligent Input Bus (IBUS).
 #
@@ -270,7 +278,6 @@ Gentoo can be configured to use a key file stored on an external USB drive to un
 We will explore in this article the general steps involved in configuring Gentoo to use an external USB drive as a key file to unlock a LUKS encrypted LVM root partition.
 
 Read: [Gentoo Linux: Unlocking a LUKS Encrypted LVM Root Partition at Boot Time using a Key File stored on an External USB Drive](https://www.jamescherti.com/gentoo-linux-unlock-lvm-root-partition-at-boot-key-file-external-usb-stick/)
-
 
 ## Maintenance
 
