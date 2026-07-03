@@ -37,3 +37,7 @@
 # will use it for better memory efficiency, while safely defaulting to glibc for
 # unsupported applications like Emacs to maintain system stability.
 */* jemalloc
+
+# The GNU Multiple Precision Arithmetic Library (dev-libs/gmp) is extensively
+# optimized for arbitrary-precision arithmetic.
+*/* gmp
