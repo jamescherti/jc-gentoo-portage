@@ -163,6 +163,15 @@ File: `/etc/portage/package.use/00my-hardware-scanner`
 */* SANE_BACKENDS: -*
 ```
 
+### systemd-boot for sys-kernel/gentoo-kernel users
+
+The systemd-boot makes `installkernel` manage `bootctl` entries dynamically using the Boot Loader Specification (BLS). This creates individual menu options for each installed kernel version, providing an automatic fallback if a new kernel fails to boot.
+
+```
+echo "sys-kernel/installkernel systemd-boot" > /etc/portage/package.use/00my-systemd-boot
+echo "layout=bls" > /etc/kernel/install.conf
+```
+
 ## Customizing /etc/portage/make-local.conf
 
 The `jc-gentoo-portage` repository tracks the primary `make.conf` file via Git. Modifying `make.conf` directly to add hardware specifics will cause merge conflicts whenever `git pull` is executed to update the repository with upstream changes.
