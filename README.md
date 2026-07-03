@@ -193,7 +193,7 @@ File: `/etc/portage/package.use/00my-just-english`
 */* -ibus
 
 # The exclusion of nls (Native Language Support) is a deliberate choice to
-# simplify the dependency graph and streamline the package installation process.
+# simplify the dependency graph and simplify the package installation process.
 # By setting USE="-nls", you instruct Portage to ignore internationalization
 # libraries and omit the compilation of localized message files, ensuring that
 # all software interfaces default to English. This configuration is particularly
