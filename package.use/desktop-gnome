@@ -5,16 +5,10 @@
 # Distributed under terms of the MIT license.
 #
 
-# gnome: Enable global GNOME support to ensure packages compile with appropriate
+# Enable global GNOME support to ensure packages compile with appropriate
 # desktop environment hooks (e.g., configuration backends, native
 # notifications...).
-#
-# Explicit Exclusions:
-#   alternative credential manager is utilized.
-*/* gnome
-
-# Global configuration
-*/* -qt5 -qt6 wayland
+*/* -kde -semantic-desktop -qt5 -qt6 wayland gnome
 
 # Prune comic book archive formats from the primary document viewer
 app-text/papers -comics
@@ -35,9 +29,6 @@ gnome-extra/evolution-data-server -weather
 # unnecessary background HTTP requests, keeping your system network traffic
 # strictly bounded to things you explicitly execute.
 net-misc/networkmanager -concheck
-
-# Disable KDE
-*/* -kde -semantic-desktop
 
 # Flameshot dependencies
 # -linguist: No Qt Assistant (documentation viewer).
