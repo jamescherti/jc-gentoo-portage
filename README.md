@@ -210,7 +210,7 @@ The systemd-boot makes `installkernel` manage `bootctl` entries dynamically usin
 
 # systemd-boot
 {
-  echo "sys-kernel/installkernel systemd-boot"
+  echo "sys-kernel/installkernel dracut systemd-boot"
   echo "sys-apps/systemd boot"
   # When dist-kernel is set, Portage will automatically trigger Dracut to
   # build the initramfs and automatically rebuild out-of-tree modules
