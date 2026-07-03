@@ -185,8 +185,13 @@ echo "layout=bls" > /etc/kernel/install.conf
 } > /etc/portage/package.use/00my-systemd-boot
 ```
 
-For NVIDIA users:
-```
+### Dracut + NVIDIA: Forcing Nvidia Driver Inclusion in the Early Boot Sequence
+
+To guarantee that your graphical interface initializes reliably on Gentoo, you must ensure the proprietary Nvidia kernel modules are loaded before your display manager starts.
+
+By default, Dracut may omit these out-of-tree drivers during initramfs generation. The following sequence creates an explicit configuration directive to bind the essential Nvidia kernel components, including the core driver, modesetting controls, unified virtual memory, and direct rendering manager layers, directly into the early boot image, and then regenerates all initramfs files to apply the configuration.
+
+```sh
 mkdir -p /etc/dracut.conf.d/
 echo 'add_drivers+=" nvidia nvidia_modeset nvidia_uvm nvidia_drm "' > /etc/dracut.conf.d/60-nvidia-default.conf
 dracut --regenerate-all --force
