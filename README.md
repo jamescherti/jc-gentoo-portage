@@ -183,6 +183,7 @@ The systemd-boot makes `installkernel` manage `bootctl` entries dynamically usin
 {
   echo "layout=bls"
   echo "initrd_generator=dracut"
+  echo "uki_generator=none"
 } > /etc/kernel/install.conf
 
 # systemd-boot
@@ -314,6 +315,8 @@ THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR I
 
 - [jc-gentoo-portage @GitHub](https://github.com/jamescherti/jc-gentoo-portage)
 - [Customizing /etc/portage/make.conf ](https://wiki.gentoo.org/wiki//etc/portage/make.conf)
+- [Gentoo Linux x86 Handbook: Installing Gentoo ](https://wiki.gentoo.org/wiki/Handbook:X86/Full/Installation)
+- [Gentoo AMD64 Handbook ](https://wiki.gentoo.org/wiki/Handbook:AMD64)
 - [Gentoo Wiki](https://wiki.gentoo.org/wiki/)
 - [Gentoo Handbook](https://wiki.gentoo.org/wiki/Handbook:Main_Page)
 - [Article: jc-gentoo-portage: An opinionated, performance-oriented Gentoo Portage /etc/portage configuration](https://www.jamescherti.com/jc-gentoo-portage/)
