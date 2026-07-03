@@ -168,8 +168,15 @@ File: `/etc/portage/package.use/00my-hardware-scanner`
 The systemd-boot makes `installkernel` manage `bootctl` entries dynamically using the Boot Loader Specification (BLS). This creates individual menu options for each installed kernel version, providing an automatic fallback if a new kernel fails to boot.
 
 ```
-echo "sys-kernel/installkernel systemd-boot" > /etc/portage/package.use/00my-systemd-boot
+# BLS (Boot Loader Specification): Individual menu options for each installed
+# kernel version
 echo "layout=bls" > /etc/kernel/install.conf
+
+# systemd-boot
+{
+  echo "sys-kernel/installkernel systemd-boot"
+  echo "sys-apps/systemd boot"
+} > /etc/portage/package.use/00my-systemd-boot
 ```
 
 ## Customizing /etc/portage/make-local.conf
