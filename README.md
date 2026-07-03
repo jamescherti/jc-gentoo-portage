@@ -201,13 +201,16 @@ echo 'initrd_generator=dracut' > /etc/kernel/install.conf
 
 ### Dracut + NVIDIA: Forcing Nvidia Driver Inclusion in the Early Boot Sequence
 
-To guarantee that your graphical interface initializes reliably on Gentoo, you must ensure the proprietary Nvidia kernel modules are loaded before your display manager starts.
-
 By default, Dracut may omit these out-of-tree drivers during initramfs generation. The following sequence creates an explicit configuration directive to bind the essential Nvidia kernel components, including the core driver, modesetting controls, unified virtual memory, and direct rendering manager layers, directly into the early boot image, and then regenerates all initramfs files to apply the configuration.
 
 ```sh
 mkdir -p /etc/dracut.conf.d/
-echo 'add_drivers+=" nvidia nvidia_modeset nvidia_uvm nvidia_drm "' > /etc/dracut.conf.d/60-nvidia-default.conf
+
+{
+  echo 'add_drivers+=" nvidia nvidia_modeset nvidia_uvm nvidia_drm "'
+  echo 'omit_drivers+=" nouveau "'
+} > /etc/dracut.conf.d/nvidia.conf
+
 dracut --regenerate-all --force
 ```
 
@@ -241,6 +244,24 @@ echo 'GOAMD64="v3"' >> /etc/portage/make-local.conf
 Explicitly declaring `GOAMD64="v3"` in `/etc/portage/make-local.conf` ensures Portage applies hardware-specific optimizations to all compiled Go binaries. If this variable is omitted, the Go compiler defaults to `v1`, generating universally compatible but unoptimized code. A higher tier should only be set if the target processor explicitly supports the required instruction sets.
 
 ## Other customizations
+
+### Installing the latest kernel
+
+Unmask the kernel:
+```sh
+{
+  echo "sys-kernel/gentoo-kernel-bin ~amd64"
+  echo "sys-kernel/gentoo-kernel ~amd64"
+  echo "virtual/dist-kernel ~amd64"
+} > /etc/portage/package.accept_keywords/00-my-latest-kernel
+```
+
+Then run:
+```
+emerge --ask --with-bdeps=y --update --deep --changed-use @world
+```
+
+Finally, use `eselect kernel list` and `eselect kernel set <version>` to select the newly installed kernel.
 
 ### Temporary File Systems (tmpfs) Optimization
 
