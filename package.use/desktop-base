@@ -44,7 +44,6 @@
 # USE="$USE flac faad twolame mp3 mp4 mpeg ogg aac fdk lame"
 */* gstreamer ffmpeg x264 x265 vpx aom opus speex vorbis theora matroska dav1d
 
-
 # Disable CD-ROM/DVD
 # This is an optimization for a lean desktop profile. Unless the machine houses
 # a physical optical disc drive, keeping CD/DVD reading and CSS decryption
@@ -60,3 +59,17 @@
 
 # Flatpak
 */* flatpak
+
+# Prune massive redundant typography packages from the install plan
+# I do not need 14 different font families for a clean desktop layout. GNOME
+# natively relies on media-fonts/cantarell for its system shell, and the
+# terminal code layouts will look crisp using media-fonts/source-code-pro or
+# dejavu.
+media-fonts/fonts-meta -latin
+
+# Compiles a headless, low-overhead version of the some tools
+app-text/mupdf -X
+sys-apps/lshw -gtk
+net-firewall/firewalld -gui
+media-gfx/img2pdf -gui
+net-misc/unison -gtk

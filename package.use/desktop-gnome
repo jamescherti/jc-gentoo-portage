@@ -57,3 +57,9 @@ dev-libs/boost nls
 
 # libreoffice TODO Force-strip the heavy database client layers
 # media-gfx/fontforge -tiff
+
+# I am running a minimal GTK-based desktop environment (gnome-light) and use
+# tools like GIMP, keeping qt6 enabled on matplotlib will force Portage to pull
+# in a massive portion of the Qt6 toolkit framework framework (such as
+# dev-qt/qtbase), which you do not need.
+dev-python/matplotlib -qt6

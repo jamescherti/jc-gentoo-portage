@@ -11,7 +11,7 @@
 # -handbook Some packages, particularly those from the KDE or legacy GNOME
 # ecosystems, have documentation translated into dozens of languages. Disabling
 # this saves disk space and reduces documentation build time.
-*/* -debug -handbook -gtk-doc -doc -test -examples -accessibility -perl -firewalld -ppp -zeroconf -modemmanager -branding
+*/* -debug -handbook -gtk-doc -doc -test -examples -accessibility -perl -firewalld -ppp -modemmanager -branding
 
 # Fix modemmanager
 # !!! The ebuild selected to satisfy
@@ -40,12 +40,6 @@ net-misc/networkmanager modemmanager
 # the late 1990s. Modern video players render frames using OpenGL, Vulkan, or
 # EGL directly onto the window surface. You do not need XV hooks.
 */* -xv
-
-# Fix -zeroconf issue. An error occurs because the escl driver (Apple AirPrint /
-# eSCL network scanning protocol) inside sane-backends requires network service
-# discovery (zeroconf) to function. Because I have globally disabled zeroconf in
-# my make.conf, disabling escl (-escl) is required.
-media-gfx/sane-backends SANE_BACKENDS: -escl
 
 # Enables deduplication (deduplicate) to remove redundant, identical firmware
 # files across different device folders, saving storage.

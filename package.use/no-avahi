@@ -1,0 +1,14 @@
+#
+# Copyright (C) 2022-2026 James Cherti
+# URL: https://github.com/jamescherti/jc-gentoo-portage
+#
+# Distributed under terms of the MIT license.
+#
+
+*/* -zeroconf
+
+# Fix -zeroconf issue. An error occurs because the escl driver (Apple AirPrint /
+# eSCL network scanning protocol) inside sane-backends requires network service
+# discovery (zeroconf) to function. Because I have globally disabled zeroconf in
+# my make.conf, disabling escl (-escl) is required.
+media-gfx/sane-backends SANE_BACKENDS: -escl
