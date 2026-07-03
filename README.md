@@ -6,7 +6,7 @@ The [jc-gentoo-portage](https://github.com/jamescherti/jc-gentoo-portage) reposi
 
 This repository can be used as an inspiration to build a lean and fast Gentoo operating system.
 
-- Core system utilities are heavily optimized. Applications are compiled using `pgo` (Profile-Guided Optimization) and `lto` (Link-Time Optimization). Global flags such as `xs`, `asm`, `orc`, `jit`, `threads`, `kms`, and `native-extensions` ensure applications use hand-optimized assembly routines and multi-core parallelism. This portage uses `jemalloc` to reduce memory fragmentation, for a specific list of packages. Furthermore, specific linker flags (`-Wl,--as-needed`, `-Wl,-z,pack-relative-relocs`) shrink binaries, and `-fno-semantic-interposition` is used to accelerate the Python interpreter.
+- Core system utilities are heavily optimized. Applications are compiled using `pgo` (Profile-Guided Optimization) and `lto` (Link-Time Optimization). Global flags such as `xs`, `asm`, `orc`, `jit`, `threads`, `kms`, and `native-extensions` ensure applications use hand-optimized assembly routines and multi-core parallelism. This portage uses `jemalloc` to reduce memory fragmentation. Furthermore, specific linker flags (`-Wl,--as-needed`, `-Wl,-z,pack-relative-relocs`) shrink binaries, and `-fno-semantic-interposition` is used to accelerate the Python interpreter.
 - Network chatter is bounded. The configuration disables upstream telemetry, background analytics reporting, geolocation (`-geoclue`), cloud provider integrations, and zero-configuration local service scanning like Avahi. It also prevents NetworkManager from leaking IP addresses through periodic background HTTP connectivity checks.
 - The multimedia stack is standardized on PipeWire, disabling the legacy PulseAudio daemon. For video, the setup relies entirely on FFmpeg's optimized internal decoders, hardware acceleration (`x264`, `x265`, `vpx`, `aom`), and the industry-reference `dav1d` AV1 decoder. Audio processing is centralized using plugins like `lsp-plugins` and `rnnoise` for neural network noise reduction within EasyEffects.
 - The configuration drops smartcard dependencies, and physical optical media (CD/DVD) support to prevent hardware probing utilities from linking against media players.
@@ -71,35 +71,105 @@ To effectively customize this configuration, you need to understand its layout:
 * [package.accept_keywords/](https://github.com/jamescherti/jc-gentoo-portage/tree/main/package.accept_keywords): Allows the installation of specific testing or unstable packages on a stable system.
 * [package.mask/](https://github.com/jamescherti/jc-gentoo-portage/tree/main/package.mask) and [package.unmask/](https://github.com/jamescherti/jc-gentoo-portage/blob/main/package.unmask): Used to block or allow specific package versions.
 
-## Usage and Maintenance
+## Customizing USE Flags (package.use)
 
-After applying this configuration or making your own modifications, you must instruct Portage to evaluate the dependency tree and apply the changes to your live system.
+The `package.use/` directory is modular. You should read through the files and remove entries for software you do not intend to install. If you need a feature that is disabled globally in `make.conf` (like `nls` or `bluetooth`), do not enable it globally. Instead, enable it only for the specific package that requires it by creating a new entry in `package.use/`.
 
-1. Apply the new USE flags and update the system:
-   ```bash
-   emerge --ask --verbose --update --deep --newuse @world
-   ```
+### Forcing English
 
-2. Remove orphaned dependencies that are no longer required:
-   ```bash
-   emerge --ask --depclean
-   ```
+For users who don't need localization, setting `-nls`, `-cjk`, and `-ibus` globally **forces interfaces to English**, which skips the compilation of thousands of unneeded localization files:
 
-## Customizations
+File: `/etc/portage/package.use/00my-just-english`
+```
+# Global exclusion of the Intelligent Input Bus (IBUS).
+#
+# Justification:
+# - Performance: Prevents unnecessary background daemon processes.
+# - Footprint: Eliminates complex dependencies and reduces system bloat.
+# - Security: Minimizes the attack surface by removing unused system services.
+#
+# Note:
+# This assumes that no specialized Input Method Editors (IME) are required for
+# non-Latin script input. If localized language support is needed in the future,
+# this flag must be re-evaluated.
+*/* -ibus
 
-This setup is highly opinionated. You are expected to review the configurations and adjust them to match your hardware and workflow.
+# The exclusion of nls (Native Language Support) is a deliberate choice to
+# simplify the dependency graph and simplify the package installation process.
+# By setting USE="-nls", you instruct Portage to ignore internationalization
+# libraries and omit the compilation of localized message files, ensuring that
+# all software interfaces default to English. This configuration is particularly
+# beneficial on Gentoo because it prevents unnecessary interactions with the
+# gettext utility and significantly reduces the total number of files installed
+# across your system. Consequently, your updates will finish faster, and you
+# will regain valuable disk space that would otherwise be occupied by dozens of
+# translation files you do not need, resulting in a cleaner and more efficient
+# OS environment.
+#
+# cjk: cjk (Chinese, Japanese, Korean), safe to disable globally.
+*/* -nls -cjk
+```
 
-### Adjusting Global Settings (make.conf)
+### Intel Processor + NVIDIA GPU
 
-Open `/etc/portage/make.conf` and modify the variables to match your system resources:
+File: `/etc/portage/package.use/00my-hardware-video`
 
-* `MAKEOPTS`: Adjust this based on your CPU core count and available RAM. A common rule is `-jN -lN` where `N` is your logical CPU core count.
+```
+# Tells Portage to only install the microcode files necessary for the host CPU.
+sys-firmware/intel-microcode hostonly
 
-### /etc/portage/make-local.conf: Separating Local Overrides from Git-Managed Configuration
+# Enables drivers for both the NVIDIA discrete GPU and the Intel integrated
+# GPU. This setup allows using the Intel iGPU for power-efficient
+# hardware video decoding.
+*/* VIDEO_CARDS: -* nvidia intel
+
+# Opts into native NVIDIA hardware video encoding/decoding while disabling the legacy,
+# X11-bound VDPAU backend.
+*/* nvenc nvdec -vdpau
+
+# Enables VA-API support across applications. This allows the Intel integrated GPU
+# to handle hardware acceleration paths natively via Intel Quick Sync.
+*/* vaapi
+
+# Enable Intel Quick Sync Video
+# Ensure every media application on the system compiles with Intel Quick Sync
+# Video support if the package supports it. For a dual-GPU setup containing an
+# Intel iGPU and an NVIDIA discrete card, the primary benefit is systematic
+# workload isolation. It allows offloading everyday video decoding and
+# background encoding tasks across all applications (such as media players,
+# transcoders, and broadcasting tools) directly to the Intel processor. This
+# strategy keeps the NVIDIA card completely free from media processing overhead,
+# reserving its full hardware capacity for demanding tasks like 3D rendering or
+# compute workloads, while avoiding the need to configure flags on a per-package
+# basis.
+*/* qsv
+```
+
+### Intel audio + USB audio
+
+File: `/etc/portage/package.use/00my-hardware-audio`
+
+```
+# Intel audio + USB audio
+*/* ALSA_CARDS: -* hda-intel usb-audio
+```
+
+### Scanner: Disabling all sane backends
+
+File: `/etc/portage/package.use/00my-hardware-scanner`
+
+```
+# Disable all sane backends
+*/* SANE_BACKENDS: -*
+```
+
+## Customizing /etc/portage/make-local.conf
 
 The `jc-gentoo-portage` repository tracks the primary `make.conf` file via Git. Modifying `make.conf` directly to add hardware specifics will cause merge conflicts whenever `git pull` is executed to update the repository with upstream changes.
 
 To prevent this, the provided `make.conf` is automatically source `/etc/portage/make-local.conf` at the end of its execution. By placing all system-specific overrides (such as `GOAMD64`, `MAKEOPTS`, or `CFLAGS`) inside `make-local.conf`, these settings successfully override the global defaults while keeping the Git working tree clean. This allows upstream updates to be applied without manual conflict resolution.
+
+Open `/etc/portage/make-local.conf` and modify the variables to match your system resources. For example, modify `MAKEOPTS` to Adjust this based on your CPU core count and available RAM. A common rule is `-jN -lN` where `N` is your logical CPU core count.
 
 ### Go Compiler Optimizations (GOAMD64)
 
@@ -121,10 +191,6 @@ echo 'GOAMD64="v3"' >> /etc/portage/make-local.conf
 ```
 
 Explicitly declaring `GOAMD64="v3"` in `/etc/portage/make-local.conf` ensures Portage applies hardware-specific optimizations to all compiled Go binaries. If this variable is omitted, the Go compiler defaults to `v1`, generating universally compatible but unoptimized code. A higher tier should only be set if the target processor explicitly supports the required instruction sets.
-
-### Managing Per-Package USE Flags (package.use)
-
-The `package.use/` directory is modular. You should read through the files and remove entries for software you do not intend to install. If you need a feature that is disabled globally in `make.conf` (like `nls` or `bluetooth`), do not enable it globally. Instead, enable it only for the specific package that requires it by creating a new entry in `package.use/`.
 
 ### Hardware-Specific and User-Specific Examples
 
@@ -173,99 +239,26 @@ We will explore in this article the general steps involved in configuring Gentoo
 
 Read: [Gentoo Linux: Unlocking a LUKS Encrypted LVM Root Partition at Boot Time using a Key File stored on an External USB Drive](https://www.jamescherti.com/gentoo-linux-unlock-lvm-root-partition-at-boot-key-file-external-usb-stick/)
 
-### Forcing English
-
-For users who don't need localization, setting `-nls`, `-cjk`, and `-ibus` globally **forces interfaces to English**, which skips the compilation of thousands of unneeded localization files:
-
-File: `/etc/portage/package.use/00my-just-english`
-```
-# Global exclusion of the Intelligent Input Bus (IBUS).
-#
-# Justification:
-# - Performance: Prevents unnecessary background daemon processes.
-# - Footprint: Eliminates complex dependencies and reduces system bloat.
-# - Security: Minimizes the attack surface by removing unused system services.
-#
-# Note:
-# This assumes that no specialized Input Method Editors (IME) are required for
-# non-Latin script input. If localized language support is needed in the future,
-# this flag must be re-evaluated.
-*/* -ibus
-
-# The exclusion of nls (Native Language Support) is a deliberate choice to
-# simplify the dependency graph and simplify the package installation process.
-# By setting USE="-nls", you instruct Portage to ignore internationalization
-# libraries and omit the compilation of localized message files, ensuring that
-# all software interfaces default to English. This configuration is particularly
-# beneficial on Gentoo because it prevents unnecessary interactions with the
-# gettext utility and significantly reduces the total number of files installed
-# across your system. Consequently, your updates will finish faster, and you
-# will regain valuable disk space that would otherwise be occupied by dozens of
-# translation files you do not need, resulting in a cleaner and more efficient
-# OS environment.
-#
-# cjk: cjk (Chinese, Japanese, Korean), safe to disable globally.
-*/* -nls -cjk
-```
-
-#### Intel Processor + NVIDIA GPU
-
-File: `/etc/portage/package.use/00my-hardware-video`
-
-```
-# Tells Portage to only install the microcode files necessary for the host CPU.
-sys-firmware/intel-microcode hostonly
-
-# Enables drivers for both the NVIDIA discrete GPU and the Intel integrated
-# GPU. This setup allows using the Intel iGPU for power-efficient
-# hardware video decoding.
-*/* VIDEO_CARDS: -* nvidia intel
-
-# Opts into native NVIDIA hardware video encoding/decoding while disabling the legacy,
-# X11-bound VDPAU backend.
-*/* nvenc nvdec -vdpau
-
-# Enables VA-API support across applications. This allows the Intel integrated GPU
-# to handle hardware acceleration paths natively via Intel Quick Sync.
-*/* vaapi
-
-# Enable Intel Quick Sync Video
-# Ensure every media application on the system compiles with Intel Quick Sync
-# Video support if the package supports it. For a dual-GPU setup containing an
-# Intel iGPU and an NVIDIA discrete card, the primary benefit is systematic
-# workload isolation. It allows offloading everyday video decoding and
-# background encoding tasks across all applications (such as media players,
-# transcoders, and broadcasting tools) directly to the Intel processor. This
-# strategy keeps the NVIDIA card completely free from media processing overhead,
-# reserving its full hardware capacity for demanding tasks like 3D rendering or
-# compute workloads, while avoiding the need to configure flags on a per-package
-# basis.
-*/* qsv
-```
-
-#### Intel audio + USB audio
-
-File: `/etc/portage/package.use/00my-hardware-audio`
-
-```
-# Intel audio + USB audio
-*/* ALSA_CARDS: -* hda-intel usb-audio
-```
-
-#### Scanner: Disable all sane backends
-
-File: `/etc/portage/package.use/00my-hardware-scanner`
-
-```
-# Disable all sane backends
-*/* SANE_BACKENDS: -*
-```
 
 ### Installing Debian onto a separate partition from an existing distribution, such as Arch Linux or Gentoo, without using the Debian installer
 
 There are various scenarios in which one might need to install a Debian-based system (e.g., Debian, Ubuntu, etc.) from another distribution (e.g., Arch Linux, Gentoo, Debian/Ubuntu distributions, Fedora, etc.). One common reason is when a user wants to set up a Debian-based system alongside an existing distribution. This could be for the purpose of testing software compatibility, development, or simply to have a dual-boot.
 
 Read: [Installing Debian onto a separate partition from an existing distribution, such as Arch Linux or Gentoo, without using the Debian installer](https://www.jamescherti.com/how-to-install-debian-using-arch-linux-or-gentoo/)
+
+## Maintenance
+
+After applying this configuration or making your own modifications, you must instruct Portage to evaluate the dependency tree and apply the changes to your live system.
+
+1. Apply the new USE flags and update the system:
+   ```bash
+   emerge --ask --verbose --update --deep --newuse @world
+   ```
+
+2. Remove orphaned dependencies that are no longer required:
+   ```bash
+   emerge --ask --depclean
+   ```
 
 ## License
 
