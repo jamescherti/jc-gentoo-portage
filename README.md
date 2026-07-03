@@ -16,12 +16,12 @@ This repository can be used as an inspiration to build a lean and fast Gentoo op
 ## Installation
 
 1. Ensure the system is set to the compatible 23.0 systemd desktop profile:
-   ```
+   ```sh
    eselect profile set default/linux/amd64/23.0/desktop/systemd
    ```
 
 2. Create required file and directory:
-   ```
+   ```sh
    mkdir -p /var/portage-notmpfs
    touch /etc/portage/make-local.conf
    ```
@@ -29,36 +29,36 @@ This repository can be used as an inspiration to build a lean and fast Gentoo op
    (Creating /var/portage-notmpfs is used to prevent compilation failures for massive packages that run out of space when building in RAM. Many users configure Portage to compile packages inside a tmpfs, a temporary filesystem in RAM, to accelerate build times, but exceptionally large software like web browsers, gcc, or compilers can easily exceed available memory during the build process. Creating this physical directory on a hard drive or SSD allows configuring Portage to redirect the build location specifically for those giant packages, providing them with enough physical disk space to finish compiling successfully.)
 
 3. Install requirements:
-   ```
+   ```sh
    emerge -av app-portage/cpuid2cpuflags app-arch/zstd dev-vcs/git
    ```
 
 4. Clone the Repository:
 
-   ```bash
+   ```sh
    git clone https://github.com/jamescherti/jc-gentoo-portage /etc/portage
    ```
 
 5. Update CPU flags:
-   ```
+   ```sh
    echo "*/* $(cpuid2cpuflags)" > /etc/portage/package.use/00cpu-flags
    ```
 
 6. Create make.profile:
-   ```
+   ```sh
    cd /etc/portage
    ln -sf ../../var/db/repos/gentoo/profiles/default/linux/amd64/23.0/desktop/systemd make.profile
    ```
 
 7. Recompile GCC using this Portage configuration, which enables Profile-Guided Optimization (PGO) and Link-Time Optimization (LTO) to maximize compilation throughput:
-   ```
+   ```sh
    emerge -av sys-devel/gcc
    ```
 
 8. Begin customizing `/etc/portage` to fit your specific requirements.
 
 9. Install packages, such as:
-   ```
+   ```sh
    emerge -av gnome-base/gnome-light
    ```
 
@@ -156,6 +156,8 @@ File: `/etc/portage/package.use/00my-hardware-audio`
 
 ### Scanner: Disabling all sane backends
 
+For users who use scanners requiring proprietary drivers, such as those from Brother, it is recommended to disable all SANE backends.
+
 File: `/etc/portage/package.use/00my-hardware-scanner`
 
 ```
@@ -163,11 +165,11 @@ File: `/etc/portage/package.use/00my-hardware-scanner`
 */* SANE_BACKENDS: -*
 ```
 
-### systemd-boot for sys-kernel/gentoo-kernel users
+### systemd-boot and dracut for sys-kernel/gentoo-kernel users
 
 The systemd-boot makes `installkernel` manage `bootctl` entries dynamically using the Boot Loader Specification (BLS). This creates individual menu options for each installed kernel version, providing an automatic fallback if a new kernel fails to boot.
 
-```
+```sh
 # BLS (Boot Loader Specification): Individual menu options for each installed
 # kernel version
 echo "layout=bls" > /etc/kernel/install.conf
@@ -176,7 +178,18 @@ echo "layout=bls" > /etc/kernel/install.conf
 {
   echo "sys-kernel/installkernel systemd-boot"
   echo "sys-apps/systemd boot"
+  # When dist-kernel is set, Portage will automatically trigger Dracut to
+  # build the initramfs and automatically rebuild out-of-tree modules
+  # (like nvidia-drivers) whenever a new sys-kernel/gentoo-kernel is installed.
+  echo "*/* dist-kernel"
 } > /etc/portage/package.use/00my-systemd-boot
+```
+
+For NVIDIA users:
+```
+mkdir -p /etc/dracut.conf.d/
+echo 'add_drivers+=" nvidia nvidia_modeset nvidia_uvm nvidia_drm "' > /etc/dracut.conf.d/60-nvidia-default.conf
+dracut --regenerate-all --force
 ```
 
 ## Customizing /etc/portage/make-local.conf
