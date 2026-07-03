@@ -192,9 +192,7 @@ echo 'GOAMD64="v3"' >> /etc/portage/make-local.conf
 
 Explicitly declaring `GOAMD64="v3"` in `/etc/portage/make-local.conf` ensures Portage applies hardware-specific optimizations to all compiled Go binaries. If this variable is omitted, the Go compiler defaults to `v1`, generating universally compatible but unoptimized code. A higher tier should only be set if the target processor explicitly supports the required instruction sets.
 
-### Hardware-Specific and User-Specific Examples
-
-Below are examples of how to configure `package.use` for specific hardware setups. You can create new files in `/etc/portage/package.use/` to store these directives.
+## Other customizations
 
 ### Temporary File Systems (tmpfs) Optimization
 
@@ -239,12 +237,6 @@ We will explore in this article the general steps involved in configuring Gentoo
 
 Read: [Gentoo Linux: Unlocking a LUKS Encrypted LVM Root Partition at Boot Time using a Key File stored on an External USB Drive](https://www.jamescherti.com/gentoo-linux-unlock-lvm-root-partition-at-boot-key-file-external-usb-stick/)
 
-
-### Installing Debian onto a separate partition from an existing distribution, such as Arch Linux or Gentoo, without using the Debian installer
-
-There are various scenarios in which one might need to install a Debian-based system (e.g., Debian, Ubuntu, etc.) from another distribution (e.g., Arch Linux, Gentoo, Debian/Ubuntu distributions, Fedora, etc.). One common reason is when a user wants to set up a Debian-based system alongside an existing distribution. This could be for the purpose of testing software compatibility, development, or simply to have a dual-boot.
-
-Read: [Installing Debian onto a separate partition from an existing distribution, such as Arch Linux or Gentoo, without using the Debian installer](https://www.jamescherti.com/how-to-install-debian-using-arch-linux-or-gentoo/)
 
 ## Maintenance
 
