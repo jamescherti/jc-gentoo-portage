@@ -6,7 +6,7 @@ The [jc-gentoo-portage](https://github.com/jamescherti/jc-gentoo-portage) reposi
 
 This repository can be used as an inspiration to build a lean and fast Gentoo operating system.
 
-- The system dependency graph is reduced. Setting `-nls`, `-cjk`, and `-ibus` globally **forces interfaces to English**, which skips the compilation of thousands of unneeded localization files. The configuration also drops KDE libraries, smartcard dependencies, and physical optical media (CD/DVD) support to prevent hardware probing utilities from linking against media players.
+- The configuration also drops KDE libraries, smartcard dependencies, and physical optical media (CD/DVD) support to prevent hardware probing utilities from linking against media players.
 - Core system utilities are heavily optimized. Applications are compiled using `pgo` (Profile-Guided Optimization) and `lto` (Link-Time Optimization). Global flags such as `xs`, `asm`, `orc`, `jit`, `threads`, `kms`, and `native-extensions` ensure applications use hand-optimized assembly routines and multi-core parallelism. This portage uses `jemalloc` to reduce memory fragmentation, for a specific list of packages. Furthermore, specific linker flags (`-Wl,--as-needed`, `-Wl,-z,pack-relative-relocs`) shrink binaries, and `-fno-semantic-interposition` is used to accelerate the Python interpreter.
 - Network chatter is bounded. The configuration disables upstream telemetry, background analytics reporting, geolocation (`-geoclue`), cloud provider integrations, and zero-configuration local service scanning like Avahi. It also prevents NetworkManager from leaking IP addresses through periodic background HTTP connectivity checks.
 - The multimedia stack is standardized on PipeWire, actively disabling the legacy PulseAudio daemon. For video, the setup relies entirely on FFmpeg's optimized internal decoders, hardware acceleration (`x264`, `x265`, `vpx`, `aom`), and the industry-reference `dav1d` AV1 decoder. Audio processing is centralized using plugins like `lsp-plugins` and `rnnoise` for neural network noise reduction within EasyEffects.
@@ -126,9 +126,44 @@ Explicitly declaring `GOAMD64="v3"` in `/etc/portage/make-local.conf` ensures Po
 
 The `package.use/` directory is modular. You should read through the files and remove entries for software you do not intend to install. If you need a feature that is disabled globally in `make.conf` (like `nls` or `bluetooth`), do not enable it globally. Instead, enable it only for the specific package that requires it by creating a new entry in `package.use/`.
 
-### Hardware-Specific Examples
+### Hardware-Specific and User-Specific Examples
 
 Below are examples of how to configure `package.use` for specific hardware setups. You can create new files in `/etc/portage/package.use/` to store these directives.
+
+### Forcing English
+
+For users who don't need localization, setting `-nls`, `-cjk`, and `-ibus` globally **forces interfaces to English**, which skips the compilation of thousands of unneeded localization files:
+
+File: `/etc/portage/package.use/00my-just-english`
+```
+# Global exclusion of the Intelligent Input Bus (IBUS).
+#
+# Justification:
+# - Performance: Prevents unnecessary background daemon processes.
+# - Footprint: Eliminates complex dependencies and reduces system bloat.
+# - Security: Minimizes the attack surface by removing unused system services.
+#
+# Note:
+# This assumes that no specialized Input Method Editors (IME) are required for
+# non-Latin script input. If localized language support is needed in the future,
+# this flag must be re-evaluated.
+*/* -ibus
+
+# The exclusion of nls (Native Language Support) is a deliberate choice to
+# simplify the dependency graph and streamline the package installation process.
+# By setting USE="-nls", you instruct Portage to ignore internationalization
+# libraries and omit the compilation of localized message files, ensuring that
+# all software interfaces default to English. This configuration is particularly
+# beneficial on Gentoo because it prevents unnecessary interactions with the
+# gettext utility and significantly reduces the total number of files installed
+# across your system. Consequently, your updates will finish faster, and you
+# will regain valuable disk space that would otherwise be occupied by dozens of
+# translation files you do not need, resulting in a cleaner and more efficient
+# OS environment.
+#
+# cjk: cjk (Chinese, Japanese, Korean), safe to disable globally.
+*/* -nls -cjk
+```
 
 #### Intel Processor + NVIDIA GPU
 
