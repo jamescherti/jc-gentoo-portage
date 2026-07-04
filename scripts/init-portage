@@ -50,6 +50,25 @@ else
 fi
 
 # make-local.conf
+detect_goamd64() {
+  local cpu_flags
+  cpu_flags=$(grep -m 1 '^flags' /proc/cpuinfo)
+
+  # v4 requires AVX-512
+  if [[ "${cpu_flags}" == *avx512f* ]]; then
+    echo "v4"
+  # v3 requires AVX2
+  elif [[ "${cpu_flags}" == *avx2* ]]; then
+    echo "v3"
+  # v2 requires POPCNT and SSE4.2
+  elif [[ "${cpu_flags}" == *popcnt* && "${cpu_flags}" == *sse4_2* ]]; then
+    echo "v2"
+  # Fallback to baseline x86-64
+  else
+    echo "v1"
+  fi
+}
+
 if [[ ! -f "${MAKE_LOCAL_CONF}" ]]; then
   echo "[CREATE FILE] ${MAKE_LOCAL_CONF}"
   install -m 0644 /dev/null "${MAKE_LOCAL_CONF}"
@@ -63,9 +82,20 @@ if [[ ! -f "${MAKE_LOCAL_CONF}" ]]; then
     fi
 
     echo "MAKEOPTS='-j${HALF_PROCESSORS} -l${HALF_PROCESSORS}'" \
-      >"${MAKE_LOCAL_CONF}"
+      >>"${MAKE_LOCAL_CONF}"
+    echo "[ADD] ${MAKE_LOCAL_CONF}:" \
+      "MAKEOPTS='-j${HALF_PROCESSORS} -l${HALF_PROCESSORS}'"
   else
     echo "Warning: The 'nproc' command was not found." >&2
+  fi
+
+  GOAMD64_LEVEL=$(detect_goamd64)
+  if [[ $GOAMD64_LEVEL != "" ]]; then
+    echo "GOAMD64=\"${GOAMD64_LEVEL}\"" >>"${MAKE_LOCAL_CONF}"
+    echo "[ADD] ${MAKE_LOCAL_CONF}:" \
+      "GOAMD64=\"${GOAMD64_LEVEL}\""
+  else
+    echo "[IGNORE] NOT ADDING GOAMD64 TO ${MAKE_LOCAL_CONF}"
   fi
 else
   echo "[IGNORE] ${MAKE_LOCAL_CONF}"
@@ -74,7 +104,7 @@ fi
 # CPU flags
 if [[ ! -f "${CPU_FLAGS_FILE}" ]]; then
   echo "*/* $(cpuid2cpuflags)" >"${CPU_FLAGS_FILE}"
-  echo "[CREATE FILE] ${CPU_FLAGS_FILE}"
+  echo "[CREATE FILE] ${CPU_FLAGS_FILE}:" "$(cat "$CPU_FLAGS_FILE")"
 else
   echo "[IGNORE] ${CPU_FLAGS_FILE}"
 fi
