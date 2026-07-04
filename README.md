@@ -246,7 +246,7 @@ Open `/etc/portage/make-local.conf` and modify the variables to match your syste
 The `GOAMD64` environment variable specifies the microarchitecture level of the `amd64` (x86-64) architecture that the Go compiler targets. Setting `GOAMD64="v3"` inside `/etc/portage/make-local.conf` forces the Go compiler to generate machine code leveraging newer CPU instructions, such as AVX2, BMI1, BMI2, F16C, FMA, LZCNT, MOVBE, and OSXSAVE:
 
 ```sh
-echo 'GOAMD64="v3"' > /etc/portage/make-local.conf
+echo 'GOAMD64="v3"' >> /etc/portage/make-local.conf
 ```
 
 While C and C++ compiler optimizations are managed via `CFLAGS` and `CXXFLAGS` (e.g., `-march=x86-64-v3`), the Go compiler ignores these flags. Many modern utilities packaged in Gentoo are written in Go (including Docker, Kubernetes, and Terraform). When Portage builds these packages from source, the ebuilds read Go-specific environment variables.
@@ -270,8 +270,8 @@ Explicitly declaring `GOAMD64="v3"` in `/etc/portage/make-local.conf` ensures Po
 
 If you manage multiple identical or similar Gentoo machines, use FEATURES="buildpkg" on your fastest machine to compile binaries once, then distribute them to your other machines using emerge --usepkg.
 
-```
-echo 'FEATURES="$FEATURES buildpkg" ' > /etc/portage/make-local.conf
+```sh
+echo 'FEATURES="$FEATURES buildpkg"' >> /etc/portage/make-local.conf
 ```
 
 ## Other customizations
