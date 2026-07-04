@@ -38,7 +38,7 @@ This repository can be used as an inspiration to build a lean and fast Gentoo op
    /etc/portage/scripts/init-portage
    ```
 
-   (This script creates `/var/portage-notmpfs` to prevent compilation failures for massive packages that run out of space when building in RAM. It also generates `/etc/portage/make-local.conf`, which establishes a safe, untracked location for machine-specific overrides. By default, it populates this file with a `MAKEOPTS` setting configured to use half of your system's processors. Finally, the script uses the `cpuid2cpuflags` command to dynamically query your hardware for supported instruction sets, such as AVX2 or SSE4, and writes them to `/etc/portage/package.use/00cpu-flags`. This ensures that all subsequently compiled software is fully optimized for your specific processor.)
+   (This script creates `/var/portage-notmpfs` to prevent compilation failures for massive packages that run out of space when building in RAM. It also generates `/etc/portage/make-local.conf`, which establishes a safe, untracked location for machine-specific overrides. By default, it populates this file with a `MAKEOPTS` setting configured to use half of your system's processors. Finally, the script uses the `cpuid2cpuflags` command to dynamically query your hardware for supported instruction sets, such as AVX2 or SSE4, and writes them to `/etc/portage/package.use/00my-cpu-flags`. This ensures that all subsequently compiled software is fully optimized for your specific processor.)
 
 5. Create make.profile:
    ```sh
@@ -239,11 +239,7 @@ Open `/etc/portage/make-local.conf` and modify the variables to match your syste
 
 ### Go Compiler Optimizations (GOAMD64)
 
-The `GOAMD64` environment variable specifies the microarchitecture level of the `amd64` (x86-64) architecture that the Go compiler targets. Setting `GOAMD64="v3"` inside `/etc/portage/make-local.conf` forces the Go compiler to generate machine code leveraging newer CPU instructions, such as AVX2, BMI1, BMI2, F16C, FMA, LZCNT, MOVBE, and OSXSAVE:
-
-```sh
-echo 'GOAMD64="v3"' >> /etc/portage/make-local.conf
-```
+The `GOAMD64` environment variable specifies the microarchitecture level of the `amd64` (x86-64) architecture that the Go compiler targets. Setting `GOAMD64="v3"` inside `/etc/portage/make-local.conf` forces the Go compiler to generate machine code leveraging newer CPU instructions, such as AVX2, BMI1, BMI2, F16C, FMA, LZCNT, MOVBE, and OSXSAVE.
 
 While C and C++ compiler optimizations are managed via `CFLAGS` and `CXXFLAGS` (e.g., `-march=x86-64-v3`), the Go compiler ignores these flags. Many modern utilities packaged in Gentoo are written in Go (including Docker, Kubernetes, and Terraform). When Portage builds these packages from source, the ebuilds read Go-specific environment variables.
 
