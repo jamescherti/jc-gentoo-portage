@@ -25,6 +25,7 @@
 #
 
 set -euo pipefail
+umask 022
 
 # Global variables for paths
 readonly PORTAGE_NOTMPFS_DIR="/var/portage-notmpfs"
@@ -44,7 +45,7 @@ fi
 # No tmpfs dir
 if [[ ! -d "${PORTAGE_NOTMPFS_DIR}" ]]; then
   echo "[CREATE DIRECTORY] ${PORTAGE_NOTMPFS_DIR}"
-  install -d -m 0755 "${PORTAGE_NOTMPFS_DIR}"
+  mkdir -p "${PORTAGE_NOTMPFS_DIR}"
 else
   echo "[IGNORE] ${PORTAGE_NOTMPFS_DIR}"
 fi
@@ -71,7 +72,7 @@ detect_goamd64() {
 
 if [[ ! -f "${MAKE_LOCAL_CONF}" ]]; then
   echo "[CREATE FILE] ${MAKE_LOCAL_CONF}"
-  install -m 0644 /dev/null "${MAKE_LOCAL_CONF}"
+  touch "${MAKE_LOCAL_CONF}"
 
   if type -P nproc &>/dev/null; then
     NUM_PROCESSORS=$(nproc)
@@ -90,7 +91,7 @@ if [[ ! -f "${MAKE_LOCAL_CONF}" ]]; then
   fi
 
   GOAMD64_LEVEL=$(detect_goamd64)
-  if [[ -n $GOAMD64_LEVEL ]]; then
+  if [[ -n "${GOAMD64_LEVEL}" ]]; then
     echo "GOAMD64=\"${GOAMD64_LEVEL}\"" >>"${MAKE_LOCAL_CONF}"
     echo "[ADD] ${MAKE_LOCAL_CONF}:" \
       "GOAMD64=\"${GOAMD64_LEVEL}\""
@@ -103,9 +104,8 @@ fi
 
 # CPU flags
 if [[ ! -f "${CPU_FLAGS_FILE}" ]]; then
-  install -m 0644 /dev/null "${CPU_FLAGS_FILE}"
   echo "*/* $(cpuid2cpuflags)" >"${CPU_FLAGS_FILE}"
-  echo "[CREATE FILE] ${CPU_FLAGS_FILE}:" "$(cat "$CPU_FLAGS_FILE")"
+  echo "[CREATE FILE] ${CPU_FLAGS_FILE}:" "$(cat "${CPU_FLAGS_FILE}")"
 else
   echo "[IGNORE] ${CPU_FLAGS_FILE}"
 fi
