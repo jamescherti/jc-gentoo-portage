@@ -46,7 +46,7 @@ if [[ ! -f /etc/portage/make-local.conf ]]; then
   touch /etc/portage/make-local.conf
 fi
 
-if [[ ! -f /etc/portage/package.use/00cpu-flags ]]; then
-  echo "*/* $(cpuid2cpuflags)" >"/etc/portage/package.use/00cpu-flags"
-  echo "[CREATE FILE] /etc/portage/package.use/00cpu-flags"
+if [[ ! -f /etc/portage/package.use/00my-cpu-flags ]]; then
+  echo "*/* $(cpuid2cpuflags)" >"/etc/portage/package.use/00my-cpu-flags"
+  echo "[CREATE FILE] /etc/portage/package.use/00my-cpu-flags"
 fi
