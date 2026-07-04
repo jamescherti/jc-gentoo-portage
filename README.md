@@ -122,7 +122,7 @@ File: `/etc/portage/package.use/00my-gpu-nvidia`
 ### Intel CPU
 
 
-File: `/etc/portage/package.use/00my-cpu-intel`
+File: `/etc/portage/package.use/00my-hw-cpu-intel`
 
 ```
 # Tells Portage to only install the microcode files necessary for the host CPU.
@@ -147,7 +147,7 @@ sys-firmware/intel-microcode hostonly
 
 ### Intel Integrated graphics
 
-File: `/etc/portage/package.use/00my-gpu-intel`
+File: `/etc/portage/package.use/00my-intel-integrated-graphics`
 
 ```
 */* VIDEO_CARDS: -* intel
@@ -175,7 +175,7 @@ File: `/etc/portage/package.use/00my-gpu-intel`
 
 ### Intel audio + USB audio
 
-File: `/etc/portage/package.use/00my-hardware-audio`
+File: `/etc/portage/package.use/00my-hw-audio-intel`
 
 ```
 # Intel audio + USB audio
@@ -186,7 +186,7 @@ File: `/etc/portage/package.use/00my-hardware-audio`
 
 For users who use scanners requiring proprietary drivers, such as those from Brother, it is recommended to disable all SANE backends.
 
-File: `/etc/portage/package.use/00my-hardware-scanner`
+File: `/etc/portage/package.use/00my-hw-scanner`
 
 ```
 # Disable all sane backends
