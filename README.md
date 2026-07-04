@@ -38,7 +38,7 @@ This repository can be used as an inspiration to build a lean and fast Gentoo op
    /etc/portage/scripts/init-portage
    ```
 
-   (This script creates `/var/portage-notmpfs`, which prevents compilation failures for massive packages that run out of space when building in RAM. In addition to that, it creates `/etc/portage/make-local.conf`, which establishes a safe, untracked location for your machine-specific overrides. By default, it adds to make-local.conf half the processors in MAKEOPTS variable. Finally, it uses `cpuid2cpuflags` to dynamically query your CPU for supported instruction sets, like AVX2 or SSE4, and writes them to `/etc/portage/package.use/00cpu-flags`. This guarantees that all subsequently compiled software is optimized for your specific processor.)
+   (This script creates `/var/portage-notmpfs` to prevent compilation failures for massive packages that run out of space when building in RAM. It also generates `/etc/portage/make-local.conf`, which establishes a safe, untracked location for machine-specific overrides. By default, it populates this file with a `MAKEOPTS` setting configured to use half of your system's processors. Finally, the script uses the `cpuid2cpuflags` command to dynamically query your hardware for supported instruction sets, such as AVX2 or SSE4, and writes them to `/etc/portage/package.use/00cpu-flags`. This ensures that all subsequently compiled software is fully optimized for your specific processor.)
 
 5. Create make.profile:
    ```sh
