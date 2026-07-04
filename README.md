@@ -354,7 +354,7 @@ After applying this configuration or making your own modifications, you must ins
 
 ## License
 
-The **jc-gentoo-portage** files have been written by James Cherti and is distributed under terms of the MIT license.
+The **jc-gentoo-portage** files were written by James Cherti and is distributed under terms of the MIT license.
 
 Copyright (C) 2022-2026 [James Cherti](https://www.jamescherti.com).
 
