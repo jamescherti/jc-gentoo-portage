@@ -21,39 +21,6 @@
 # Multimedia
 */* -jack v4l mtp
 
-# - ffmpeg: Serves as the unified multimedia master engine.
-# - x264 / x265 / vpx / aom: Maximizes modern streaming video playback
-#   compatibility (AVC, HEVC, VP9, AV1) while fully activating GPU's hardware
-#   accelerated video decoding.
-# - opus / vorbis / theora / speex: Ensures structural compatibility with all
-#   modern WebRTC, HTML5 video streaming, and online voice applications.
-# - matroska: Explicitly passes instructions to applications to optimize
-#   container structures for .mkv files.
-# - dav1d: The industry reference AV1 software decoder. When hardware decoding
-#   is unavailable, dav1d uses highly optimized assembly code (such as AVX2) to
-#   decode high-resolution AV1 streams efficiently. This minimizes CPU
-#   utilization and thermal overhead compared to alternative software decoders
-#   during video playback. SVT-AV1 is primarily an encoder. Rather than enabling
-#   the svt-av1 USE flag globally, it is better to enable it selectively via
-#   /etc/portage/package.use/ for tools that specifically require AV1 encoding
-#   capabilities, such as media-video/ffmpeg or media-video/obs-studio.
-#
-# REMOVED: External legacy codecs like lame, twolame, and fdk are unnecessary
-# because FFmpeg handles 100% of these formats using its own native, highly
-# optimized internal encoders and decoders.
-# USE="$USE flac faad twolame mp3 mp4 mpeg ogg aac fdk lame"
-*/* gstreamer ffmpeg x264 x265 vpx aom opus speex vorbis theora matroska dav1d
-
-# Disable CD-ROM/DVD
-# This is an optimization for a lean desktop profile. Unless the machine houses
-# a physical optical disc drive, keeping CD/DVD reading and CSS decryption
-# routines disabled prevents packages like mpv or ffmpeg from linking against
-# hardware optical probing utilities.
-*/* -cdrom -a52 -cdda -dvd -dvdr -cdr -css
-
-# Images
-*/* gif svg jpeg webp png
-
 # Compression
 */* zlib bzip2 lzma zstd lz4 lzo zip rar
 
