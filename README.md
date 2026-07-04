@@ -147,7 +147,7 @@ sys-firmware/intel-microcode hostonly
 
 ### Intel Integrated graphics
 
-File: `/etc/portage/package.use/00my-intel-integrated-graphics`
+File: `/etc/portage/package.use/00my-hw-intel-integrated-graphics`
 
 ```
 */* VIDEO_CARDS: -* intel
