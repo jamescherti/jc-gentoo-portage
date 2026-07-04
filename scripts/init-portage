@@ -26,6 +26,11 @@
 
 set -euo pipefail
 
+# Global variables for paths
+readonly PORTAGE_NOTMPFS_DIR="/var/portage-notmpfs"
+readonly MAKE_LOCAL_CONF="/etc/portage/make-local.conf"
+readonly CPU_FLAGS_FILE="/etc/portage/package.use/00my-cpu-flags"
+
 if [[ "${EUID}" -ne 0 ]]; then
   echo "Error: This script must be run as root." >&2
   exit 1
@@ -36,17 +41,32 @@ if ! type -P cpuid2cpuflags &>/dev/null; then
   exit 1
 fi
 
-if [[ ! -d /var/portage-notmpfs ]]; then
-  echo "[CREATE DIRECTORY] /var/portage-notmpfs"
-  mkdir -p /var/portage-notmpfs
+# No tmpfs dir
+if [[ ! -d "${PORTAGE_NOTMPFS_DIR}" ]]; then
+  echo "[CREATE DIRECTORY] ${PORTAGE_NOTMPFS_DIR}"
+  install -d -m 0755 "${PORTAGE_NOTMPFS_DIR}"
+else
+  echo "[IGNORE] ${PORTAGE_NOTMPFS_DIR}"
 fi
 
-if [[ ! -f /etc/portage/make-local.conf ]]; then
-  echo "[CREATE FILE] /etc/portage/make-local.conf"
-  touch /etc/portage/make-local.conf
+# make-local.conf
+if [[ ! -f "${MAKE_LOCAL_CONF}" ]]; then
+  echo "[CREATE FILE] ${MAKE_LOCAL_CONF}"
+  install -m 0644 /dev/null "${MAKE_LOCAL_CONF}"
+
+  if type -P nproc &>/dev/null; then
+    NUM_PROCESSORS=$(nproc)
+    echo "MAKEOPTS='-j${NUM_PROCESSORS} -l${NUM_PROCESSORS}'" \
+      >"${MAKE_LOCAL_CONF}"
+  fi
+else
+  echo "[IGNORE] ${MAKE_LOCAL_CONF}"
 fi
 
-if [[ ! -f /etc/portage/package.use/00my-cpu-flags ]]; then
-  echo "*/* $(cpuid2cpuflags)" >"/etc/portage/package.use/00my-cpu-flags"
-  echo "[CREATE FILE] /etc/portage/package.use/00my-cpu-flags"
+# CPU flags
+if [[ ! -f "${CPU_FLAGS_FILE}" ]]; then
+  echo "*/* $(cpuid2cpuflags)" >"${CPU_FLAGS_FILE}"
+  echo "[CREATE FILE] ${CPU_FLAGS_FILE}"
+else
+  echo "[IGNORE] ${CPU_FLAGS_FILE}"
 fi
