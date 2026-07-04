@@ -20,7 +20,7 @@ This repository can be used as an inspiration to build a lean and fast Gentoo op
    eselect profile set default/linux/amd64/23.0/desktop/systemd
    ```
 
-  This step ensures that the base system dependencies, compiler configurations, and default USE flags are properly aligned for a modern systemd-based graphical desktop environment, preventing conflicting initialization systems.
+   (This that the base system dependencies, compiler configurations, and default USE flags are aligned for a modern systemd-based graphical desktop environment.)
 
 2. Install requirements:
    ```sh
@@ -193,30 +193,27 @@ File: `/etc/portage/package.use/00my-hw-scanner`
 */* SANE_BACKENDS: -*
 ```
 
-### systemd-boot and dracut for sys-kernel/gentoo-kernel users
+### systemd-boot and dracut for sys-kernel/gentoo-kernel or sys-kernel/gentoo-kernel-bin users
 
 The systemd-boot makes `installkernel` manage `bootctl` entries dynamically using the Boot Loader Specification (BLS). This creates individual menu options for each installed kernel version, providing an automatic fallback if a new kernel fails to boot.
 
+First, edit `/etc/kernel/install.conf` and add the following lines to define the kernel installation layout:
+
+```
+layout=bls
+initrd_generator=dracut
+uki_generator=none
+```
+
+Next, edit `/etc/portage/package.use/00my-systemd-boot` to apply the required USE flags. This enables dracut and systemd-boot for installkernel and sets the dist-kernel flag globally. Add the following lines:
 ```sh
-# BLS (Boot Loader Specification): Individual menu options for each installed
-# kernel version
-{
-  echo "layout=bls"
-  echo "initrd_generator=dracut"
-  echo "uki_generator=none"
-} > /etc/kernel/install.conf
+sys-kernel/installkernel dracut systemd-boot
+sys-apps/systemd boot
 
-# systemd-boot
-{
-  echo "sys-kernel/installkernel dracut systemd-boot"
-  echo "sys-apps/systemd boot"
-  # When dist-kernel is set, Portage will automatically trigger Dracut to
-  # build the initramfs and automatically rebuild out-of-tree modules
-  # (like nvidia-drivers) whenever a new sys-kernel/gentoo-kernel is installed.
-  echo "*/* dist-kernel"
-} > /etc/portage/package.use/00my-systemd-boot
-
-echo 'initrd_generator=dracut' > /etc/kernel/install.conf
+# When dist-kernel is set, Portage will automatically trigger Dracut to
+# build the initramfs and automatically rebuild out-of-tree modules
+# (like nvidia-drivers) whenever a new sys-kernel/gentoo-kernel is installed.
+*/* dist-kernel
 ```
 
 ### Dracut + NVIDIA: Forcing Nvidia Driver Inclusion in the Early Boot Sequence
