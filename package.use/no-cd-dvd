@@ -1,0 +1,14 @@
+#
+# Copyright (C) 2022-2026 James Cherti
+# URL: https://github.com/jamescherti/jc-gentoo-portage
+#
+# Distributed under terms of the MIT license.
+#
+
+# Disable CD-ROM/DVD
+#
+# This is an optimization for a lean desktop profile. Unless the machine houses
+# a physical optical disc drive, keeping CD/DVD reading and CSS decryption
+# routines disabled prevents packages like mpv or ffmpeg from linking against
+# hardware optical probing utilities.
+*/* -cdrom -a52 -cdda -dvd -dvdr -cdr -css

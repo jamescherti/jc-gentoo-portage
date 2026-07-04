@@ -275,7 +275,7 @@ Unmask the kernel:
   echo "sys-kernel/gentoo-kernel-bin ~amd64"
   echo "sys-kernel/gentoo-kernel ~amd64"
   echo "virtual/dist-kernel ~amd64"
-} > /etc/portage/package.accept_keywords/00-my-latest-kernel
+} > /etc/portage/package.accept_keywords/00my-latest-gentoo-kernel
 ```
 
 Then run:
