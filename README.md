@@ -22,34 +22,25 @@ This repository can be used as an inspiration to build a lean and fast Gentoo op
 
   This step ensures that the base system dependencies, compiler configurations, and default USE flags are properly aligned for a modern systemd-based graphical desktop environment, preventing conflicting initialization systems.
 
-2. Create required file and directory:
-   ```sh
-   mkdir -p /var/portage-notmpfs
-   touch /etc/portage/make-local.conf
-   ```
-
-   Creating `/var/portage-notmpfs` prevents compilation failures for massive packages that run out of space when building in RAM. Creating `/etc/portage/make-local.conf` establishes a safe, untracked location for your machine-specific overrides (like thread count or compiler targets), ensuring future repository updates do not result in git merge conflicts.
-
-3. Install requirements:
+2. Install requirements:
    ```sh
    emerge -av app-portage/cpuid2cpuflags app-arch/zstd dev-vcs/git
    ```
+   (`cpuid2cpuflags` is required to detect your host processor's hardware capabilities. `zstd` is installed to provide high-speed compression for Portage build operations and binary packages, and `git` is required to clone this repository.)
 
-   `cpuid2cpuflags` is required to detect your host processor's hardware capabilities. `zstd` is installed to provide high-speed compression for Portage build operations and binary packages, and `git` is required to clone this repository.
-
-4. Clone the Repository:
+3. Clone the Repository:
    ```sh
    git clone https://github.com/jamescherti/jc-gentoo-portage /etc/portage
    ```
 
-5. Update CPU flags:
+4. Run:
    ```sh
-   echo "*/* $(cpuid2cpuflags)" > /etc/portage/package.use/00cpu-flags
+   /etc/portage/scripts/init-portage
    ```
 
-   This step dynamically queries your CPU for supported instruction sets (like AVX2 or SSE4) and writes them to a Portage configuration file. This guarantees that all subsequently compiled software is highly optimized for your specific processor.
+   (This script creates `/var/portage-notmpfs`, which prevents compilation failures for massive packages that run out of space when building in RAM. In addition to that, it creates `/etc/portage/make-local.conf`, which establishes a safe, untracked location for your machine-specific overrides. Finally, it uses `cpuid2cpuflags` to dynamically query your CPU for supported instruction sets, like AVX2 or SSE4, and writes them to `/etc/portage/package.use/00cpu-flags`. This guarantees that all subsequently compiled software is optimized for your specific processor.)
 
-6. Create make.profile:
+5. Create make.profile:
    ```sh
    cd /etc/portage
    ln -sf ../../var/db/repos/gentoo/profiles/default/linux/amd64/23.0/desktop/systemd make.profile
@@ -57,14 +48,12 @@ This repository can be used as an inspiration to build a lean and fast Gentoo op
 
    Portage relies on the `make.profile` symlink to determine which system profile is currently active. Creating this link manually ensures Portage resolves the dependency graph and default variables accurately from the downloaded Gentoo repository tree.
 
-7. Recompile GCC using this Portage configuration, which enables Profile-Guided Optimization (PGO) and Link-Time Optimization (LTO) to maximize compilation throughput:
+6. Recompile GCC using this Portage configuration, which enables Profile-Guided Optimization (PGO) and Link-Time Optimization (LTO) to maximize compilation throughput:
    ```sh
    emerge -av sys-devel/gcc
    ```
 
-8. Begin customizing `/etc/portage` to fit your specific requirements.
-
-9. Install packages using `emerge`.
+7. Begin customizing `/etc/portage` to fit your specific requirements and install packages using `emerge`.
 
 ## Repository Structure
 
