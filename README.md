@@ -46,7 +46,7 @@ This repository can be used as an inspiration to build a lean and fast Gentoo op
    ln -sf ../../var/db/repos/gentoo/profiles/default/linux/amd64/23.0/desktop/systemd make.profile
    ```
 
-   Portage relies on the `make.profile` symlink to determine which system profile is currently active. Creating this link manually ensures Portage resolves the dependency graph and default variables accurately from the downloaded Gentoo repository tree.
+   (Portage relies on the `make.profile` symlink to determine which system profile is currently active. Creating this link manually ensures Portage resolves the dependency graph and default variables accurately from the downloaded Gentoo repository tree.)
 
 6. Recompile GCC using this Portage configuration, which enables Profile-Guided Optimization (PGO) and Link-Time Optimization (LTO) to maximize compilation throughput:
    ```sh
@@ -104,44 +104,56 @@ File: `/etc/portage/package.use/00my-just-english`
 */* -nls -cjk
 ```
 
-### NVIDIA GPU only
+### NVIDIA GPU
 
-File: `/etc/portage/package.use/00my-hardware-video`
+File: `/etc/portage/package.use/00my-gpu-nvidia`
 
 ```
-# Tells Portage to only install the microcode files necessary for the host CPU.
-sys-firmware/intel-microcode hostonly
-
-# Enables drivers for both the NVIDIA discrete GPU and the Intel integrated
-# GPU. This setup allows using the Intel iGPU for power-efficient
-# hardware video decoding.
 */* VIDEO_CARDS: -* nvidia
 
 # Opts into native NVIDIA hardware video encoding/decoding while disabling the legacy,
 # X11-bound VDPAU backend.
 */* nvenc nvdec -vdpau
 
-# Enables VA-API support across applications. This allows the Intel integrated GPU
-# to handle hardware acceleration paths natively via Intel Quick Sync.
+# Enables VA-API support across applications.
 */* vaapi
 ```
 
-### Intel Processor + NVIDIA GPU
+### Intel CPU
 
-File: `/etc/portage/package.use/00my-hardware-video`
+
+File: `/etc/portage/package.use/00my-cpu-intel`
 
 ```
 # Tells Portage to only install the microcode files necessary for the host CPU.
 sys-firmware/intel-microcode hostonly
 
-# Enables drivers for both the NVIDIA discrete GPU and the Intel integrated
-# GPU. This setup allows using the Intel iGPU for power-efficient
-# hardware video decoding.
-*/* VIDEO_CARDS: -* nvidia intel
+# Enables VA-API support across applications.
+*/* vaapi
 
-# Opts into native NVIDIA hardware video encoding/decoding while disabling the legacy,
-# X11-bound VDPAU backend.
-*/* nvenc nvdec -vdpau
+# Enable Intel Quick Sync Video
+# Ensure every media application on the system compiles with Intel Quick Sync
+# Video support if the package supports it. For a dual-GPU setup containing an
+# Intel iGPU and an NVIDIA discrete card, the primary benefit is systematic
+# workload isolation. It allows offloading everyday video decoding and
+# background encoding tasks across all applications (such as media players,
+# transcoders, and broadcasting tools) directly to the Intel processor. This
+# strategy keeps the NVIDIA card completely free from media processing overhead,
+# reserving its full hardware capacity for demanding tasks like 3D rendering or
+# compute workloads, while avoiding the need to configure flags on a per-package
+# basis.
+*/* qsv
+```
+
+### Intel Integrated graphics
+
+File: `/etc/portage/package.use/00my-gpu-intel`
+
+```
+*/* VIDEO_CARDS: -* intel
+
+# Disable the legacy, X11-bound VDPAU backend.
+*/* -vdpau
 
 # Enables VA-API support across applications. This allows the Intel integrated GPU
 # to handle hardware acceleration paths natively via Intel Quick Sync.
