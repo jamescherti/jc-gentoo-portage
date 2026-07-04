@@ -216,20 +216,18 @@ sys-apps/systemd boot
 */* dist-kernel
 ```
 
-### Dracut + NVIDIA: Forcing Nvidia Driver Inclusion in the Early Boot Sequence
+### Dracut + NVIDIA: Force NVIDIA Driver Inclusion in the Early Boot Sequence (Dracut)
 
-By default, Dracut may omit these out-of-tree drivers during initramfs generation. The following sequence creates an explicit configuration directive to bind the essential Nvidia kernel components, including the core driver, modesetting controls, unified virtual memory, and direct rendering manager layers, directly into the early boot image, and then regenerates all initramfs files to apply the configuration.
+By default, Dracut may omit out-of-tree drivers during initramfs generation. Force the inclusion of the essential NVIDIA kernel components, including the core driver, modesetting controls, unified virtual memory, and direct rendering manager layers, directly into the early boot image. This step also ensures the open-source Nouveau driver is explicitly omitted to prevent conflicts.
 
-```sh
-mkdir -p /etc/dracut.conf.d/
+First, edit `/etc/dracut.conf.d/nvidia.conf` and add the following lines to bind the required drivers:
 
-{
-  echo 'add_drivers+=" nvidia nvidia_modeset nvidia_uvm nvidia_drm "'
-  echo 'omit_drivers+=" nouveau "'
-} > /etc/dracut.conf.d/nvidia.conf
-
-dracut --regenerate-all --force
 ```
+add_drivers+=" nvidia nvidia_modeset nvidia_uvm nvidia_drm "
+omit_drivers+=" nouveau "
+```
+
+Next, regenerate all of your initramfs images to apply the configuration. Run your bootloader or kernel management tool to trigger the rebuilding process, or execute your system's standard initramfs generation utility with the force flag to ensure the changes are baked into the early boot sequence.
 
 ## Customizing /etc/portage/make-local.conf
 
@@ -274,16 +272,19 @@ echo 'FEATURES="$FEATURES buildpkg"' >> /etc/portage/make-local.conf
 
 ## Other customizations
 
-### Installing the latest kernel
+### Install the latest testing kernel
 
-Unmask the kernel:
-```sh
-{
-  echo "sys-kernel/gentoo-kernel-bin ~amd64"
-  echo "sys-kernel/gentoo-kernel ~amd64"
-  echo "virtual/dist-kernel ~amd64"
-} > /etc/portage/package.accept_keywords/00my-latest-gentoo-kernel
+Unmask the testing versions (`~amd64`) of the Gentoo distribution kernels. This allows Portage to look past the stable tree and fetch the latest upstream kernel updates.
+
+First, edit `/etc/portage/package.accept_keywords/00my-latest-gentoo-kernel` and add the following lines to accept the testing keywords:
+
+```text
+sys-kernel/gentoo-kernel-bin ~amd64
+sys-kernel/gentoo-kernel ~amd64
+virtual/dist-kernel ~amd64
 ```
+
+Next, run your standard package upgrade command to pull in the new kernel version, and use your system's kernel selection utility to set the newly installed kernel as the default.
 
 Then run:
 ```
