@@ -20,7 +20,7 @@ This repository can be used as an inspiration to build a lean and fast Gentoo op
    eselect profile set default/linux/amd64/23.0/desktop/systemd
    ```
 
-   (This that the base system dependencies, compiler configurations, and default USE flags are aligned for a modern systemd-based graphical desktop environment.)
+   (This ensures that the base system dependencies, compiler configurations, and default USE flags are aligned for a modern systemd-based graphical desktop environment.)
 
 2. Install requirements:
    ```sh
@@ -348,7 +348,7 @@ After applying this configuration or making your own modifications, you must ins
 
 ## License
 
-The **jc-gentoo-portage** files were written by James Cherti and is distributed under terms of the MIT license.
+The **jc-gentoo-portage** files were written by James Cherti and are distributed under terms of the MIT license.
 
 Copyright (C) 2022-2026 [James Cherti](https://www.jamescherti.com).
 
@@ -368,7 +368,7 @@ THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR I
 - [Gentoo Handbook](https://wiki.gentoo.org/wiki/Handbook:Main_Page)
 - [Article: jc-gentoo-portage: An opinionated, performance-oriented Gentoo Portage /etc/portage configuration](https://www.jamescherti.com/jc-gentoo-portage/)
 
-Other project by the same author:
+Other projects by the same author:
 - [jc-dotfiles @GitHub](https://github.com/jamescherti/jc-dotfiles): A collection of UNIX/Linux configuration files. You can either install them directly or use them as inspiration your own dotfiles.
 - [bash-stdops @GitHub](https://github.com/jamescherti/bash-stdops): A collection of Bash helper shell scripts.
 - [jc-gnome-settings](https://github.com/jamescherti/jc-gnome-settings): GNOME customizations that can be applied programmatically.
