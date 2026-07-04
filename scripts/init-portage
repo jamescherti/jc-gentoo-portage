@@ -81,16 +81,16 @@ if [[ ! -f "${MAKE_LOCAL_CONF}" ]]; then
       HALF_PROCESSORS=1
     fi
 
-    echo "MAKEOPTS='-j${HALF_PROCESSORS} -l${HALF_PROCESSORS}'" \
+    echo "MAKEOPTS=\"-j${HALF_PROCESSORS} -l${HALF_PROCESSORS}\"" \
       >>"${MAKE_LOCAL_CONF}"
     echo "[ADD] ${MAKE_LOCAL_CONF}:" \
-      "MAKEOPTS='-j${HALF_PROCESSORS} -l${HALF_PROCESSORS}'"
+      "MAKEOPTS=\"-j${HALF_PROCESSORS} -l${HALF_PROCESSORS}\""
   else
     echo "Warning: The 'nproc' command was not found." >&2
   fi
 
   GOAMD64_LEVEL=$(detect_goamd64)
-  if [[ $GOAMD64_LEVEL != "" ]]; then
+  if [[ -n $GOAMD64_LEVEL ]]; then
     echo "GOAMD64=\"${GOAMD64_LEVEL}\"" >>"${MAKE_LOCAL_CONF}"
     echo "[ADD] ${MAKE_LOCAL_CONF}:" \
       "GOAMD64=\"${GOAMD64_LEVEL}\""
@@ -103,6 +103,7 @@ fi
 
 # CPU flags
 if [[ ! -f "${CPU_FLAGS_FILE}" ]]; then
+  install -m 0644 /dev/null "${CPU_FLAGS_FILE}"
   echo "*/* $(cpuid2cpuflags)" >"${CPU_FLAGS_FILE}"
   echo "[CREATE FILE] ${CPU_FLAGS_FILE}:" "$(cat "$CPU_FLAGS_FILE")"
 else
