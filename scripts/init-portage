@@ -56,8 +56,16 @@ if [[ ! -f "${MAKE_LOCAL_CONF}" ]]; then
 
   if type -P nproc &>/dev/null; then
     NUM_PROCESSORS=$(nproc)
-    echo "MAKEOPTS='-j${NUM_PROCESSORS} -l${NUM_PROCESSORS}'" \
+    HALF_PROCESSORS=$((NUM_PROCESSORS / 2))
+
+    if ((HALF_PROCESSORS == 0)); then
+      HALF_PROCESSORS=1
+    fi
+
+    echo "MAKEOPTS='-j${HALF_PROCESSORS} -l${HALF_PROCESSORS}'" \
       >"${MAKE_LOCAL_CONF}"
+  else
+    echo "Warning: The 'nproc' command was not found." >&2
   fi
 else
   echo "[IGNORE] ${MAKE_LOCAL_CONF}"
