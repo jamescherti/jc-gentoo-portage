@@ -216,7 +216,7 @@ sys-apps/systemd boot
 */* dist-kernel
 ```
 
-### Dracut + NVIDIA: Force NVIDIA Driver Inclusion in the Early Boot Sequence (Dracut)
+### Dracut + NVIDIA: Force NVIDIA Driver Inclusion in the Early Boot Sequence
 
 By default, Dracut may omit out-of-tree drivers during initramfs generation. Force the inclusion of the essential NVIDIA kernel components, including the core driver, modesetting controls, unified virtual memory, and direct rendering manager layers, directly into the early boot image. This step also ensures the open-source Nouveau driver is explicitly omitted to prevent conflicts.
 
@@ -233,9 +233,9 @@ Next, regenerate all of your initramfs images to apply the configuration. Run yo
 
 The `jc-gentoo-portage` repository tracks the primary `make.conf` file via Git. Modifying `make.conf` directly to add hardware specifics will cause merge conflicts whenever `git pull` is executed to update the repository with upstream changes.
 
-To prevent this, the provided `make.conf` is automatically source `/etc/portage/make-local.conf` at the end of its execution. By placing all system-specific overrides (such as `GOAMD64`, `MAKEOPTS`, or `CFLAGS`) inside `make-local.conf`, these settings successfully override the global defaults while keeping the Git working tree clean. This allows upstream updates to be applied without manual conflict resolution.
+To prevent this, the provided `make.conf` automatically sources `/etc/portage/make-local.conf` at the end of its execution. By placing all system-specific overrides (such as `GOAMD64`, `MAKEOPTS`, or `CFLAGS`) inside `make-local.conf`, these settings successfully override the global defaults while keeping the Git working tree clean. This allows upstream updates to be applied without manual conflict resolution.
 
-Open `/etc/portage/make-local.conf` and modify the variables to match your system resources. For example, modify `MAKEOPTS` to Adjust this based on your CPU core count and available RAM. A common rule is `-jN -lN` where `N` is your logical CPU core count.
+Open `/etc/portage/make-local.conf` and modify the variables to match your system resources. For example, modify `MAKEOPTS` based on your CPU core count and available RAM. A common rule is `-jN -lN` where `N` is your logical CPU core count.
 
 ### Go Compiler Optimizations (GOAMD64)
 
@@ -260,7 +260,7 @@ Explicitly declaring `GOAMD64="v3"` in `/etc/portage/make-local.conf` ensures Po
 
 ### FEATURES: buildpkg
 
-If you manage multiple identical or similar Gentoo machines, use FEATURES="buildpkg" on your fastest machine to compile binaries once, then distribute them to your other machines using emerge --usepkg.
+If you manage multiple identical or similar Gentoo machines, use `FEATURES="buildpkg"` on your fastest machine to compile binaries once, then distribute them to your other machines using `emerge --usepkg`.
 
 ```sh
 echo 'FEATURES="$FEATURES buildpkg"' >> /etc/portage/make-local.conf
