@@ -9,4 +9,6 @@
 # for encoding support.
 media-libs/libva-intel-media-driver redistributable
 
+# Install non-free firmware files that possess licenses permitting
+# redistribution
 sys-kernel/linux-firmware redistributable
