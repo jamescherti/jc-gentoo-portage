@@ -32,6 +32,9 @@
 # USE="$USE flac faad twolame mp3 mp4 mpeg ogg aac fdk lame"
 */* gstreamer ffmpeg x264 x265 vpx aom opus speex vorbis theora matroska dav1d
 
+# Multimedia
+*/* -jack v4l mtp
+
 # Images
 */* gif svg jpeg webp png
 

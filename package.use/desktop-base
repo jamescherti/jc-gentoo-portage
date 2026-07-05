@@ -18,9 +18,6 @@
 # Spell
 */* spell aspell
 
-# Multimedia
-*/* -jack v4l mtp
-
 # Compression
 */* zlib bzip2 lzma zstd lz4 lzo zip rar
 
