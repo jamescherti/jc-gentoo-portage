@@ -106,14 +106,13 @@ File: `/etc/portage/package.use/00my-just-english`
 
 ### NVIDIA GPU
 
-File: `/etc/portage/package.use/00my-gpu-nvidia`
+File: `/etc/portage/package.use/00my-hw-gpu-nvidia`
 
 ```
 */* VIDEO_CARDS: -* nvidia
 
-# Opts into native NVIDIA hardware video encoding/decoding while disabling the legacy,
-# X11-bound VDPAU backend.
-*/* nvenc nvdec -vdpau
+# Opts into native NVIDIA hardware video encoding/decoding
+*/* nvenc nvdec vdpau
 
 # Enables VA-API support across applications.
 */* vaapi
@@ -152,9 +151,6 @@ File: `/etc/portage/package.use/00my-hw-intel-integrated-graphics`
 ```
 */* VIDEO_CARDS: -* intel
 
-# Disable the legacy, X11-bound VDPAU backend.
-*/* -vdpau
-
 # Enables VA-API support across applications. This allows the Intel integrated GPU
 # to handle hardware acceleration paths natively via Intel Quick Sync.
 */* vaapi
@@ -171,6 +167,9 @@ File: `/etc/portage/package.use/00my-hw-intel-integrated-graphics`
 # compute workloads, while avoiding the need to configure flags on a per-package
 # basis.
 */* qsv
+
+# Disable VDPAU backend
+*/* -vdpau
 ```
 
 ### Intel audio + USB audio
