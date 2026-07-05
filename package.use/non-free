@@ -6,5 +6,6 @@
 #
 
 # redistributable: Enable this flag to install the necessary non-free binaries
-# for encoding support.
-media-libs/libva-intel-media-driver redistributable
+# for encoding support for packages such as media-libs/libva-intel-media-driver
+# and sys-kernel/linux-firmware.
+*/* redistributable
