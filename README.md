@@ -10,11 +10,12 @@ This repository can be used as an inspiration to build a lean and fast Gentoo op
 - Global flags such as `xs`, `asm`, `orc`, `jit`, `threads`, `kms`, and `native-extensions` ensure applications use hand-optimized assembly routines and multi-core parallelism.
 - Uses `jemalloc` to reduce memory fragmentation.
 - Adds linker flags (`-Wl,--as-needed`, `-Wl,-z,pack-relative-relocs`) shrink binaries, and `-fno-semantic-interposition` is used to accelerate the Python interpreter.
+- Add optimizations for Go and Rust,
 - Network chatter is bounded. The configuration disables upstream telemetry, background analytics reporting, geolocation, cloud provider integrations, and zero-configuration local service scanning like Avahi.
-- The multimedia stack is standardized on PipeWire, disabling the legacy PulseAudio daemon. For video, the setup relies entirely on FFmpeg's optimized internal decoders, hardware acceleration (`x264`, `x265`, `vpx`, `aom`), and the industry-reference `dav1d` AV1 decoder. Audio processing is centralized using plugins like `lsp-plugins` and `rnnoise` for neural network noise reduction within EasyEffects.
 - The configuration drops smartcard dependencies, and physical optical media (CD/DVD) support to prevent hardware probing utilities from linking against media players.
 - Unnecessary UI layers are masked to prevent dependency bloat. LibreOffice is compiled without MariaDB, Java-based scripting macros, or Bluetooth support. The configuration also trims heavy database indexing hooks and large redundant typography packages for a minimalist graphical environment.
 - The setup features a GTK and Wayland desktop environment (specifically `gnome-base/gnome-light`). It debloats the GNOME shell by pruning heavy file-indexing hooks from `localsearch`, removing Samba and Active Directory integrations (`-samba`, `-ads`, `-acl`) from Nautilus, and stripping out weather daemons.
+- The multimedia stack is standardized on PipeWire, disabling the legacy PulseAudio daemon. For video, the setup relies entirely on FFmpeg's optimized internal decoders, hardware acceleration (`x264`, `x265`, `vpx`, `aom`), and the industry-reference `dav1d` AV1 decoder. Audio processing is centralized using plugins like `lsp-plugins` and `rnnoise` for neural network noise reduction within EasyEffects.
 
 ## Installation
 
