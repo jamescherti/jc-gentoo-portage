@@ -42,9 +42,6 @@ net-print/cups-filters -foomatic
 # Spell
 */* spell aspell
 
-# Compression
-*/* zlib bzip2 lzma zstd lz4 lzo zip rar
-
 # Flatpak
 */* flatpak
 

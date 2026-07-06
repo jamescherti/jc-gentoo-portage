@@ -47,3 +47,6 @@ sys-kernel/zen-sources symlink
 # built with the native capability to process those instructions. Enabling this
 # flag pulls in dev-libs/isl to handle structural loop geometry transformations.
 sys-devel/gcc graphite
+
+# Compression
+*/* zlib bzip2 lzma zstd lz4 lzo zip rar
