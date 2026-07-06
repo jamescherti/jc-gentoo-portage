@@ -13,8 +13,8 @@
 # - x264 / x265 / vpx / aom: Maximizes modern streaming video playback
 #   compatibility (AVC, HEVC, VP9, AV1) while fully activating GPU's hardware
 #   accelerated video decoding.
-# - opus / vorbis / theora / speex: Ensures structural compatibility with all
-#   modern WebRTC, HTML5 video streaming, and online voice applications.
+# - opus / vorbis: Ensures structural compatibility with all modern WebRTC,
+#   HTML5 video streaming, and online voice applications.
 # - matroska: Explicitly passes instructions to applications to optimize
 #   container structures for .mkv files.
 # - dav1d: The industry reference AV1 software decoder. When hardware decoding
@@ -35,7 +35,15 @@
 # because FFmpeg handles 100% of these formats using its own native, highly
 # optimized internal encoders and decoders.
 # USE="$USE flac faad twolame mp3 mp4 mpeg ogg aac fdk lame"
-*/* gstreamer ffmpeg x264 x265 vpx aom opus speex vorbis theora matroska dav1d a52
+*/* gstreamer ffmpeg x264 x265 vpx aom opus vorbis matroska dav1d a52
+
+# Speex: The Xiph.Org Foundation, the organization that developed Speex,
+# officially obsoleted the codec.
+#
+# Theora: This project is abandoned. It lacks the compression efficiency,
+# resolution support, and hardware acceleration capabilities of modern formats
+# like VP9, AV1, or HEVC.
+*/* -speex -theora
 
 # Multimedia
 */* -jack v4l mtp
