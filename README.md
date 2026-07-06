@@ -6,16 +6,19 @@ The [jc-gentoo-portage](https://github.com/jamescherti/jc-gentoo-portage) reposi
 
 This repository can be used as an inspiration to build a lean and fast Gentoo operating system.
 
-- Core system utilities are heavily optimized. Applications are compiled using `pgo` (Profile-Guided Optimization) and `lto` (Link-Time Optimization).
-- Global flags such as `xs`, `asm`, `orc`, `jit`, `threads`, `kms`, and `native-extensions` ensure applications use hand-optimized assembly routines and multi-core parallelism.
-- Uses `jemalloc` to reduce memory fragmentation.
-- Adds linker flags (`-Wl,--as-needed`, `-Wl,-z,pack-relative-relocs`) shrink binaries, and `-fno-semantic-interposition` is used to accelerate the Python interpreter.
-- Add optimizations for Go and Rust,
-- Network chatter is bounded. The configuration disables upstream telemetry, background analytics reporting, geolocation, cloud provider integrations, and zero-configuration local service scanning like Avahi.
-- The configuration drops smartcard dependencies, and physical optical media (CD/DVD) support to prevent hardware probing utilities from linking against media players.
-- Unnecessary UI layers are masked to prevent dependency bloat. LibreOffice is compiled without MariaDB, Java-based scripting macros, or Bluetooth support. The configuration also trims heavy database indexing hooks and large redundant typography packages for a minimalist graphical environment.
-- The setup features a GTK and Wayland desktop environment (specifically `gnome-base/gnome-light`). It debloats the GNOME shell by pruning heavy file-indexing hooks from `localsearch`, removing Samba and Active Directory integrations (`-samba`, `-ads`, `-acl`) from Nautilus, and stripping out weather daemons.
-- The multimedia stack is standardized on PipeWire, disabling the legacy PulseAudio daemon. For video, the setup relies entirely on FFmpeg's optimized internal decoders, hardware acceleration (`x264`, `x265`, `vpx`, `aom`), and the industry-reference `dav1d` AV1 decoder. Audio processing is centralized using plugins like `lsp-plugins` and `rnnoise` for neural network noise reduction within EasyEffects.
+Features:
+
+- Execution performance is maximized across the system by globally enabling `xs`, `asm`, `orc`, `jit`, and `threads`, forcing packages to use hand-written assembly routines and JIT compilation loops.
+- Links long-running daemons and high-throughput parsing utilities against this alternative `jemalloc` to guarantee flat memory profiles and highly predictable multi-threaded performance during extended uptimes.
+- Telemetry and remote RPC calls are disabled by globally setting `-telemetry`, `-geoclue`, `-geolocation`, `-cloudproviders`, `-google`, and `-gnome-online-accounts`.
+- Rust: Enforce modern instruction sets, applying `target-cpu=native`, `opt-level=3`, `strip=symbols`, `lto=thin`, and `codegen-units=1`.
+- Legacy hardware probing and I/O interfaces are entirely pruned by globally disabling `-cdrom`, `-dvd`, `-dvdr`, `-css`, `-xv`, and `-smartcard`.
+- Remove documentation bloat by globally disabling `-doc`, `-gtk-doc`, and `-handbook`. This explicitly instructs the build system to skip the generation and installation of extraneous HTML manuals, localized help files, and developer references, thereby reducing compilation times and minimizing the final disk footprint.
+- Aggressively optimizes the linker using `-Wl,-O2 -Wl,--sort-common -Wl,--as-needed -Wl,-z,pack-relative-relocs` to compress relocation tables, drop unused dependencies, and group global variables by alignment for faster binary loads.
+- The multimedia stack is exclusively standardized on PipeWire.
+- The GNOME desktop footprint is restricted by masking heavy file indexing (`app-misc/localsearch -pdf -playlist`) and stripping network discovery protocols from file managers (`-samba`, `-ads`, `-acl`).
+- High-load compilation processes are isolated to background resources using `PORTAGE_SCHEDULING_POLICY="idle"`, `PORTAGE_IONICE_COMMAND="ionice -c 3 \${PID}"`, and a custom `notmpfs.conf` to prevent Out of Memory errors on massive packages.
+- Binary packages and man pages are compiled using maximum compression via `BINPKG_COMPRESS_FLAGS_ZSTD="-19 -T0"`, using all CPU threads.
 
 ## Installation
 
