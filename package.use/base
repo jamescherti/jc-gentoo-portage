@@ -7,7 +7,7 @@
 
 # -evdev: Used both in console and X/Wayland
 # ssl: Mandatory for secure web traffic, fetching packages, and encrypted communication.
-*/* -wxwidgets -sdl -sdl2 -evdev ssl alsa nvme apparmor bluetooth lvm bash-completion lm-sensors hddtemp verify-sig cryptsetup
+*/* -wxwidgets -sdl -sdl2 -evdev ssl alsa nvme apparmor bluetooth lvm bash-completion lm-sensors verify-sig cryptsetup
 
 # The symlink flag automatically creates or updates a symbolic link at
 # /usr/src/linux pointing to your current kernel source code.

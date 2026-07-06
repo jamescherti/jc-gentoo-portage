@@ -23,3 +23,6 @@
 # -telemetry Disables upstream metrics tracking and background analytics
 # reporting to maximize network privacy and eliminate data-collection overhead.
 */* -cloudproviders -google -kaccounts -geoclue -geolocation -telemetry
+
+# - gnome-online-accounts: Disabled to prevent unnecessary cloud service bindings.
+*/* -gnome-online-accounts

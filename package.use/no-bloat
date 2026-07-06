@@ -31,11 +31,6 @@
 # systemd )
 net-misc/networkmanager modemmanager
 
-# Unless you use a physical Yubikey or hardware security token plugged into your
-# machine for SSH authentication or disk decryption, disabling smartcard
-# prevents system utilities from building smartcard-reading libraries
-*/* -smartcard
-
 # -xv (XVideo): This is an ancient, legacy X11 hardware video overlay path from
 # the late 1990s. Modern video players render frames using OpenGL, Vulkan, or
 # EGL directly onto the window surface. You do not need XV hooks.
@@ -44,6 +39,3 @@ net-misc/networkmanager modemmanager
 # Enables deduplication (deduplicate) to remove redundant, identical firmware
 # files across different device folders, saving storage.
 sys-kernel/linux-firmware deduplicate
-
-# - gnome-online-accounts: Disabled to prevent unnecessary cloud service bindings.
-*/* -gnome-online-accounts

@@ -8,17 +8,17 @@ This repository can be used as an inspiration to build a lean and fast Gentoo op
 
 Features:
 
-- Execution performance is maximized across the system by globally enabling `xs`, `asm`, `orc`, `jit`, and `threads`, forcing packages to use hand-written assembly routines and JIT compilation loops.
-- Links long-running daemons and high-throughput parsing utilities against this alternative `jemalloc` to guarantee flat memory profiles and highly predictable multi-threaded performance during extended uptimes.
-- Telemetry and remote RPC calls are disabled by globally setting `-telemetry`, `-geoclue`, `-geolocation`, `-cloudproviders`, `-google`, and `-gnome-online-accounts`.
-- Rust: Enforce modern instruction sets, applying `target-cpu=native`, `opt-level=3`, `strip=symbols`, `lto=thin`, and `codegen-units=1`.
-- Legacy hardware probing and I/O interfaces are entirely pruned by globally disabling `-cdrom`, `-dvd`, `-dvdr`, `-css`, `-xv`, and `-smartcard`.
-- Remove documentation bloat by globally disabling `-doc`, `-gtk-doc`, and `-handbook`. This explicitly instructs the build system to skip the generation and installation of extraneous HTML manuals, localized help files, and developer references, thereby reducing compilation times and minimizing the final disk footprint.
-- Aggressively optimizes the linker using `-Wl,-O2 -Wl,--sort-common -Wl,--as-needed -Wl,-z,pack-relative-relocs` to compress relocation tables, drop unused dependencies, and group global variables by alignment for faster binary loads.
-- The multimedia stack is exclusively standardized on PipeWire.
-- The GNOME desktop footprint is restricted by masking heavy file indexing (`app-misc/localsearch -pdf -playlist`) and stripping network discovery protocols from file managers (`-samba`, `-ads`, `-acl`).
-- High-load compilation processes are isolated to background resources using `PORTAGE_SCHEDULING_POLICY="idle"`, `PORTAGE_IONICE_COMMAND="ionice -c 3 \${PID}"`, and a custom `notmpfs.conf` to prevent Out of Memory errors on massive packages.
-- Binary packages and man pages are compiled using maximum compression via `BINPKG_COMPRESS_FLAGS_ZSTD="-19 -T0"`, using all CPU threads.
+- Maximizes execution performance across the system by globally enabling `xs`, `asm`, `orc`, `jit`, and `threads`, forcing packages to use hand-written assembly routines and JIT compilation loops.
+- Disables telemetry and remote RPC calls by globally setting `-telemetry`, `-geoclue`, `-geolocation`, `-cloudproviders`, `-google`, and `-gnome-online-accounts`.
+- Optimizes Rust compiler outputs by enforcing modern instruction sets via `target-cpu=native`, `opt-level=3`, `strip=symbols`, `lto=thin`, and `codegen-units=1`.
+- Links long-running daemons and high-throughput parsing utilities against `jemalloc` to guarantee flat memory profiles and highly predictable multi-threaded performance during extended uptimes.
+- Prunes legacy hardware probing and obsolete I/O interfaces by globally disabling optical media (`-cdrom`, `-dvd`, `-dvdr`, `-css`) and deprecated X11 video rendering (`-xv`).
+- Removes documentation bloat by globally disabling `-doc`, `-gtk-doc`, and `-handbook`. This instructs the build system to skip the generation of extraneous HTML manuals and localized help files, reducing compilation times and the final disk footprint.
+- Optimizes the linker aggressively using `-Wl,-O2 -Wl,--sort-common -Wl,--as-needed -Wl,-z,pack-relative-relocs` to compress relocation tables, drop unused dependencies, and group global variables by alignment for faster binary loads.
+- Standardizes the multimedia stack exclusively on PipeWire while enforcing hardware-accelerated video decoding.
+- Restricts the GNOME desktop footprint by masking heavy file indexing (`app-misc/localsearch -pdf -playlist`) and stripping network discovery protocols from file managers (`-samba`, `-ads`, `-acl`).
+- Isolates high-load compilation processes to background resources using `PORTAGE_SCHEDULING_POLICY="idle"`, `PORTAGE_IONICE_COMMAND="ionice -c 3 \${PID}"`, and a custom `notmpfs.conf` to prevent Out of Memory errors on massive packages.
+- Compiles binary packages and man pages using maximum compression via `BINPKG_COMPRESS_FLAGS_ZSTD="-19 -T0"`, utilizing all CPU threads.
 
 ## Installation
 
@@ -75,7 +75,7 @@ To effectively customize this configuration, you need to understand its layout:
 
 The `package.use/` directory is modular. You should read through the files and remove entries for software you do not intend to install. If you need a feature that is disabled globally in `make.conf` (like `nls` or `bluetooth`), do not enable it globally. Instead, enable it only for the specific package that requires it by creating a new entry in `package.use/`.
 
-### Forcing English
+### Force English
 
 For users who don't need localization, setting `-nls`, `-cjk`, and `-ibus` globally **forces interfaces to English**, which skips the compilation of thousands of unneeded localization files:
 
@@ -109,6 +109,20 @@ File: `/etc/portage/package.use/00my-just-english`
 #
 # cjk: cjk (Chinese, Japanese, Korean), safe to disable globally.
 */* -nls -cjk
+```
+
+### Disable smartcard
+
+File: `/etc/portage/package.use/00my-no-smartcard`
+
+```
+# Disabling smartcard support prevents packages like app-crypt/gnupg and
+# net-misc/openssh from linking against smartcard-reading libraries.
+#
+# Warning: Do not apply this mask if you rely on a physical hardware token (such
+# as a YubiKey or Nitrokey) for SSH authentication, GPG commit signing, or LUKS
+# disk decryption.
+*/* -smartcard
 ```
 
 ### NVIDIA GPU

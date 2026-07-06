@@ -7,7 +7,7 @@
 
 # Enables a minimal desktop-capable build with common system integrations and
 # hardware support.
-*/* -startup-notification X networkmanager fontconfig udev dbus policykit udisks joystick
+*/* -startup-notification X networkmanager fontconfig udev dbus policykit udisks
 
 # Printer and scanner
 */* cups scanner

@@ -11,4 +11,4 @@
 # a physical optical disc drive, keeping CD/DVD reading and CSS decryption
 # routines disabled prevents packages like mpv or ffmpeg from linking against
 # hardware optical probing utilities.
-*/* -cdrom -a52 -cdda -dvd -dvdr -cdr -css
+*/* -cdrom -cdda -dvd -dvdr -cdr -css

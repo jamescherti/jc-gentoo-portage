@@ -25,12 +25,17 @@
 #   the svt-av1 USE flag globally, it is better to enable it selectively via
 #   /etc/portage/package.use/ for tools that specifically require AV1 encoding
 #   capabilities, such as media-video/ffmpeg or media-video/obs-studio.
+# - a52: a52 is the ATSC A/52 standard, also known as Dolby Digital (AC-3).
+#   While it was the standard for physical DVDs, AC-3 audio tracks are still
+#   heavily used in standard .mkv or .mp4 video files. If you disable this
+#   globally, you might find that certain downloaded movie files play video but
+#   output no audio.
 #
 # REMOVED: External legacy codecs like lame, twolame, and fdk are unnecessary
 # because FFmpeg handles 100% of these formats using its own native, highly
 # optimized internal encoders and decoders.
 # USE="$USE flac faad twolame mp3 mp4 mpeg ogg aac fdk lame"
-*/* gstreamer ffmpeg x264 x265 vpx aom opus speex vorbis theora matroska dav1d
+*/* gstreamer ffmpeg x264 x265 vpx aom opus speex vorbis theora matroska dav1d a52
 
 # Multimedia
 */* -jack v4l mtp
