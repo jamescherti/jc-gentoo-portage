@@ -9,6 +9,12 @@
 # hardware support.
 */* -startup-notification X networkmanager fontconfig udev dbus policykit udisks
 
+# harfbuzz: Provides modern text shaping, which is required for correct
+# rendering of code ligatures and complex text layouts.
+#
+# truetype: Enables the rendering of scalable fonts.
+*/* harfbuzz truetype
+
 # Disable the wxWidgets GUI toolkit to avoid compiling unnecessary graphical
 # dependencies.
 */* -wxwidgets
