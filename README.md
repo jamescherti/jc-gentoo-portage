@@ -6,12 +6,15 @@ The [jc-gentoo-portage](https://github.com/jamescherti/jc-gentoo-portage) reposi
 
 This repository can be used as an inspiration to build a lean and fast Gentoo operating system.
 
-- Core system utilities are heavily optimized. Applications are compiled using `pgo` (Profile-Guided Optimization) and `lto` (Link-Time Optimization). Global flags such as `xs`, `asm`, `orc`, `jit`, `threads`, `kms`, and `native-extensions` ensure applications use hand-optimized assembly routines and multi-core parallelism. This portage uses `jemalloc` to reduce memory fragmentation. Furthermore, specific linker flags (`-Wl,--as-needed`, `-Wl,-z,pack-relative-relocs`) shrink binaries, and `-fno-semantic-interposition` is used to accelerate the Python interpreter.
-- Network chatter is bounded. The configuration disables upstream telemetry, background analytics reporting, geolocation (`-geoclue`), cloud provider integrations, and zero-configuration local service scanning like Avahi. It also prevents NetworkManager from leaking IP addresses through periodic background HTTP connectivity checks.
+- Core system utilities are heavily optimized. Applications are compiled using `pgo` (Profile-Guided Optimization) and `lto` (Link-Time Optimization).
+- Global flags such as `xs`, `asm`, `orc`, `jit`, `threads`, `kms`, and `native-extensions` ensure applications use hand-optimized assembly routines and multi-core parallelism.
+- Uses `jemalloc` to reduce memory fragmentation.
+- Adds linker flags (`-Wl,--as-needed`, `-Wl,-z,pack-relative-relocs`) shrink binaries, and `-fno-semantic-interposition` is used to accelerate the Python interpreter.
+- Network chatter is bounded. The configuration disables upstream telemetry, background analytics reporting, geolocation, cloud provider integrations, and zero-configuration local service scanning like Avahi.
 - The multimedia stack is standardized on PipeWire, disabling the legacy PulseAudio daemon. For video, the setup relies entirely on FFmpeg's optimized internal decoders, hardware acceleration (`x264`, `x265`, `vpx`, `aom`), and the industry-reference `dav1d` AV1 decoder. Audio processing is centralized using plugins like `lsp-plugins` and `rnnoise` for neural network noise reduction within EasyEffects.
 - The configuration drops smartcard dependencies, and physical optical media (CD/DVD) support to prevent hardware probing utilities from linking against media players.
 - Unnecessary UI layers are masked to prevent dependency bloat. LibreOffice is compiled without MariaDB, Java-based scripting macros, or Bluetooth support. The configuration also trims heavy database indexing hooks and large redundant typography packages for a minimalist graphical environment.
-- The setup features a GTK and Wayland desktop environment (specifically `gnome-base/gnome-light`). It debloats the GNOME shell by pruning heavy file-indexing hooks from `localsearch`, removing Samba and Active Directory integrations (`-samba`, `-ads`, `-acl`) from Nautilus, and stripping out weather daemons. **(For users interested in installing an alternative desktop environment such as KDE, remove `/etc/portage/package.use/desktop-gnome`.)**
+- The setup features a GTK and Wayland desktop environment (specifically `gnome-base/gnome-light`). It debloats the GNOME shell by pruning heavy file-indexing hooks from `localsearch`, removing Samba and Active Directory integrations (`-samba`, `-ads`, `-acl`) from Nautilus, and stripping out weather daemons.
 
 ## Installation
 
@@ -323,13 +326,31 @@ This parameter is unique to `genkernel`. If the initramfs is built using `sys-ke
 
 Enabling TRIM on an encrypted device exposes disk usage patterns and filesystem layout to an attacker with physical access to the drive. For standard operational profiles, the performance and hardware longevity benefits outweigh this minor metadata leakage.
 
-### Gentoo Linux: Unlocking a LUKS Encrypted LVM Root Partition at Boot Time using a Key File stored on an External USB Drive
+### Using the Ninja Build System
 
-Gentoo can be configured to use a key file stored on an external USB drive to unlock a LUKS encrypted LVM root partition.
+Ninja is a efficient build system that evaluates dependencies rapidly and execute multiple build tasks concurrently. Replacing standard `make` with Ninja provides performance improvements during the compilation phase, particularly for large C and C++ projects.
 
-We will explore in this article the general steps involved in configuring Gentoo to use an external USB drive as a key file to unlock a LUKS encrypted LVM root partition.
+Benefits of using Ninja:
 
-Read: [Gentoo Linux: Unlocking a LUKS Encrypted LVM Root Partition at Boot Time using a Key File stored on an External USB Drive](https://www.jamescherti.com/gentoo-linux-unlock-lvm-root-partition-at-boot-key-file-external-usb-stick/)
+* Faster dependency resolution and startup time.
+* Improved management of parallel build processes.
+* Noticeably reduced compilation times for heavy packages.
+
+To configure Portage to use Ninja globally for CMake-based ebuilds, you must install the package and declare it as the default generator.
+
+Install Ninja:
+
+```sh
+emerge -av dev-build/ninja
+```
+
+Append the generator variable to your local configuration:
+
+```sh
+echo 'CMAKE_MAKEFILE_GENERATOR="ninja"' >> /etc/portage/make-local.conf
+```
+
+This configuration ensures that any package using CMake will use Ninja instead of traditional `make` to process the build.
 
 ## Maintenance
 

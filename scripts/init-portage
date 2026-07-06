@@ -75,6 +75,11 @@ if [[ ! -f "${MAKE_LOCAL_CONF}" ]]; then
       >>"${MAKE_LOCAL_CONF}"
     echo "[ADD] ${MAKE_LOCAL_CONF}:" \
       "MAKEOPTS=\"-j${HALF_PROCESSORS} -l${HALF_PROCESSORS}\""
+
+    echo "NINJAFLAGS=\"\$MAKEOPTS\"" \
+      >>"${MAKE_LOCAL_CONF}"
+    echo "[ADD] ${MAKE_LOCAL_CONF}:" \
+      "NINJAFLAGS=\"\$MAKEOPTS\""
   else
     echo "Warning: The 'nproc' command was not found." >&2
   fi

@@ -8,7 +8,7 @@
 # Enable global GNOME support to ensure packages compile with appropriate
 # desktop environment hooks (e.g., configuration backends, native
 # notifications...).
-*/* -kde -semantic-desktop -qt5 -qt6 wayland gnome
+*/* wayland gnome
 
 # Prune comic book archive formats from the primary document viewer
 app-text/papers -comics
@@ -23,12 +23,6 @@ net-libs/ngtcp2 gnutls
 # layers from the desktop stack
 gnome-base/nautilus -previewer
 gnome-extra/evolution-data-server -weather
-
-# The machine pings an external server every few minutes, leaking your IP
-# address and uptime status to whoever hosts that endpoint. It prevents
-# unnecessary background HTTP requests, keeping your system network traffic
-# strictly bounded to things you explicitly execute.
-net-misc/networkmanager -concheck
 
 # Flameshot dependencies
 # -linguist: No Qt Assistant (documentation viewer).

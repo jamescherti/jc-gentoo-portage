@@ -5,8 +5,6 @@
 # Distributed under terms of the MIT license.
 #
 
-# Gentoo Optimizations
-
 # The combination of xs, asm, orc, jit, threads, and kms represents a
 # performance-oriented configuration that maximizes hardware utilization and
 # system responsiveness. The asm, orc, and jit flags empower software to use
@@ -16,19 +14,6 @@
 # parallelism and flicker-free, high-resolution graphics output via the kernel's
 # display manager.
 */* xs asm orc jit threads kms
-
-# native-extensions: This flag influences how certain interpreted language
-# packages compile performance-sensitive subroutines into native binary code.
-*/* native-extensions
-
-# Enable Link Time Optimization (LTO) and Profile-Guided Optimization (PGO).
-#
-# LTO allows the compiler to perform whole-program optimizations during linking,
-# while PGO uses runtime profiling data to guide optimizations during a
-# subsequent build. These optimizations can improve performance and reduce
-# binary size, but they also increase build time, memory usage, and may expose
-# package-specific build issues.
-*/* lto pgo
 
 # Unlike the standard glibc malloc, jemalloc significantly reduces memory
 # fragmentation and lock contention in heavily multithreaded applications and
@@ -41,3 +26,45 @@
 # The GNU Multiple Precision Arithmetic Library (dev-libs/gmp) is extensively
 # optimized for arbitrary-precision arithmetic.
 */* gmp
+
+# native-extensions: This flag influences how certain interpreted language
+# packages compile performance-sensitive subroutines into native binary code.
+*/* native-extensions
+
+# Enable Link Time Optimization (LTO) and Profile-Guided Optimization (PGO).
+#
+# LTO allows the compiler to perform whole-program optimizations during linking,
+# while PGO uses runtime profiling data to guide optimizations during a
+# subsequent build. These optimizations can improve performance and reduce
+# binary size, but they also increase build time, memory usage, and may expose
+# package-specific build issues.
+sys-devel/gcc lto pgo
+
+dev-lang/rust lto
+
+app-arch/xz-utils pgo
+app-shells/bash pgo
+dev-lang/python pgo
+media-libs/svt-av1 pgo
+sys-devel/binutils pgo
+
+# mold: Link against mimalloc (Microsoft Research's mimalloc allocator).
+#
+# Benefits:
+# - Maximizes multi-threaded linking speed by replacing standard glibc malloc.
+#   Since mold is designed to process object files in parallel across all CPU
+#   cores, standard global allocation locks create a severe performance
+#   bottleneck. mimalloc uses thread-local heaps to eliminate this contention.
+# - Improves CPU cache locality by grouping allocations strictly by size class
+#   inside distinct memory pages, speeding up symbol resolution passes.
+# - Minimizes internal memory fragmentation during rapid, short-lived allocation
+#   cycles characteristic of large toolchain link phases.
+#
+# Drawbacks:
+# - Results in a larger virtual memory footprint (VSIZE) because mimalloc
+#   pre-allocates broad virtual address regions from the Linux kernel upfront.
+# - Yields diminishing returns on processors with low core counts or thread-
+#   constrained configurations where allocator contention is not a major factor.
+# - Offers fewer native diagnostics and profiling hooks compared to jemalloc,
+#   reducing visibility during deep toolchain troubleshooting.
+sys-devel/mold mimalloc
