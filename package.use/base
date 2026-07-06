@@ -37,11 +37,6 @@
 # communication.
 */* -sdl -sdl2 -evdev lvm cryptsetup ssl nvme bluetooth bash-completion lm-sensors verify-sig
 
-# TODO move apparmor to README
-# apparmor: Enables Mandatory Access Control (MAC) security profiles via
-# AppArmor.
-*/* apparmor
-
 # The symlink flag automatically creates or updates a symbolic link at
 # /usr/src/linux pointing to your current kernel source code.
 sys-kernel/gentoo-sources symlink
