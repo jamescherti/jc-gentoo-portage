@@ -83,16 +83,6 @@ if [[ ! -f "${MAKE_LOCAL_CONF}" ]]; then
   else
     echo "Warning: The 'nproc' command was not found." >&2
   fi
-
-  # TODO
-  # GOAMD64_LEVEL=$(detect_goamd64)
-  # if [[ -n "${GOAMD64_LEVEL}" ]]; then
-  #   echo "GOAMD64=\"${GOAMD64_LEVEL}\"" >>"${MAKE_LOCAL_CONF}"
-  #   echo "[ADD] ${MAKE_LOCAL_CONF}:" \
-  #     "GOAMD64=\"${GOAMD64_LEVEL}\""
-  # else
-  #   echo "[IGNORE] NOT ADDING GOAMD64 TO ${MAKE_LOCAL_CONF}"
-  # fi
 else
   echo "[IGNORE] ${MAKE_LOCAL_CONF}"
 fi
