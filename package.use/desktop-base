@@ -21,6 +21,22 @@ net-print/cups-meta -foomatic
 net-print/cups-filters -foomatic
 
 # Ensures applications can use hardware-accelerated rendering
+#
+# opengl: This provides the standard desktop graphics API. Almost all 3D
+# applications, terminal emulators with GPU acceleration, and desktop
+# compositors require it.
+#
+# gles2: This is the OpenGL ES API. While originally designed for embedded
+# systems, modern desktop software like web browsers (for WebGL support), media
+# players, and GUI toolkits heavily rely on it for efficient rendering.
+#
+# egl: This acts as the interface between the rendering APIs (like OpenGL) and
+# the underlying windowing system. It is required if you intend to run Wayland,
+# and it heavily improves modern X11 setups.
+#
+# vulkan: This is the modern, low-overhead graphics and compute API. It provides
+# direct access to the GPU, offering high performance and hardware acceleration
+# for gaming, rendering engines, and modern window managers.
 */* opengl gles2 egl vulkan
 
 # Spell
