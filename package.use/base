@@ -17,3 +17,9 @@ sys-kernel/zen-sources symlink
 # Disable legacy translation databases for modern IPP printers
 net-print/cups-meta -foomatic
 net-print/cups-filters -foomatic
+
+# Allow gcc to use polyhedral loop optimizations (such as -floop-nest-optimize)
+# to speed up mathematical operations across your system packages, GCC must be
+# built with the native capability to process those instructions. Enabling this
+# flag pulls in dev-libs/isl to handle structural loop geometry transformations.
+sys-devel/gcc graphite
