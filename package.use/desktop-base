@@ -20,8 +20,8 @@
 net-print/cups-meta -foomatic
 net-print/cups-filters -foomatic
 
-# Graphics
-*/* opengl gles2 egl
+# Ensures applications can use hardware-accelerated rendering
+*/* opengl gles2 egl vulkan
 
 # Spell
 */* spell aspell
