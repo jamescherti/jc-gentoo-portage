@@ -7,11 +7,7 @@
 
 # Remove bloat
 # -zeroconf disables avahi.
-#
-# -handbook Some packages, particularly those from the KDE or legacy GNOME
-# ecosystems, have documentation translated into dozens of languages. Disabling
-# this saves disk space and reduces documentation build time.
-*/* -debug -handbook -gtk-doc -doc -test -examples -accessibility -perl -firewalld -ppp -modemmanager -branding
+*/* -debug -test -accessibility -perl -firewalld -ppp -modemmanager -branding
 
 # Fix modemmanager
 # !!! The ebuild selected to satisfy
