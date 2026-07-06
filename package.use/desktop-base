@@ -9,8 +9,16 @@
 # hardware support.
 */* -startup-notification X networkmanager fontconfig udev dbus policykit udisks
 
+# Disable the wxWidgets GUI toolkit to avoid compiling unnecessary graphical
+# dependencies.
+*/* -wxwidgets
+
 # Printer and scanner
 */* cups scanner
+
+# Disable legacy translation databases for modern IPP printers
+net-print/cups-meta -foomatic
+net-print/cups-filters -foomatic
 
 # Graphics
 */* opengl gles2 egl

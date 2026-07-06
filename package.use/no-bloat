@@ -6,7 +6,6 @@
 #
 
 # Remove bloat
-# -zeroconf disables avahi.
 */* -debug -test -accessibility -perl -firewalld -ppp -modemmanager -branding
 
 # Fix modemmanager

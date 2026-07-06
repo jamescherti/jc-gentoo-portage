@@ -5,18 +5,47 @@
 # Distributed under terms of the MIT license.
 #
 
-# -evdev: Used both in console and X/Wayland
-# ssl: Mandatory for secure web traffic, fetching packages, and encrypted communication.
-*/* -wxwidgets -sdl -sdl2 -evdev ssl alsa nvme apparmor bluetooth lvm bash-completion lm-sensors verify-sig cryptsetup
+# -sdl: Disables Simple DirectMedia Layer v1, keeping the system free of
+# unwanted gaming/multimedia libraries.
+#
+# -sdl2: Disables Simple DirectMedia Layer v2 for the same reason.
+#
+# -evdev: Disables the evdev input driver. Used both in console and X/Wayland
+# (often disabled in favor of libinput).
+#
+# ssl: Mandatory for secure web traffic, fetching packages, and encrypted
+# communication.
+#
+# nvme: Enables tooling and support for NVM Express fast storage devices.
+#
+# bluetooth: Enables the Bluetooth hardware and protocol stack.
+#
+# lvm: Enables Logical Volume Manager support for flexible disk partition
+# management.
+#
+# bash-completion: Adds programmable tab-completion support for the Bash shell.
+#
+# lm-sensors: Enables hardware health monitoring (temperatures, fan speeds,
+# voltages).
+#
+# verify-sig: Instructs Portage to verify upstream PGP cryptographic signatures
+# of downloaded source tarballs.
+#
+# cryptsetup: Enables dm-crypt/LUKS full-disk encryption management support.
+#
+# ssl: Mandatory for secure web traffic, fetching packages, and encrypted
+# communication.
+*/* -sdl -sdl2 -evdev lvm cryptsetup ssl nvme bluetooth bash-completion lm-sensors verify-sig
+
+# TODO move apparmor to README
+# apparmor: Enables Mandatory Access Control (MAC) security profiles via
+# AppArmor.
+*/* apparmor
 
 # The symlink flag automatically creates or updates a symbolic link at
 # /usr/src/linux pointing to your current kernel source code.
 sys-kernel/gentoo-sources symlink
 sys-kernel/zen-sources symlink
-
-# Disable legacy translation databases for modern IPP printers
-net-print/cups-meta -foomatic
-net-print/cups-filters -foomatic
 
 # Allow gcc to use polyhedral loop optimizations (such as -floop-nest-optimize)
 # to speed up mathematical operations across your system packages, GCC must be

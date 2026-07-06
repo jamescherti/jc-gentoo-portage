@@ -9,6 +9,9 @@
 # --------------
 # URL: https://www.gentoo.org/support/news-items/2022-07-29-pipewire-sound-server.html
 
+# alsa: Enables Advanced Linux Sound Architecture for base-level audio support.
+*/* alsa
+
 # Pipewire
 # pipewire-alsa: Install ALSA plugin, similar to media-plugins/alsa-plugins's
 media-video/pipewire sound-server pipewire-alsa

@@ -5,6 +5,7 @@
 # Distributed under terms of the MIT license.
 #
 
+# -zeroconf disables avahi.
 */* -zeroconf
 
 # Fix -zeroconf issue. An error occurs because the escl driver (Apple AirPrint /
