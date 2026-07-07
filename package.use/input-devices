@@ -5,5 +5,12 @@
 # Distributed under terms of the MIT license.
 #
 
-# Input devices
-*/* INPUT_DEVICES: -* libinput joystick
+# Modern setup: libinput handles X.Org input devices such as keyboards, mice,
+# and touchpads. Game controllers are exposed by the Linux kernel through the
+# evdev input subsystem and are accessed directly by games and libraries such as
+# SDL, so the X.Org 'joystick' driver is unnecessary.
+#
+# Likewise, there is no need to include keyboard, mouse, or synaptics in
+# INPUT_DEVICES. These are legacy X.Org drivers. libinput is the standard X.Org
+# input driver and replaces them for modern systems.
+*/* INPUT_DEVICES: -* libinput

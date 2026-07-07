@@ -7,7 +7,7 @@
 
 # Enables a minimal desktop-capable build with common system integrations and
 # hardware support.
-*/* -startup-notification X networkmanager fontconfig policykit udisks bluetooth
+*/* -startup-notification X networkmanager fontconfig policykit udisks bluetooth evdev
 
 # harfbuzz: Provides modern text shaping, which is required for correct
 # rendering of code ligatures and complex text layouts.
