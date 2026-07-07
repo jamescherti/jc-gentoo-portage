@@ -5,14 +5,6 @@
 # Distributed under terms of the MIT license.
 #
 
-# -sdl: Disables Simple DirectMedia Layer v1, keeping the system free of
-# unwanted gaming/multimedia libraries.
-#
-# -sdl2: Disables Simple DirectMedia Layer v2 for the same reason.
-#
-# -evdev: Disables the evdev input driver. Used both in console and X/Wayland
-# (often disabled in favor of libinput).
-#
 # ssl: Mandatory for secure web traffic, fetching packages, and encrypted
 # communication.
 #
@@ -35,7 +27,7 @@
 #
 # ssl: Mandatory for secure web traffic, fetching packages, and encrypted
 # communication.
-*/* -sdl -sdl2 -evdev lvm cryptsetup ssl nvme bluetooth bash-completion lm-sensors verify-sig
+*/* lvm cryptsetup ssl nvme bash-completion lm-sensors verify-sig
 
 # udev: Handles dynamic device management. Your system will not map hardware
 # properly without it.
