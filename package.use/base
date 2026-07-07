@@ -37,6 +37,13 @@
 # communication.
 */* -sdl -sdl2 -evdev lvm cryptsetup ssl nvme bluetooth bash-completion lm-sensors verify-sig
 
+# udev: Handles dynamic device management. Your system will not map hardware
+# properly without it.
+#
+# dbus: Required for inter-process communication. Nearly all modern Linux
+# subsystems expect it.
+*/* udev dbus
+
 # The symlink flag automatically creates or updates a symbolic link at
 # /usr/src/linux pointing to your current kernel source code.
 sys-kernel/gentoo-sources symlink
