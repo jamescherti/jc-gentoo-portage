@@ -38,6 +38,7 @@ games-util/game-device-udev-rules ~amd64
 # Ruff
 dev-python/python-lsp-ruff ~amd64
 dev-python/lsprotocol ~amd64
+dev-python/schema ~amd64
 
 # Scanner
 media-gfx/brscan4 ~amd64
