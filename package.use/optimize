@@ -68,3 +68,20 @@ sys-devel/binutils pgo
 # - Offers fewer native diagnostics and profiling hooks compared to jemalloc,
 #   reducing visibility during deep toolchain troubleshooting.
 sys-devel/mold mimalloc
+
+# Spidermonkey is the core JavaScript engine driving the GNOME desktop
+# environment shell via GJS. Upstream Mozilla developers optimize this engine
+# heavily for the LLVM ecosystem. Compiling it with Clang rather than GCC
+# provides faster execution layouts, resulting in snappier window animations and
+# UI responses.
+dev-lang/spidermonkey clang
+
+# TODO
+# The Mozilla build system is optimized for LLVM's ThinLTO (Link-Time
+# Optimization) and PGO (Profile-Guided Optimization). Compiling these with
+# Clang ensures the compiler leverages the exact memory layouts,
+# devirtualization passes, and auto-vectorization strategies the developers
+# target. Using GCC here often results in slightly slower JavaScript execution
+# and page rendering.
+# www-client/firefox clang
+# mail-client/thunderbird clang
