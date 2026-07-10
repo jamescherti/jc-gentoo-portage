@@ -22,14 +22,3 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 #
-
-# dev-python/rfc3161-client:0
-#
-# (dev-python/rfc3161-client-1.0.6:0/0::gentoo, ebuild scheduled for merge)
-# USE="-debug -test" ABI_X86="(64)" PYTHON_TARGETS="python3_14 -python3_12
-# -python3_13 (-python3_15)" conflicts with
-#
-# ~dev-python/rfc3161-client-1.0.3[python_targets_python3_14(-)] required by
-# (dev-python/sigstore-4.3.0:0/0::gentoo, installed) USE="-test" ABI_X86="(64)"
-# PYTHON_TARGETS="python3_14 -python3_12 -python3_13"
->=dev-python/rfc3161-client-1.0.4
