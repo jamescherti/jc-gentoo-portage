@@ -13,9 +13,6 @@
 # Prune comic book archive formats from the primary document viewer
 app-text/papers -comics
 
-# Strip Indexing and Cache Bloat (Minimalist Tuning)
-app-misc/localsearch -jpeg -tiff -pdf -playlist -iso -cue -exif
-
 # Required by net-fs/samba to support modern encrypted network transport states
 net-libs/ngtcp2 gnutls
 
@@ -39,9 +36,6 @@ dev-libs/boost nls
 
 # libreoffice TODO: Strip all database hooks from LibreOffice's semantic text stack.
 # dev-libs/redland -mysql -berkdb -sqlite
-
-# libreoffice TODO Force-strip the heavy database client layers
-# media-gfx/fontforge -tiff
 
 # I am running a minimal GTK-based desktop environment (gnome-light) and use
 # tools like GIMP, keeping qt6 enabled on matplotlib will force Portage to pull
