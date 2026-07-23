@@ -45,6 +45,3 @@ media-gfx/brscan4 ~amd64
 
 # brother-overlay
 net-print/brother-genml1-bin ~amd64
-
-# ocrmypdf
-app-text/OCRmyPDF ~amd64
