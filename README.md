@@ -11,7 +11,7 @@ Features:
 - Maximizes execution performance across the system by globally enabling `xs`, `asm`, `orc`, `jit`, and `threads`, forcing packages to use hand-written assembly routines and JIT compilation loops.
 - Disables telemetry and remote RPC calls by globally setting `-telemetry`, `-geoclue`, `-geolocation`, `-cloudproviders`, `-google`, and `-gnome-online-accounts`.
 - Optimizes Rust compiler outputs by enforcing modern instruction sets via `target-cpu=native`, `opt-level=3`, and `strip=symbols`.
-- Links long-running daemons and high-throughput parsing utilities against `jemalloc` to guarantee flat memory profiles and highly predictable multi-threaded performance during extended uptimes.
+- Links long-running daemons and high-throughput parsing utilities against `jemalloc` to guarantee flat memory profiles and predictable multi-threaded performance during extended uptimes.
 - Prunes legacy hardware probing and obsolete I/O interfaces by globally disabling optical media (`-cdrom`, `-dvd`, `-dvdr`, `-css`) and deprecated X11 video rendering (`-xv`).
 - Removes documentation bloat by globally disabling `-doc`, `-gtk-doc`, and `-handbook`. This instructs the build system to skip the generation of extraneous HTML manuals and localized help files, reducing compilation times and the final disk footprint.
 - Optimizes the linker aggressively using `-Wl,-O2 -Wl,--sort-common -Wl,--as-needed -Wl,-z,pack-relative-relocs` to compress relocation tables, drop unused dependencies, and group global variables by alignment for faster binary loads.
