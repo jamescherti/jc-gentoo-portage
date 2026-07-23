@@ -64,3 +64,8 @@ sys-apps/lshw -gtk
 net-firewall/firewalld -gui
 media-gfx/img2pdf -gui
 net-misc/unison -gtk
+
+# Enforce pure Wayland execution by disabling native X11 protocol support and
+# XWayland fallback, reducing the overall dependency footprint. This also
+# disables the standalone vte app, which is redundant with gnome-console.
+gui-libs/vte -X
