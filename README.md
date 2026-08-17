@@ -40,9 +40,9 @@ emerge -av app-portage/cpuid2cpuflags app-arch/zstd dev-vcs/git
 
 ### Step 3: Clone the Repository
 
-   ```sh
-   git clone https://github.com/jamescherti/jc-gentoo-portage /etc/portage
-   ```
+```sh
+git clone https://github.com/jamescherti/jc-gentoo-portage /etc/portage
+```
 
 ### Step 4: Run
 
@@ -383,15 +383,15 @@ This configuration ensures that any package using CMake will use Ninja instead o
 
 After applying this configuration or making your own modifications, you must instruct Portage to evaluate the dependency tree and apply the changes to your live system.
 
-1. Apply the new USE flags and update the system:
-   ```bash
-   emerge --ask --verbose --update --deep --newuse @world
-   ```
+Apply the new USE flags and update the system:
+```bash
+emerge --ask --verbose --update --deep --newuse @world
+```
 
-2. Remove orphaned dependencies that are no longer required:
-   ```bash
-   emerge --ask --depclean
-   ```
+Then remove orphaned dependencies that are no longer required:
+```bash
+emerge --ask --depclean
+```
 
 ## License
 
