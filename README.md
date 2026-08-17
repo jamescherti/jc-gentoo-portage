@@ -44,7 +44,7 @@ emerge -av app-portage/cpuid2cpuflags app-arch/zstd dev-vcs/git
 git clone https://github.com/jamescherti/jc-gentoo-portage /etc/portage
 ```
 
-### Step 4: Run
+### Step 4: Run /etc/portage/scripts/init-portage
 
 ```sh
 /etc/portage/scripts/init-portage
