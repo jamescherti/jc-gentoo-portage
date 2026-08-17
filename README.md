@@ -75,10 +75,10 @@ Begin customizing `/etc/portage` to fit your specific requirements and install p
 
 To effectively customize this configuration, you need to understand its layout:
 
-* [make.conf](https://github.com/jamescherti/jc-gentoo-portage/blob/main/make.conf): The primary configuration file. It contains global compiler flags (`CFLAGS`, `CXXFLAGS`), `MAKEOPTS`, global `USE` flags, and `FEATURES`.
-* [package.use/](https://github.com/jamescherti/jc-gentoo-portage/tree/main/package.use): A directory containing modular files that define USE flags on a per-package basis. Files are categorized logically (e.g., `gnome`, `sound-server`, `optimize`).
-* [package.accept_keywords/](https://github.com/jamescherti/jc-gentoo-portage/tree/main/package.accept_keywords): Allows the installation of specific testing or unstable packages on a stable system.
-* [package.mask/](https://github.com/jamescherti/jc-gentoo-portage/tree/main/package.mask) and [package.unmask/](https://github.com/jamescherti/jc-gentoo-portage/blob/main/package.unmask): Used to block or allow specific package versions.
+- [make.conf](https://github.com/jamescherti/jc-gentoo-portage/blob/main/make.conf): The primary configuration file. It contains global compiler flags (`CFLAGS`, `CXXFLAGS`), `MAKEOPTS`, global `USE` flags, and `FEATURES`.
+- [package.use/](https://github.com/jamescherti/jc-gentoo-portage/tree/main/package.use): A directory containing modular files that define USE flags on a per-package basis. Files are categorized logically (e.g., `gnome`, `sound-server`, `optimize`).
+- [package.accept_keywords/](https://github.com/jamescherti/jc-gentoo-portage/tree/main/package.accept_keywords): Allows the installation of specific testing or unstable packages on a stable system.
+- [package.mask/](https://github.com/jamescherti/jc-gentoo-portage/tree/main/package.mask) and [package.unmask/](https://github.com/jamescherti/jc-gentoo-portage/blob/main/package.unmask): Used to block or allow specific package versions.
 
 ## Customizing USE Flags (package.use)
 
@@ -274,10 +274,10 @@ While C and C++ compiler optimizations are managed via `CFLAGS` and `CXXFLAGS` (
 
 To determine the correct target level for a specific hardware setup, processor capabilities must be inspected. CPU flags can be checked by running `grep -m 1 '^flags' /proc/cpuinfo` and matching them against the following levels:
 
-* `v1`: The baseline x86-64 architecture. This is appropriate for distributing compiled binaries to unknown hardware or for processors older than 2008.
-* `v2`: Requires `popcnt` and `sse4_2`. This is intended for older processors released around 2008 to 2013, such as Intel Nehalem or AMD Jaguar.
-* `v3`: Requires `avx2`. This is intended for modern processors released after 2014, such as Intel Haswell or AMD Excavator.
-* `v4`: Requires `avx512f`. This is intended for the latest enterprise or high-end desktop processors, such as Intel Skylake-X or AMD Zen 4.
+- `v1`: The baseline x86-64 architecture. This is appropriate for distributing compiled binaries to unknown hardware or for processors older than 2008.
+- `v2`: Requires `popcnt` and `sse4_2`. This is intended for older processors released around 2008 to 2013, such as Intel Nehalem or AMD Jaguar.
+- `v3`: Requires `avx2`. This is intended for modern processors released after 2014, such as Intel Haswell or AMD Excavator.
+- `v4`: Requires `avx512f`. This is intended for the latest enterprise or high-end desktop processors, such as Intel Skylake-X or AMD Zen 4.
 
 Once the highest supported level is identified, the variable can be appended to the local configuration:
 
@@ -359,9 +359,9 @@ Ninja is a efficient build system that evaluates dependencies rapidly and execut
 
 Benefits of using Ninja:
 
-* Faster dependency resolution and startup time.
-* Improved management of parallel build processes.
-* Noticeably reduced compilation times for heavy packages.
+- Faster dependency resolution and startup time.
+- Improved management of parallel build processes.
+- Noticeably reduced compilation times for heavy packages.
 
 To configure Portage to use Ninja globally for CMake-based ebuilds, you must install the package and declare it as the default generator.
 
