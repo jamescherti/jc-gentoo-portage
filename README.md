@@ -407,9 +407,10 @@ This configuration ensures that any package using CMake will use Ninja instead o
 
 ## Maintenance
 
-After applying this configuration or making your own modifications, you must instruct Portage to evaluate the dependency tree and apply the changes to your live system.
+### Apply the new USE flags and update the system:
 
-Apply the new USE flags and update the system:
+After applying this configuration or making your own modifications, you need to make Portage evaluate the dependency tree and apply the changes to your live system.
+
 ```bash
 emerge --ask --verbose --update --deep --newuse @world
 ```
@@ -418,6 +419,24 @@ Then remove orphaned dependencies that are no longer required:
 ```bash
 emerge --ask --depclean
 ```
+
+## Kernel cleanup with eclean-kernel
+
+The `/boot` partition and `/lib/modules/` directory accumulate obsolete files with every kernel update. The `eclean-kernel` utility safely identifies and removes stale kernel binaries, initramfs images, System.map files, and out-of-tree module directories.
+
+Install the package:
+
+```bash
+emerge --ask --verbose app-admin/eclean-kernel
+```
+
+Execute the automated cleanup:
+
+```bash
+eclean-kernel -a
+```
+
+Using the `-a` (auto) flag causes the utility to remove all installed kernels except the currently running kernel and the newest compiled kernel. This guarantees a safe fallback option in the bootloader while automatically reclaiming storage space without requiring manual file deletion.
 
 ## License
 
