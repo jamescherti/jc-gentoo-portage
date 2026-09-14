@@ -299,6 +299,8 @@ echo 'FEATURES="$FEATURES buildpkg"' >> /etc/portage/make-local.conf
 
 ### Install the latest testing kernel
 
+#### 1. Unmask the testing kernel packages
+
 Unmask the testing versions (`~amd64`) of the Gentoo distribution kernels. This allows Portage to look past the stable tree and fetch the latest upstream kernel updates.
 
 First, edit `/etc/portage/package.accept_keywords/00my-latest-gentoo-kernel` and add the following lines to accept the testing keywords:
@@ -308,6 +310,18 @@ sys-kernel/gentoo-kernel-bin ~amd64
 sys-kernel/gentoo-kernel ~amd64
 virtual/dist-kernel ~amd64
 ```
+
+#### 2. Unmask the NVIDIA driver (NVIDIA users only)
+
+When tracking testing kernels (`sys-kernel/gentoo-kernel` or `sys-kernel/gentoo-kernel-bin` under `~amd64`), unmask `x11-drivers/nvidia-drivers` under the same keyword. Upstream kernel updates frequently break out-of-tree module APIs; stable driver builds will lag behind these changes and fail to compile. Keeping driver and kernel keywords in sync ensures Portage pulls releases containing the required upstream API fixes.
+
+Edit `/etc/portage/package.accept_keywords/00my-latest-gentoo-kernel` and add the following line:
+
+```text
+x11-drivers/nvidia-drivers ~amd64
+```
+
+#### Rebuild and select the new kernel
 
 Next, run your standard package upgrade command to pull in the new kernel version, and use your system's kernel selection utility to set the newly installed kernel as the default.
 
