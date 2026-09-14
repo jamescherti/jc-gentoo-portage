@@ -321,12 +321,18 @@ Edit `/etc/portage/package.accept_keywords/00my-latest-gentoo-kernel` and add th
 x11-drivers/nvidia-drivers ~amd64
 ```
 
+Once unmasked, update the driver package. This command fetches the testing release and compiles the kernel module against the headers of the currently active kernel symlink:
+
+```text
+emerge --ask --verbose --oneshot x11-drivers/nvidia-drivers
+```
+
 #### Rebuild and select the new kernel
 
 Next, run your standard package upgrade command to pull in the new kernel version, and use your system's kernel selection utility to set the newly installed kernel as the default.
 
 Then run:
-```
+```text
 emerge --ask --with-bdeps=y --update --deep --changed-use @world
 ```
 
