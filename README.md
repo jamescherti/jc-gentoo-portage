@@ -353,17 +353,23 @@ tmpfs    /var/tmp/portage     tmpfs     size=16G,uid=portage,gid=portage,mode=77
 
 ### Storage Optimization & Encryption (LUKS / SSD)
 
-For systems utilizing an encrypted root filesystem on solid-state storage (SSD/NVMe), specialized kernel parameters are required to maintain storage performance.
+By default, dm-crypt/LUKS containers block TRIM requests for security reasons, which can degrade SSD performance and longevity over time. For systems using an encrypted root filesystem on solid-state storage (SSD/NVMe), kernel parameters are required to maintain storage performance.
 
-By default, dm-crypt/LUKS containers block TRIM requests for security reasons, which can degrade SSD performance and longevity over time. If `sys-kernel/genkernel` is used to manage the initramfs, append the following parameter to the bootloader kernel command line (e.g., in `grub.cfg` or `refind.conf`):
+#### Dracut
+
+If `sys-kernel/dracut` is used to manage the initramfs, discard support must be explicitly enabled. For Dracut setups using the systemd module, this can be done by appending the `rd.luks.options=discard` parameter to the bootloader kernel command line (e.g., the `/etc/kernel/cmdline` file for `sys-kernel/gentoo-kernel` users). For Dracut environments relying on the native crypt module instead of systemd, the `rd.luks.allow-discards` parameter must be used. These parameters can also be specified within standard Dracut configuration files.
+
+These parameters cause the Dracut initramfs to open the LUKS volume with discard operations permitted. It allows the root filesystem to pass discard/TRIM commands through the encryption layer down to the underlying physical storage controller. While enabling TRIM on an encrypted device exposes disk usage patterns and filesystem layout to an attacker with physical access to the drive, the performance and hardware longevity benefits outweigh this leakage for standard operational profiles.
+
+#### Genkernel
+
+By default, dm-crypt/LUKS containers block TRIM requests for security reasons, which can degrade SSD performance and longevity over time. If `sys-kernel/genkernel` is used to manage the initramfs, append the following parameter to the bootloader kernel command line.
 
 ```
 root_trim=yes
 ```
 
 This parameter instructs the initramfs script to pass the `--allow-discards` option to `cryptsetup` during the initial phase of the boot sequence. This allows the root filesystem to successfully pass discard/TRIM commands through the encryption layer down to the underlying physical controller.
-
-This parameter is unique to `genkernel`. If the initramfs is built using `sys-kernel/dracut`, this flag will be ignored; standard Dracut configuration or the `rd.luks.options=discard` kernel parameter must be used instead.
 
 Enabling TRIM on an encrypted device exposes disk usage patterns and filesystem layout to an attacker with physical access to the drive. For standard operational profiles, the performance and hardware longevity benefits outweigh this minor metadata leakage.
 
