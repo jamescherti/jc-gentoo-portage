@@ -287,6 +287,21 @@ echo 'GOAMD64="v3"' >> /etc/portage/make-local.conf
 
 Explicitly declaring `GOAMD64="v3"` in `/etc/portage/make-local.conf` ensures Portage applies hardware-specific optimizations to all compiled Go binaries. If this variable is omitted, the Go compiler defaults to `v1`, generating universally compatible but unoptimized code. A higher tier should only be set if the target processor explicitly supports the required instruction sets.
 
+### Compress with zstd
+
+To reduce the size of binary packages and installed documentation, zstd compression can be configured with aggressive compression settings in `/etc/portage/make-local.conf`:
+
+```sh
+# BINPKG_COMPRESS_FLAGS_ZSTD flags:
+# * -T0 (already the default but adding here so it's not lost)
+# * -22: maximum compression level
+# * --ultra: work harder
+BINPKG_COMPRESS_FLAGS_ZSTD="-T0 -22 --ultra"
+PORTAGE_COMPRESS_FLAGS="-T0 -22 --ultra"
+```
+
+`BINPKG_COMPRESS_FLAGS_ZSTD` applies these options to zstd compression of binary packages. `PORTAGE_COMPRESS` selects the compressor used for documentation, while `PORTAGE_COMPRESS_FLAGS` supplies its compression options. Using `-T0` allows zstd to use all available CPU threads. `--ultra -22` enables zstd's highest compression level, which can substantially increase CPU time and memory usage compared with lower compression levels.
+
 ### FEATURES: buildpkg
 
 If you manage multiple identical or similar Gentoo machines, use `FEATURES="buildpkg"` on your fastest machine to compile binaries once, then distribute them to your other machines using `emerge --usepkg`.
