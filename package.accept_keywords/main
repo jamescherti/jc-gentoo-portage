@@ -45,3 +45,7 @@ media-gfx/brscan4 ~amd64
 
 # brother-overlay
 net-print/brother-genml1-bin ~amd64
+
+# uutils
+sys-apps/uutils-findutils ~amd64
+sys-apps/uutils-coreutils ~amd64
