@@ -68,3 +68,7 @@ net-misc/unison -gtk
 # Enforce pure Wayland execution by disabling native X11 protocol support and
 # XWayland fallback, reducing the overall dependency footprint.
 gui-libs/vte -X
+
+# It links feh against libmagic, allowing the application to identify image
+# formats based on file content rather than file extensions.
+media-gfx/feh magic
