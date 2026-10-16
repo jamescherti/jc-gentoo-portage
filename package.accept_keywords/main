@@ -49,3 +49,6 @@ net-print/brother-genml1-bin ~amd64
 # uutils
 sys-apps/uutils-findutils ~amd64
 sys-apps/uutils-coreutils ~amd64
+
+# Motley
+dev-python/python-lsp-mypy ~amd64
