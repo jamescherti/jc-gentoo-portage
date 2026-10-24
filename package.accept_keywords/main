@@ -52,3 +52,6 @@ sys-apps/uutils-coreutils ~amd64
 
 # Motley
 dev-python/python-lsp-mypy ~amd64
+
+# Zeal
+app-text/zeal ~amd64
