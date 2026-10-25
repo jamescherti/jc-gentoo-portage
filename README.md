@@ -3,6 +3,8 @@
 - Author: James Cherti <[https://www.jamescherti.com/](https://www.jamescherti.com/)>
 - License: MIT
 
+---
+
 <img src="https://www.jamescherti.com/wp-content/uploads/2023/04/gentoo-linux-icon-1.png" align="right" />
 
 The [jc-gentoo-portage](https://github.com/jamescherti/jc-gentoo-portage) repository houses an opinionated, performance-oriented Gentoo Portage (`/etc/portage`) configuration.
