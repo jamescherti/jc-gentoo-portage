@@ -49,3 +49,7 @@ sys-devel/gcc graphite
 
 # Compression
 */* zlib bzip2 lzma zstd lz4 lzo zip rar
+
+# curl: Composer and many PHP CLI tools use cURL to fetch packages and interact
+# with APIs.
+dev-lang/php curl
