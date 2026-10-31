@@ -55,3 +55,6 @@ dev-python/python-lsp-mypy ~amd64
 
 # Zeal
 app-text/zeal ~amd64
+
+# PHP
+dev-php/PHP_CodeSniffer ~amd64

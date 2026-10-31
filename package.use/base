@@ -52,4 +52,6 @@ sys-devel/gcc graphite
 
 # curl: Composer and many PHP CLI tools use cURL to fetch packages and interact
 # with APIs.
-dev-lang/php curl
+#
+# xmlwriter: Required by PHP_CodeSniffer.
+dev-lang/php curl xmlwriter
