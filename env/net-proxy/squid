@@ -1,0 +1,12 @@
+# Suppress cron emails caused by Squid's configuration warnings during log
+# rotation. Reapply after each installation or upgrade without duplicating
+# the redirection. All output, including errors, is discarded.
+post_pkg_postinst() {
+    local cron_file="${EROOT%/}/etc/cron.weekly/squid.cron"
+
+    [[ -f "${cron_file}" ]] || return 0
+
+    if ! grep -Fxq 'exec >/dev/null 2>&1' "${cron_file}"; then
+        sed -i '1a exec >/dev/null 2>&1' "${cron_file}" || return 1
+    fi
+}
