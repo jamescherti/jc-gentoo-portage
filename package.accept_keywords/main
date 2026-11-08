@@ -58,3 +58,6 @@ app-text/zeal ~amd64
 
 # PHP
 dev-php/PHP_CodeSniffer ~amd64
+
+# Other
+sci-ml/huggingface_hub ~amd64
