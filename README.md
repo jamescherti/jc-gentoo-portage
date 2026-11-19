@@ -20,6 +20,7 @@ Features:
 - Optimizes the linker aggressively using `-Wl,-O2 -Wl,--sort-common -Wl,--as-needed -Wl,-z,pack-relative-relocs` to compress relocation tables, drop unused dependencies, and group global variables by alignment for faster binary loads.
 - Standardizes the multimedia stack exclusively on PipeWire while enforcing hardware-accelerated video decoding.
 - Restricts the GNOME desktop by stripping network discovery protocols from file managers (`-samba`, `-ads`, `-acl`).
+- Raise glibc's minimum supported kernel to omit compatibility code for older kernels, which may provide a performance benefit.
 - Isolates high-load compilation processes to background resources using `PORTAGE_SCHEDULING_POLICY="idle"`, `PORTAGE_IONICE_COMMAND="ionice -c 3 \${PID}"`, and a custom `notmpfs.conf` to prevent Out of Memory errors on massive packages.
 - Compiles binary packages and man pages using maximum compression via `BINPKG_COMPRESS_FLAGS_ZSTD="-19 -T0"`, utilizing all CPU threads.
 
