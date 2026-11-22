@@ -62,3 +62,7 @@ dev-php/PHP_CodeSniffer ~amd64
 # Hugging face
 sci-ml/huggingface_hub ~amd64
 sci-ml/hf_xet ~amd64
+
+# ddccontrol
+app-misc/ddccontrol ~amd64
+app-misc/ddccontrol-db ~amd64
